@@ -1,4 +1,4 @@
-package com.trip.tripmitra;
+package com.acts.tripmitra;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
