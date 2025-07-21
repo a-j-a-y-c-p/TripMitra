@@ -20,6 +20,9 @@ target/
 # Maven local repository
 .mvn/repository/
 
+# Mac DS_STORE
+.DS_Store
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
