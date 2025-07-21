@@ -1,5 +1,10 @@
 package com.acts.tripmitra.services.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,11 +27,6 @@ public class TripServiceImpl implements TripService {
 		
 		BeanUtils.copyProperties(tripdto, trip);
 		try {
-
-			System.out.println(trip.getMode());
-			System.out.println(trip.getCurMembers());
-			System.out.println(trip.getEstimateCost());
-			System.out.println(trip.getMaxMembers());
 			tripRepository.save(trip);
 		}
 		catch(Exception e) {
@@ -35,5 +35,40 @@ public class TripServiceImpl implements TripService {
 		
 		return "created";
 	}
+
+	@Override
+	public Iterator<TripDto> getAllTrips() {
+		List<Trip> tripList = tripRepository.findAll();
+		List<TripDto> tripDtoList = new ArrayList<>();
+		for(Trip trip: tripList) {
+			TripDto tripDto = new TripDto();
+			BeanUtils.copyProperties(trip, tripDto);
+			tripDtoList.add(tripDto);
+		}
+		return tripDtoList.iterator();
+	}
+
+	@Override
+	public TripDto getTripById(Integer id) {
+		Optional<Trip> trip = tripRepository.findById(id);
+		if(trip.isEmpty()) {
+//			throw new TripNotFoundException("Trip with id:" + id + " does not exist.");
+		}
+		TripDto tripDto = new TripDto();
+		BeanUtils.copyProperties(trip.get(), tripDto);
+		return tripDto;
+	}
+
+	@Override
+	public String deleteTrip(Integer tripId) {
+		try {
+			tripRepository.deleteById(tripId);
+		}
+		catch(Exception e) {
+			return "Delete failed";
+		}
+		return "Deleted successfully";
+	}
+	
 
 }
