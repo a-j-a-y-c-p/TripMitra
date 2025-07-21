@@ -17,4 +17,5 @@ public interface TripMemberService {
     void updateStatus(TripMember tripMember);
     List<TripMember> findById(int tripId);
 	List<TripMember> findByStatus(String status);
+	
 }
