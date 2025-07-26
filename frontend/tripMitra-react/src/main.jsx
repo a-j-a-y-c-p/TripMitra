@@ -7,6 +7,7 @@ import App from './App.jsx'
 import Home from './routes/Home.jsx'
 import Dashboard from './routes/Dashboard.jsx'
 import Login from './routes/Login.jsx'
+import AddTripForm from './components/AddTrip.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 const router = createBrowserRouter([
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'dashboard', element: <Dashboard /> },
       { path: 'login', element: <Login /> },
+      { path: 'addtrip' , element: <AddTripForm /> } 
     ],
   }
 ])
