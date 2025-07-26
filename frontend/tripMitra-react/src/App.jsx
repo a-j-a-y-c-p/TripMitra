@@ -1,13 +1,18 @@
 import './App.css'
 import { Outlet } from 'react-router-dom'
 import Navbar from './components/Navbar.jsx'
-
+import Footer from './components/Footer.jsx'
+import React from 'react'
+import './css/logo.css'
+import Logo from './components/Logo.jsx'
 
 function App() {
   return (
     <div>
-      <Navbar/>
+      <Navbar />
+      <Logo />
       <Outlet />
+      <Footer />
     </div>
   )
 }
