@@ -1,0 +1,13 @@
+.footer-background {
+  background-image: url('../../images/footer1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+.footer-text {
+  color: white;
+  text-align: center;
+  padding: 20px;
+}

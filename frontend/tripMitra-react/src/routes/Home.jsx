@@ -1,4 +1,5 @@
 import React from 'react';
+import HeroCarousel from '../routes/HeroCarousel.jsx';
 
 const Home = () => {
   const destinations = [
@@ -37,11 +38,7 @@ const Home = () => {
   return (
     <div className="container mt-5">
       {/* Hero Section */}
-      <div className="text-center bg-light p-5 rounded-4 shadow">
-        <h1 className="display-4 fw-bold">Welcome to Trip Mitra</h1>
-        <p className="lead">Your Ultimate Travel Companion</p>
-        <button className="btn btn-primary btn-lg mt-3">Explore Trips</button>
-      </div>
+      <HeroCarousel />
 
       {/* Featured Destinations */}
       <section className="mt-5">

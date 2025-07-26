@@ -1,8 +1,10 @@
 import React from 'react';
-export default function Footer(){
-    return(
-        <div>
-        <footer className="bg-dark text-white mt-5 p-4 rounded-top">
+import '../css/Footer.css';
+
+export default function Footer() {
+  return (
+    <div>
+      <footer className="footer-background text-white mt-5 p-4 rounded-top">
         <div className="row">
           <div className="col-md-4">
             <h5>Trip Mitra</h5>
@@ -25,6 +27,6 @@ export default function Footer(){
         <hr className="border-light mt-3" />
         <p className="text-center mb-0">© 2025 Trip Mitra. All rights reserved.</p>
       </footer>
-        </div>
-    );
+    </div>
+  );
 }

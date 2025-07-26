@@ -10,6 +10,7 @@ import Login from './routes/Login.jsx'
 import Profile from './routes/ProfileDetail';
 import UpdateProfile from './routes/UpdateProfile';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Signup from './routes/Signup.jsx';
 
 const router = createBrowserRouter([
   {
@@ -19,8 +20,12 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'dashboard', element: <Dashboard /> },
       { path: 'login', element: <Login /> },
+
       { path: 'profile', element: <Profile /> },
       { path: 'update-profile', element: <UpdateProfile /> },
+
+      { path: 'signup', element: <Signup /> },
+
     ],
   }
 ])
