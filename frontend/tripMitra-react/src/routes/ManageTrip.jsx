@@ -13,8 +13,9 @@ const ManageTrip = () => {
     const fetchTrips = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get('http://your-backend-url/api/trips');
+        const response = await axios.get('http://localhost:8910/trips/');
         setTrips(response.data);
+        console.log('Fetched trips:', response.data);
         setError(null);
       } catch (err) {
         setError('Failed to fetch trips. Please try again.');
@@ -36,7 +37,7 @@ const ManageTrip = () => {
     if (!window.confirm('Are you sure you want to delete this trip?')) return;
     setIsLoading(true);
     try {
-      await axios.delete(`http://your-backend-url/api/trips/${id}`);
+      await axios.delete(`http://localhost:8910/trips/delete/${id}`);
       setTrips(trips.filter(trip => trip.id !== id));
       setError(null);
       alert('Trip deleted successfully!');
@@ -89,7 +90,7 @@ const ManageTrip = () => {
     }
     setIsLoading(true);
     try {
-      const response = await axios.put(`http://your-backend-url/api/trips/${editingTrip.id}`, editingTrip);
+      const response = await axios.put(`http://localhost:8910/trips/${editingTrip.id}`, editingTrip);
       setTrips(trips.map(trip => (trip.id === editingTrip.id ? response.data : trip)));
       setEditingTrip(null);
       setError(null);

@@ -15,6 +15,7 @@ import UpdateProfile from './routes/UpdateProfile';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Signup from './routes/Signup.jsx';
 import ManageTrip from './routes/ManageTrip.jsx';
+import TripHistory from './routes/TripHistory.jsx';
 
 const router = createBrowserRouter([
   {
@@ -28,12 +29,13 @@ const router = createBrowserRouter([
 
       { path: 'addtrip' , element: <AddTripForm /> }, 
       { path: 'managetrip', element: <ManageTrip /> },
-
+      
             { path: 'signup', element: <Signup /> },
       { path: 'profile', element: <Profile /> },
       { path: 'update-profile', element: <UpdateProfile /> },
 
       { path: 'signup', element: <Signup /> },
+      {path: 'triphistory', element: <TripHistory /> },
 
     ],
   }
