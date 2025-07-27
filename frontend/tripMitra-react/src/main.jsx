@@ -9,6 +9,7 @@ import Dashboard from './routes/Dashboard.jsx'
 import Login from './routes/Login.jsx'
 import AddTripForm from './components/AddTrip.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Signup from './routes/Signup.jsx';
 
 const router = createBrowserRouter([
   {
@@ -18,7 +19,11 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'dashboard', element: <Dashboard /> },
       { path: 'login', element: <Login /> },
-      { path: 'addtrip' , element: <AddTripForm /> } 
+
+      { path: 'addtrip' , element: <AddTripForm /> }, 
+
+            { path: 'signup', element: <Signup /> },
+
     ],
   }
 ])
