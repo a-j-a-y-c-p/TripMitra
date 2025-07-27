@@ -7,7 +7,7 @@ import App from './App.jsx'
 import Home from './routes/Home.jsx'
 import Dashboard from './routes/Dashboard.jsx'
 import Login from './routes/Login.jsx'
-import Profile from './routes/ProfileDetail';
+import Profile from './routes/UserProfile.jsx';
 import UpdateProfile from './routes/UpdateProfile';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Signup from './routes/Signup.jsx';
