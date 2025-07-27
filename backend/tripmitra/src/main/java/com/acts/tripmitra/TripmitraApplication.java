@@ -19,6 +19,7 @@ public class TripmitraApplication {
 		System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
 		System.setProperty("SPRING_USERNAME", dotenv.get("SPRING_USERNAME"));
 		System.setProperty("SPRING_PASSWORD", dotenv.get("SPRING_PASSWORD"));
+		System.setProperty("FRONTEND_URL", dotenv.get("FRONTEND_URL"));
 
 		SpringApplication.run(TripmitraApplication.class, args);
 	}
