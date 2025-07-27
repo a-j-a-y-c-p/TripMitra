@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.acts.tripmitra.dto.TripDto;
 import com.acts.tripmitra.entity.Trip;
+import com.acts.tripmitra.entity.TripDetails;
+import com.acts.tripmitra.repository.TripDetailsRepository;
 import com.acts.tripmitra.repository.TripRepository;
 import com.acts.tripmitra.services.TripService;
 
@@ -19,6 +21,9 @@ public class TripServiceImpl implements TripService {
 	
 	@Autowired
 	TripRepository tripRepository;
+	
+	@Autowired
+	TripDetailsRepository tripDetailsRepository;
 
 	@Override
 	public String createTrip(TripDto tripdto) {

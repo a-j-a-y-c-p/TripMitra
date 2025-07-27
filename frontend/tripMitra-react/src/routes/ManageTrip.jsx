@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import api from '../api/axiosConfig';
 
 const ManageTrip = () => {
   const [trips, setTrips] = useState([]);
@@ -8,13 +9,22 @@ const ManageTrip = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const username = 'admin';
+  const password = 'TripAdmin';
+
   // Fetch trips from backend on component mount
   useEffect(() => {
     const fetchTrips = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get('http://your-backend-url/api/trips');
+        const response = await api.get('/trips/', {
+          auth: {
+            username,
+            password
+          }
+        });
         setTrips(response.data);
+        console.log(tripInfo);
         setError(null);
       } catch (err) {
         setError('Failed to fetch trips. Please try again.');
@@ -55,8 +65,8 @@ const ManageTrip = () => {
       ...prev,
       tripInfo: {
         ...prev.tripInfo,
-        [name]: name === 'currMembers' || name === 'maxMembers' || name === 'estimatedCost' 
-          ? parseInt(value) || 0 
+        [name]: name === 'currMembers' || name === 'maxMembers' || name === 'estimatedCost'
+          ? parseInt(value) || 0
           : value
       }
     }));
@@ -136,13 +146,13 @@ const ManageTrip = () => {
                   <tbody>
                     {trips.map(trip => (
                       <tr key={trip.id}>
-                        <td>{trip.tripInfo.mode}</td>
-                        <td>{trip.itinerary.source}</td>
-                        <td>{trip.itinerary.destination}</td>
-                        <td>{trip.itinerary.startDate}</td>
-                        <td>{trip.itinerary.endDate}</td>
-                        <td>{trip.tripInfo.currMembers}/{trip.tripInfo.maxMembers}</td>
-                        <td>{trip.tripInfo.estimatedCost}</td>
+                        <td>{trip.mode}</td>
+                        <td>{trip.tripDetails.source}</td>
+                        <td>{trip.tripDetails.destination}</td>
+                        <td>{trip.tripDetails.startDate}</td>
+                        <td>{trip.tripDetails.endDate}</td>
+                        <td>{trip.curMembers}/{trip.maxMembers}</td>
+                        <td>{trip.estimateCost}</td>
                         <td>
                           <button
                             className="btn btn-sm btn-primary me-2"
