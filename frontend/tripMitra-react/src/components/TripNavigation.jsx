@@ -4,22 +4,41 @@ import React from "react";
 
 const TripNavigation = () => {
   return (
-    <div className="p-3 bg-light" >
-      <h4 className="mb-4">Trip Menu</h4>
-      <ul className="nav flex-column">
-        <li className="nav-item">
-          <a className="nav-link" href="/addtrip">➕ Add Trip</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/managetrip">🛠️ Manage Trip</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/triphistory">📜 Trip History</a>
-        </li>
-      </ul>
+    <div
+      className="d-flex flex-column flex-shrink-0 p-4 bg-light shadow"
+      style={{ height: "100vh", width: "250px" }}
+    >
+      <h4 className="mb-4 fw-bold" style={{ fontSize: "1.5rem" }}>
+        Trip Navigation
+      </h4>
+
+      <div className="mb-3">
+        <a href="/addtrip" className="text-decoration-none text-dark">
+          <div className="p-3 bg-white rounded hover-shadow" style={{ fontSize: "1.1rem" }}>
+            ➕ Add Trip
+          </div>
+        </a>
+      </div>
+
+      <div className="mb-3">
+        <a href="/managetrip" className="text-decoration-none text-dark">
+          <div className="p-3 bg-white rounded hover-shadow" style={{ fontSize: "1.1rem" }}>
+            🛠️ Manage Trip
+          </div>
+        </a>
+      </div>
+
+      <div>
+        <a href="/triphistory" className="text-decoration-none text-dark">
+          <div className="p-3 bg-white rounded hover-shadow" style={{ fontSize: "1.1rem" }}>
+            📜 Trip History
+          </div>
+        </a>
+      </div>
     </div>
   );
 };
+
 
 export default TripNavigation;
 

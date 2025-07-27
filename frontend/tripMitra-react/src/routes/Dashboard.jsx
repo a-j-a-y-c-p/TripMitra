@@ -5,24 +5,17 @@ import TripFilter from "../components/TripFilter";
 
 const Dashboard = () => {
   return (
-    <div className="container-fluid bg-light min-vh-100 py-3">
-      <div className="row g-3"> {/* g-3 adds gutter spacing between columns */}
-
-        {/* TripNavigation */}
-        <div className="col-12 col-md-3 border border-dark rounded p-3">
+    <div className="container-fluid bg-light py-3">
+      <div className="row g-3"> 
+        <div className="col-md-3">
           <TripNavigation />
         </div>
-
-        {/* TripList */}
-        <div className="col-12 col-md-6 border border-dark rounded p-3">
+        <div className="col-md-6 ">
           <TripList />
         </div>
-
-        {/* TripFilter */}
-        <div className="col-12 col-md-3 border border-dark rounded p-3">
+        <div className="col-md-3 ">
           <TripFilter />
         </div>
-
       </div>
     </div>
   );
