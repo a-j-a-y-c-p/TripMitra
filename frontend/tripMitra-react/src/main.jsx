@@ -9,9 +9,6 @@ import Dashboard from './routes/Dashboard.jsx'
 import Login from './routes/Login.jsx'
 
 import AddTripForm from './routes/AddTrip.jsx'
-
-
-import AddTripForm from './components/AddTrip.jsx'
 import Profile from './routes/ProfileDetail';
 import UpdateProfile from './routes/UpdateProfile';
 
