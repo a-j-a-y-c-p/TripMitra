@@ -24,17 +24,12 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'dashboard', element: <Dashboard /> },
       { path: 'login', element: <Login /> },
-
-
       { path: 'addtrip' , element: <AddTripForm /> }, 
       { path: 'managetrip', element: <ManageTrip /> },
-
       { path: 'signup', element: <Signup /> },
       { path: 'profile', element: <Profile /> },
       { path: 'update-profile', element: <UpdateProfile /> },
-
       { path: 'signup', element: <Signup /> },
-
     ],
   }
 ])

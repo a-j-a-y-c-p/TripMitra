@@ -1,12 +1,9 @@
 import React from 'react'
 
-function 
-() {
+const Admin_Dashboard = () => {
   return (
-    <div>
-        
-    </div>
+    <div>Admin_Dashboard</div>
   )
 }
 
-export default 
+export default Admin_Dashboard
