@@ -56,6 +56,23 @@ export default function HeroCarousel() {
             <button className="btn btn-warning btn-lg mt-3">Get Inspired</button>
           </div>
         </Carousel.Item>
+
+            <Carousel.Item>
+          <div
+            className="text-center text-white p-5 rounded-4 shadow"
+            style={{
+              backgroundImage: "url('../../images/carousel4.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              minHeight: "400px"
+            }}
+          >
+            <h1 className="display-4 fw-bold">Trusted by Thousands</h1>
+            <p className="lead">Find the Best Places to Travel</p>
+            <button className="btn btn-warning btn-lg mt-3">Get Inspired</button>
+          </div>
+        </Carousel.Item>
+
       </Carousel>
     </div>
   );

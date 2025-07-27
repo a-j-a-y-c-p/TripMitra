@@ -20,21 +20,6 @@ const Home = () => {
     },
   ];
 
-  const testimonials = [
-    {
-      name: 'Priya Sharma',
-      review: 'Trip Mitra made our honeymoon unforgettable!',
-    },
-    {
-      name: 'Amit Verma',
-      review: 'Easy to plan and super helpful guides.',
-    },
-    {
-      name: 'Sneha Patil',
-      review: 'The best platform for budget travel with friends!',
-    },
-  ];
-
   return (
     <div className="container mt-5">
       {/* Hero Section */}
@@ -64,21 +49,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="mt-5 bg-secondary text-white p-5 rounded-4">
-        <h2 className="text-center mb-4">💬 What Travelers Say</h2>
-        <div className="row">
-          {testimonials.map((t, index) => (
-            <div className="col-md-4 mb-3" key={index}>
-              <div className="bg-white text-dark rounded-3 p-3 shadow">
-                <p className="fst-italic">“{t.review}”</p>
-                <p className="fw-bold mb-0 text-end">– {t.name}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-      
     </div>
   );
 };
