@@ -15,7 +15,13 @@ import UpdateProfile from './routes/UpdateProfile';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Signup from './routes/Signup.jsx';
 import ManageTrip from './routes/ManageTrip.jsx';
+<<<<<<< HEAD
+
 import TripHistory from './routes/TripHistory.jsx';
+
+=======
+import TripHistory from './routes/TripHistory.jsx';
+>>>>>>> d986f6c34c1511e8d41a98d4f7cf378766b0850f
 import Admin_Dashboard from './routes/Admin_Dashboard.jsx';
 
 
