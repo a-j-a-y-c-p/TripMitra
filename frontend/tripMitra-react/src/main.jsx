@@ -7,9 +7,9 @@ import App from './App.jsx'
 import Home from './routes/Home.jsx'
 import Dashboard from './routes/Dashboard.jsx'
 import Login from './routes/Login.jsx'
-
+import Profile from './routes/UserProfile.jsx';
 import AddTripForm from './routes/AddTrip.jsx'
-import Profile from './routes/ProfileDetail';
+
 import UpdateProfile from './routes/UpdateProfile';
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
@@ -30,10 +30,10 @@ const router = createBrowserRouter([
       { path: 'addtrip' , element: <AddTripForm /> }, 
       { path: 'managetrip', element: <ManageTrip /> },
       
-            { path: 'signup', element: <Signup /> },
+      { path: 'signup', element: <Signup /> },
       { path: 'signup', element: <Signup /> },
       { path: 'profile', element: <Profile /> },
-      { path: 'update-profile', element: <UpdateProfile /> },
+      { path: 'UpdateProfile', element: <UpdateProfile /> },
       { path: 'signup', element: <Signup /> },
       {path: 'triphistory', element: <TripHistory /> },
 
