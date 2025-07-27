@@ -3,7 +3,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d986f6c34c1511e8d41a98d4f7cf378766b0850f
 const Signup = () => {
   const navigate = useNavigate();
 

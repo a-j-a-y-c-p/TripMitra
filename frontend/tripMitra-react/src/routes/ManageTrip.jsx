@@ -18,6 +18,7 @@ const ManageTrip = () => {
     const fetchTrips = async () => {
       setIsLoading(true);
       try {
+
         // Step 1: Fetch list of trip IDs for the user
         const response = await api.get(`/members/${userId}`, {
           auth: { username, password }
@@ -35,6 +36,7 @@ const ManageTrip = () => {
         const tripResponses = await Promise.all(tripPromises);
         const tripData = tripResponses.map(res => res.data);
         setTrips(tripData);
+
         setError(null);
       } catch (err) {
         setError('Failed to fetch trips. Please try again.');
