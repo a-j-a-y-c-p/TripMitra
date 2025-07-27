@@ -14,7 +14,7 @@ export default function HeroCarousel() {
               backgroundImage: "url('/images/carousel1.jpg')",
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              minHeight: '500px',
+              minHeight: '100vh',
             }}
           >
             <h1 className="display-4 fw-bold">Welcome to Trip Mitra</h1>
@@ -31,7 +31,7 @@ export default function HeroCarousel() {
               backgroundImage: "url('/images/carousel2.jpg')",
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              minHeight: '500px',
+              minHeight: '100vh',
             }}
           >
             <h1 className="display-4 fw-bold">Discover Hidden Gems</h1>
@@ -48,7 +48,7 @@ export default function HeroCarousel() {
               backgroundImage: "url('/images/carousel3.jpg')",
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              minHeight: '500px',
+              minHeight: '100vh',
             }}
           >
             <h1 className="display-4 fw-bold">Trusted by Thousands</h1>
@@ -65,7 +65,7 @@ export default function HeroCarousel() {
               backgroundImage: "url('/images/carousel4.jpg')",
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              minHeight: '500px',
+              minHeight: '100vh',
             }}
           >
             <h1 className="display-4 fw-bold">Travel Made Easy</h1>
