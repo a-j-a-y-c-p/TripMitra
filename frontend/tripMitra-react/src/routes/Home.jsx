@@ -1,53 +1,133 @@
 import React from 'react';
-import HeroCarousel from '../routes/HeroCarousel.jsx';
+import HeroCarousel from './HeroCarousel';
+import '../CSS/Home.css';
 
 const Home = () => {
-  const destinations = [
-    {
-      name: 'Goa',
-      description: 'Sun, sand, and sea – your perfect beach getaway.',
-      image: 'https://source.unsplash.com/400x300/?goa,beach',
-    },
-    {
-      name: 'Manali',
-      description: 'Snowy peaks and cozy vibes in the Himalayas.',
-      image: 'https://source.unsplash.com/400x300/?manali,mountains',
-    },
-    {
-      name: 'Ratnagiri',
-      description: 'Konkan coast charm and cultural richness.',
-      image: 'https://source.unsplash.com/400x300/?ratnagiri,coast',
-    },
-  ];
-
   return (
-    <div className="container mt-5">
+    <div>
       {/* Hero Section */}
       <HeroCarousel />
 
-      {/* Featured Destinations */}
-      <section className="mt-5">
-        <h2 className="text-center mb-4">🌍 Featured Destinations</h2>
-        <div className="row">
-          {destinations.map((place, idx) => (
-            <div className="col-md-4 mb-4" key={idx}>
-              <div className="card h-100 shadow-sm">
-                <img
-                  src={place.image}
-                  className="card-img-top"
-                  alt={place.name}
-                  style={{ height: '200px', objectFit: 'cover' }}
-                />
-                <div className="card-body">
-                  <h5 className="card-title">{place.name}</h5>
-                  <p className="card-text">{place.description}</p>
-                  <a href="#" className="btn btn-outline-primary">View More</a>
-                </div>
-              </div>
+      {/* Feature 1 (Image Right) */}
+      <section className="promo-section d-flex align-items-center text-white px-4 py-5 bgc1">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-md-6">
+              <h2 className="fw-bold mb-3">🔍 Smart Search & Filter</h2>
+              <p className="mb-4">
+                Users can search for trips based on source, destination, travel date, and time. Filter by preferences like budget, mode of travel (car/bike), and gender preference.
+              </p>
+              <button className="btn btn-light text-primary fw-semibold px-4">Learn More</button>
             </div>
-          ))}
+            <div className="col-md-6 text-center mt-4 mt-md-0">
+              <img
+                src="../../images/pic1.png"
+                alt="Smart Search"
+                className="img-fluid"
+                style={{ maxHeight: '250px' }}
+              />
+            </div>
+          </div>
         </div>
       </section>
+
+      {/* Feature 2 (Image Left) */}
+      <section className="promo-section d-flex align-items-center text-black px-4 py-5 bgc2">
+        <div className="container">
+          <div className="row align-items-center flex-md-row-reverse">
+            <div className="col-md-6">
+              <h2 className="fw-bold mb-3">👤 User Profiles & Authentication</h2>
+              <p className="mb-4">
+                Secure login/signup for riders and passengers. Profile includes user ratings, travel history, and contact info.
+              </p>
+              <button className="btn btn-light text-primary fw-semibold px-4">Learn More</button>
+            </div>
+            <div className="col-md-6 text-center mt-4 mt-md-0">
+              <img
+                src="../../images/pic2.png"
+                alt="User Profiles"
+                className="img-fluid"
+                style={{ maxHeight: '250px' }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Feature 3 (Image Right) */}
+      <section className="promo-section d-flex align-items-center text-white px-4 py-5 bgc1">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-md-6">
+              <h2 className="fw-bold mb-3">🛣️ Post & Join Trips</h2>
+              <p className="mb-4">
+                Users can create/post a trip with travel details. Other users can join available trips by sending a request or booking directly.
+              </p>
+              <button className="btn btn-light text-primary fw-semibold px-4">Learn More</button>
+            </div>
+            <div className="col-md-6 text-center mt-4 mt-md-0">
+              <img
+                src="../../images/pic3.png"
+                alt="Post & Join Trips"
+                className="img-fluid"
+                style={{ maxHeight: '250px' }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Feature 4 (Image Left) */}
+      <section className="promo-section d-flex align-items-center text-black px-4 py-5  bgc2">
+        <div className="container">
+          <div className="row align-items-center flex-md-row-reverse">
+            <div className="col-md-6">
+              <h2 className="fw-bold mb-3">📅 Trip History & Upcoming Trips:</h2>
+              <p className="mb-4">
+                View past trips, bookings, and future planned journeys. Option to repeat or copy trips for frequent travelers.
+              </p>
+              <button className="btn btn-light text-primary fw-semibold px-4">Learn More</button>
+            </div>
+            <div className="col-md-6 text-center mt-4 mt-md-0">
+              <img
+                src="../../images/pic4.png"
+                alt="Location Tracking"
+                className="img-fluid"
+                style={{ maxHeight: '250px' }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <section className="why-choose">
+  <h2>
+    Why Choose <span>Trip Mitra?</span>
+  </h2>
+  <div className="features-grid">
+    <div className="feature-box">
+      <i className="fas fa-user-check"></i>
+      <h3>Safe & Verified Riders</h3>
+      <p>All riders are verified and reviewed for your safety.</p>
+    </div>
+    <div className="feature-box">
+      <i className="fas fa-rupee-sign"></i>
+      <h3>Affordable Travel</h3>
+      <p>Pool your ride and save more with every trip.</p>
+    </div>
+    <div className="feature-box">
+      <i className="fas fa-mobile-alt"></i>
+      <h3>Easy to Use</h3>
+      <p>Plan, join or manage trips in just a few clicks.</p>
+    </div>
+    <div className="feature-box">
+      <i className="fas fa-headset"></i>
+      <h3>24/7 Support</h3>
+      <p>We’re here for you anytime, anywhere.</p>
+    </div>
+  </div>
+</section>
+
 
     </div>
   );

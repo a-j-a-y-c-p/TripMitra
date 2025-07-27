@@ -1,0 +1,17 @@
+/* Ensure full height layout */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Flex container */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Main content expands to push footer down */
+.app-content {
+  flex: 1;
+}

@@ -7,14 +7,23 @@ import App from './App.jsx'
 import Home from './routes/Home.jsx'
 import Dashboard from './routes/Dashboard.jsx'
 import Login from './routes/Login.jsx'
-
+import Profile from './routes/UserProfile.jsx';
 import AddTripForm from './routes/AddTrip.jsx'
-import Profile from './routes/ProfileDetail';
+
 import UpdateProfile from './routes/UpdateProfile';
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Signup from './routes/Signup.jsx';
 import ManageTrip from './routes/ManageTrip.jsx';
+<<<<<<< HEAD
+
+import TripHistory from './routes/TripHistory.jsx';
+
+=======
+import TripHistory from './routes/TripHistory.jsx';
+>>>>>>> d986f6c34c1511e8d41a98d4f7cf378766b0850f
+import Admin_Dashboard from './routes/Admin_Dashboard.jsx';
+
 
 const router = createBrowserRouter([
   {
@@ -26,10 +35,15 @@ const router = createBrowserRouter([
       { path: 'login', element: <Login /> },
       { path: 'addtrip' , element: <AddTripForm /> }, 
       { path: 'managetrip', element: <ManageTrip /> },
+      
+      { path: 'signup', element: <Signup /> },
       { path: 'signup', element: <Signup /> },
       { path: 'profile', element: <Profile /> },
-      { path: 'update-profile', element: <UpdateProfile /> },
+      { path: 'UpdateProfile', element: <UpdateProfile /> },
       { path: 'signup', element: <Signup /> },
+      {path: 'triphistory', element: <TripHistory /> },
+
+      {path: 'admin_dashboard',element: <Admin_Dashboard/>}
     ],
   }
 ])
