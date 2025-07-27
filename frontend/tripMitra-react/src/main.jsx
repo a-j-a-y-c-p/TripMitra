@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       { path: 'addtrip' , element: <AddTripForm /> }, 
       { path: 'managetrip', element: <ManageTrip /> },
 
-            { path: 'signup', element: <Signup /> },
+      { path: 'signup', element: <Signup /> },
       { path: 'profile', element: <Profile /> },
       { path: 'update-profile', element: <UpdateProfile /> },
 
