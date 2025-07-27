@@ -23,7 +23,7 @@ const Navbar = () => {
           <NavLink className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} aria-current="page" to="/">Home</NavLink>
         </li>
         <li class="nav-item">
-          <NavLink className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} to="/">Dashboard</NavLink>
+          <NavLink className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} to="/dashboard">Dashboard</NavLink>
         </li>
         <li class="nav-item">
           <NavLink className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} to="/login">Login</NavLink>
