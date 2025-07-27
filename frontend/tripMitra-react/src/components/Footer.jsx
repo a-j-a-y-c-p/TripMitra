@@ -4,7 +4,7 @@ import '../css/Footer.css';
 export default function Footer() {
   return (
     <div>
-      <footer className="footer-background text-white mt-5 p-4 rounded-top">
+      <footer className="footer-background text-white mt-1 p-4 rounded-top">
         <div className="row">
           <div className="col-md-4">
             <h5>Trip Mitra</h5>

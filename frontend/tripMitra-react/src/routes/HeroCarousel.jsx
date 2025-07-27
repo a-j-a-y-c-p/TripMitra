@@ -4,17 +4,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function HeroCarousel() {
   return (
-    <div className="container my-5">
+    <div>
       <Carousel fade interval={4000}>
         {/* Slide 1 */}
         <Carousel.Item>
           <div
-            className="text-center text-white p-5 rounded-4 shadow"
+            className="text-center text-white p-5"
             style={{
-              backgroundImage: "url('../../images/carousel1.jpg')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              minHeight: "400px"
+              backgroundImage: "url('/images/carousel1.jpg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              minHeight: '500px',
             }}
           >
             <h1 className="display-4 fw-bold">Welcome to Trip Mitra</h1>
@@ -26,12 +26,12 @@ export default function HeroCarousel() {
         {/* Slide 2 */}
         <Carousel.Item>
           <div
-            className="text-center text-white p-5 rounded-4 shadow"
+            className="text-center text-white p-5"
             style={{
-              backgroundImage: "url('../../images/carousel2.jpg')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              minHeight: "400px"
+              backgroundImage: "url('/images/carousel2.jpg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              minHeight: '500px',
             }}
           >
             <h1 className="display-4 fw-bold">Discover Hidden Gems</h1>
@@ -43,12 +43,12 @@ export default function HeroCarousel() {
         {/* Slide 3 */}
         <Carousel.Item>
           <div
-            className="text-center text-white p-5 rounded-4 shadow"
+            className="text-center text-white p-5"
             style={{
-              backgroundImage: "url('../../images/carousel3.jpg')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              minHeight: "400px"
+              backgroundImage: "url('/images/carousel3.jpg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              minHeight: '500px',
             }}
           >
             <h1 className="display-4 fw-bold">Trusted by Thousands</h1>
@@ -57,22 +57,22 @@ export default function HeroCarousel() {
           </div>
         </Carousel.Item>
 
-            <Carousel.Item>
+        {/* Slide 4 */}
+        <Carousel.Item>
           <div
-            className="text-center text-white p-5 rounded-4 shadow"
+            className="text-center text-white p-5"
             style={{
-              backgroundImage: "url('../../images/carousel4.jpg')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              minHeight: "400px"
+              backgroundImage: "url('/images/carousel4.jpg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              minHeight: '500px',
             }}
           >
-            <h1 className="display-4 fw-bold">Trusted by Thousands</h1>
-            <p className="lead">Find the Best Places to Travel</p>
-            <button className="btn btn-warning btn-lg mt-3">Get Inspired</button>
+            <h1 className="display-4 fw-bold">Travel Made Easy</h1>
+            <p className="lead">Join or Offer Rides Instantly</p>
+            <button className="btn btn-danger btn-lg mt-3">Ride Now</button>
           </div>
         </Carousel.Item>
-
       </Carousel>
     </div>
   );
