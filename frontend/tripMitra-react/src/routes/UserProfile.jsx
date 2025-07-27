@@ -30,6 +30,7 @@
 //         <p><strong>Trip Host:</strong> {user.isTripHost ? 'Yes' : 'No'}</p>
 //         <p><strong>Address ID:</strong> {user.addressId}</p>
 //       </div>
+{/* <button type="submit">Update Profile</button> */}
 //     </div>
 //   );
 // };
@@ -78,6 +79,7 @@ const UserProfile = ({ userId }) => {
           <p><strong>Trip Host:</strong> {user.isTripHost ? 'Yes' : 'No'}</p>
           <p><strong>Address ID:</strong> {user.addressId}</p>
         </div>
+        <button type="submit">Update Profile</button>
       </div>
     </div>
   );
