@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.acts.tripmitra.entity.Trip;
 import com.acts.tripmitra.entity.TripMember;
 import com.acts.tripmitra.repository.TripMemberRepository;
 import com.acts.tripmitra.services.TripMemberService;
@@ -49,6 +50,18 @@ public class TripMemberServiceImpl implements TripMemberService {
 	@Override
 	public List<TripMember> findByStatus(String status) {
 		return repository.findByStatus(Status.valueOf(status));
+	}
+
+	@Override
+	public List<Integer> findHostedTripsByUserId(int id) {
+		
+		 return repository.findHostedTripsByUserId(id); 
+		 
+	}
+
+	@Override
+	public List<Integer> findAllTripsByUserId(int id) {
+		return repository.findAllTripsByUserId(id);
 	}
 
 	
