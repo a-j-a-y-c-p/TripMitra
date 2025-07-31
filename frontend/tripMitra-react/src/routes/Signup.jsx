@@ -4,7 +4,6 @@ import api from '../api/axiosConfig'
 import { useNavigate } from 'react-router-dom';
 const Signup = () => {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     userEmail: "",
     userName: "",
