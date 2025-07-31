@@ -1,11 +1,11 @@
-// routes/Login.jsx
-import { useState } from "react";
+import { useContext, useState } from "react";
 import api from '../api/axiosConfig'
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
-
+  const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     userEmail: "",
     userPassword: ""
@@ -31,8 +31,13 @@ const Login = () => {
 
       if (res.status === 200) {
         const { token } = res.data;
-        localStorage.setItem('jwt', token);
-        navigate("/dashboard");
+        if (token) {
+          login(token);
+          navigate("/dashboard");
+        }
+        else{
+          setError("Token not received");
+        }
       } else {
         setError("Invalid credentials");
       }
