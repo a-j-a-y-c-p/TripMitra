@@ -2,17 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '../api/axiosConfig';
+import { jwtDecode } from 'jwt-decode';
 
 const ManageTrip = () => {
   const [trips, setTrips] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
-  const username = 'admin';
-  const password = 'TripAdmin';
-  const userId = 1; // TODO: Set dynamically (e.g., from useParams or auth)
-
+    const token = localStorage.get('token');
+     try {
+      const decoded = jwtDecode(token);
+    } catch (error) {
+      console.error('Error decoding JWT:', error.message);
+    }
+  
+    const userId = decoded.sub;
   // Fetch trips from backend on component mount
   useEffect(() => {
     const fetchTrips = async () => {
@@ -20,9 +24,7 @@ const ManageTrip = () => {
       try {
 
         // Step 1: Fetch list of trip IDs for the user
-        const response = await api.get(`/members/${userId}`, {
-          auth: { username, password }
-        });
+        const response = await api.get(`/members/${userId}`);
         if (!Array.isArray(response.data)) {
           throw new Error('Expected an array of trip IDs');
         }

@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axiosConfig';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { jwtDecode } from 'jwt-decode'; 
 
 const TripHistory = () => {
   const [trips, setTrips] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  
-  const username = 'admin';
-  const password = 'TripAdmin';
-  const userId = 1; // TODO: Set dynamically (e.g., from useParams or auth)
+
+  const token = localStorage.get('token');
+       try {
+        const decoded = jwtDecode(token);
+      } catch (error) {
+        console.error('Error decoding JWT:', error.message);
+      }
+    
+      const userId = decoded.sub;
 
   // Current date for filtering past trips
   const currentDate = new Date('2025-07-27');
@@ -67,7 +73,7 @@ const TripHistory = () => {
             <p className="text-center">No past trips found.</p>
           )}
           {trips.length > 0 && (
-            <>
+            <> 
                {trips.map(trip => (
                 <div key={trip.id} className="mb-4">
                   <div className="card shadow-sm border-0" style={{ borderRadius: '8px' }}>
