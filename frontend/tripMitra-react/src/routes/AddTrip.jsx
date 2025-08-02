@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api/axiosConfig';
 
 
 const AddTripForm = () => {
@@ -45,7 +45,7 @@ const AddTripForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://your-backend-url/api/trips', tripDetails);
+      const response = await api.post('/trips/new', tripDetails);
       console.log('Trip added successfully:', response.data);
       alert('Trip added successfully!');
       setTripDetails({
