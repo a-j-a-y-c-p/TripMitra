@@ -1,22 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '../api/axiosConfig';
-import { jwtDecode } from 'jwt-decode';
+import { AuthContext } from '../contexts/AuthContext';
 
 const ManageTrip = () => {
   const [trips, setTrips] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-    const token = localStorage.get('token');
-     try {
-      const decoded = jwtDecode(token);
-    } catch (error) {
-      console.error('Error decoding JWT:', error.message);
-    }
-  
-    const userId = decoded.sub;
+  const { user } = useContext(AuthContext);
+
+
+  const userId = user?.userId;
   // Fetch trips from backend on component mount
   useEffect(() => {
     const fetchTrips = async () => {
@@ -31,9 +27,7 @@ const ManageTrip = () => {
 
         // Step 2: Fetch full trip details for each trip ID
         const tripPromises = response.data.map(tripId =>
-          api.get(`/trips/${tripId}`, {
-            auth: { username, password }
-          })
+          api.get(`/trips/${tripId}`)
         );
         const tripResponses = await Promise.all(tripPromises);
         const tripData = tripResponses.map(res => res.data);

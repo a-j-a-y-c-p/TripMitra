@@ -40,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
 
 		userRepository.save(newUser);
 
-		String token = jwtUtil.generateToken(newUser.getUserEmail(), newUser.getUserRole());
+		String token = jwtUtil.generateToken(newUser.getUserEmail(), newUser.getUserRole(), newUser.getUserId());
 		return new AuthResponseDto(token);
 	}
 
@@ -51,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password");
 		}
 
-		String token = jwtUtil.generateToken(user.getUserEmail(), user.getUserRole());
+		String token = jwtUtil.generateToken(user.getUserEmail(), user.getUserRole(), user.getUserId());
 		return new AuthResponseDto(token);
 	}
 }
