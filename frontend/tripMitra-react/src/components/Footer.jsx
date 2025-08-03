@@ -13,8 +13,8 @@ export default function Footer() {
           <div className="col-md-4">
             <h5>Quick Links</h5>
             <ul className="list-unstyled">
-              <li><a href="#" className="text-white">Home</a></li>
-              <li><a href="#" className="text-white">Destinations</a></li>
+              <li><a href="/" className="text-white">Home</a></li>
+              <li><a href="/" className="text-white">Destinations</a></li>
               <li><a href="#" className="text-white">Contact</a></li>
             </ul>
           </div>
