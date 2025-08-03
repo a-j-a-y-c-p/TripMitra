@@ -1,36 +1,25 @@
-.custom-card {
-  height: 250px;
-  overflow: hidden;
-  transition: all 0.4s ease;
-  cursor: pointer;
-  position: relative;
-  display: flex;
-  flex-direction: column;
+/* Page load fade-in */
+.fade-in {
+  animation: fadeIn 0.6s ease forwards;
 }
 
-.custom-card-header {
-  height: 100%;
-  transition: height 0.4s ease;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.custom-card-body {
-  flex-grow: 1;
-  overflow: hidden;
-  display: none;
-  opacity: 0;
+/* Card hover effect */
+.transition {
+  transition: all 0.3s ease-in-out;
 }
 
-.custom-card:hover .custom-card-header {
-  height: 60px;
-  align-items: center;
-}
-
-.custom-card:hover .custom-card-body {
-  opacity: 1;
-  padding: 1rem;
-  display: block;
-  transition: opacity 0.4s ease;
+.hover-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
