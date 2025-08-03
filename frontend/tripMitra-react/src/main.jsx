@@ -34,7 +34,7 @@ const router = createBrowserRouter([
       { path: 'profile', element: <PrivateRoute><Profile /></PrivateRoute> },
       { path: 'UpdateProfile', element: <PrivateRoute><UpdateProfile /></PrivateRoute> },
       { path: 'triphistory', element: <PrivateRoute><TripHistory /> </PrivateRoute>},
-      { path: 'admin_dashboard', element: <PrivateRoute><Admin_Dashboard /></PrivateRoute> }
+      { path: 'admin_dashboard', element: <PrivateRoute requiredRole={'ADMIN'}><Admin_Dashboard /></PrivateRoute> }
     ],
   }
 ])

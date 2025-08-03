@@ -1,32 +1,9 @@
 import React, { useEffect } from 'react'
-import api from '../api/axiosConfig'
 import '../css/Admin_Dashboard.css'
 
 
 
 const Admin_Dashboard = () => {
-  
-const username = 'admin';
-const password = 'TripAdmin';
-
-  useEffect(() => {
-    const fetchProductDetails = async () => {
-      try {
-        const response = await api.get(`/trips/1`, {
-          auth: {
-            username,
-            password
-          }
-        });
-        console.log(response.data);
-      } catch (err) {
-        console.error('Error fetching product details:', err);
-      }
-    };
-
-    fetchProductDetails();
-  }, [])
-
   return (
     <div className="container-fluid">
       <div className='row m-5 g-4'>
