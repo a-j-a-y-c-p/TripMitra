@@ -12,6 +12,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.acts.tripmitra.utilities.JwtUtil;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +26,14 @@ public class JwtAuthFilter extends OncePerRequestFilter{
 	
 	@Autowired
     private JwtUtil jwtUtil;
+	
+	
+	private void sendErrorResponse(HttpServletResponse response, int status, String message) throws IOException {
+	    response.setStatus(status);
+	    response.setContentType("application/json");
+	    response.getWriter().write("{\"error\": \"" + message + "\"}");
+	}
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -39,6 +51,8 @@ public class JwtAuthFilter extends OncePerRequestFilter{
         }
 
         jwt = authHeader.substring(7);
+        
+        try {
         userEmail = jwtUtil.extractUsername(jwt);
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -54,6 +68,16 @@ public class JwtAuthFilter extends OncePerRequestFilter{
         }
 
         filterChain.doFilter(request, response);
+        
+        } catch (ExpiredJwtException ex) {
+            sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Token expired");
+        } catch (MalformedJwtException ex) {
+            sendErrorResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Malformed token");
+        } catch (SignatureException ex) {
+            sendErrorResponse(response, HttpServletResponse.SC_FORBIDDEN, "Invalid signature");
+        } catch (JwtException ex) {
+            sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+        }
     }
 
 }

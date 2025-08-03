@@ -1,11 +1,9 @@
 package com.acts.tripmitra.services.impl;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,9 @@ import com.acts.tripmitra.entity.Trip;
 import com.acts.tripmitra.repository.TripDetailsRepository;
 import com.acts.tripmitra.repository.TripRepository;
 import com.acts.tripmitra.services.TripService;
+import com.acts.tripmitra.services.exceptions.TripAlreadyExistsException;
+import com.acts.tripmitra.services.exceptions.TripDeletionException;
+import com.acts.tripmitra.services.exceptions.TripNotFoundException;
 
 @Service
 public class TripServiceImpl implements TripService {
@@ -36,10 +37,10 @@ public class TripServiceImpl implements TripService {
 			tripRepository.save(trip);
 		}
 		catch(Exception e) {
-			return "error";
+			throw new TripAlreadyExistsException("Trip creation failed - duplicate or invalid data");
 		}
 		
-		return "created";
+		return "trip created successfully";
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class TripServiceImpl implements TripService {
 	public TripDto getTripById(Integer id) {
 		Optional<Trip> trip = tripRepository.findById(id);
 		if(trip.isEmpty()) {
-//			throw new TripNotFoundException("Trip with id:" + id + " does not exist.");
+			throw new TripNotFoundException("Trip with ID " + id + " not found.");
 		}
 		TripDto tripDto = new TripDto();
 		BeanUtils.copyProperties(trip.get(), tripDto);
@@ -67,13 +68,15 @@ public class TripServiceImpl implements TripService {
 
 	@Override
 	public String deleteTrip(Integer tripId) {
+		if (!tripRepository.existsById(tripId)) {
+			throw new TripNotFoundException("Cannot delete. Trip with ID " + tripId + " not found.");
+		}
 		try {
 			tripRepository.deleteById(tripId);
+		} catch (Exception e) {
+			throw new TripDeletionException("Failed to delete trip with ID " + tripId);
 		}
-		catch(Exception e) {
-			return "Delete failed";
-		}
-		return "Deleted successfully";
+		return "Trip deleted successfully";
 	}
 	
 	public List<Trip> filterTrips(
