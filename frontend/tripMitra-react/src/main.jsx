@@ -9,14 +9,14 @@ import Dashboard from './routes/Dashboard.jsx'
 import Login from './routes/Login.jsx'
 import Profile from './routes/UserProfile.jsx';
 import AddTripForm from './routes/AddTrip.jsx'
-
 import UpdateProfile from './routes/UpdateProfile';
-
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Signup from './routes/Signup.jsx';
 import ManageTrip from './routes/ManageTrip.jsx';
 import TripHistory from './routes/TripHistory.jsx';
 import Admin_Dashboard from './routes/Admin_Dashboard.jsx';
+import PrivateRoute from './components/PrivateRoute.jsx';
+import { AuthProvider } from './contexts/AuthContext.jsx';
 
 
 const router = createBrowserRouter([
@@ -25,19 +25,16 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { index: true, element: <Home /> },
-      { path: 'dashboard', element: <Dashboard /> },
+      { path: 'signup', element: <Signup /> },
       { path: 'login', element: <Login /> },
-      { path: 'addtrip' , element: <AddTripForm /> }, 
-      { path: 'managetrip', element: <ManageTrip /> },
-      
-      { path: 'signup', element: <Signup /> },
-      { path: 'signup', element: <Signup /> },
-      { path: 'profile', element: <Profile /> },
-      { path: 'UpdateProfile', element: <UpdateProfile /> },
-      { path: 'signup', element: <Signup /> },
-      {path: 'triphistory', element: <TripHistory /> },
 
-      {path: 'admin_dashboard',element: <Admin_Dashboard/>}
+      { path: 'dashboard', element: <PrivateRoute><Dashboard /></PrivateRoute> },
+      { path: 'addtrip', element: <PrivateRoute><AddTripForm /></PrivateRoute> },
+      { path: 'managetrip', element: <PrivateRoute><ManageTrip /></PrivateRoute> },
+      { path: 'profile', element: <PrivateRoute><Profile /></PrivateRoute> },
+      { path: 'UpdateProfile', element: <PrivateRoute><UpdateProfile /></PrivateRoute> },
+      { path: 'triphistory', element: <PrivateRoute><TripHistory /> </PrivateRoute>},
+      { path: 'admin_dashboard', element: <PrivateRoute><Admin_Dashboard /></PrivateRoute> }
     ],
   }
 ])
@@ -45,6 +42,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>,
 )
