@@ -26,7 +26,7 @@ public class Trip {
 	String mode;
 	
 	@Column(name="currmembers")
-	Integer curMembers;
+	Integer currMembers;
 	
 	@Column(name="maxmembers")
 	Integer maxMembers;

@@ -1,9 +1,11 @@
 package com.acts.tripmitra.services.impl;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.acts.tripmitra.dto.TripDto;
 import com.acts.tripmitra.entity.Trip;
-import com.acts.tripmitra.entity.TripDetails;
 import com.acts.tripmitra.repository.TripDetailsRepository;
 import com.acts.tripmitra.repository.TripRepository;
 import com.acts.tripmitra.services.TripService;
@@ -75,5 +76,17 @@ public class TripServiceImpl implements TripService {
 		return "Deleted successfully";
 	}
 	
+	public List<Trip> filterTrips(
+		    String source,
+		    String destination,
+		    Double minPrice,
+		    Double maxPrice,
+		    Integer minSeats,
+		    Integer maxSeats
+		) {
+		    return tripRepository.findByDynamicFilters(source, destination, minPrice, maxPrice, minSeats, maxSeats);
+		}
+
+
 
 }
