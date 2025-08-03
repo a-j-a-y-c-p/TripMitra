@@ -1,22 +1,24 @@
-// routes/Login.jsx
-import { useState } from "react";
-import axios from "axios";
+import { useContext, useState } from "react";
+import api from '../api/axiosConfig'
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
-
+  const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
-    email: "",
-    password: ""
+    userEmail: "",
+    userPassword: ""
   });
 
   const [error, setError] = useState("");
 
+
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [name]: value
     }));
   };
 
@@ -25,13 +27,17 @@ const Login = () => {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:8910/auth/login", formData);
+      const res = await api.post("/auth/login", formData);
 
       if (res.status === 200) {
-        // Save user token or info if needed
-        console.log("Login successful:", res.data);
-        // Redirect to dashboard
-        navigate("/dashboard");
+        const { token } = res.data;
+        if (token) {
+          login(token);
+          navigate("/dashboard");
+        }
+        else{
+          setError("Token not received");
+        }
       } else {
         setError("Invalid credentials");
       }
@@ -58,10 +64,10 @@ const Login = () => {
             <input
               type="email"
               className="form-control"
-              name="email"
+              name="userEmail"
               required
               onChange={handleChange}
-              value={formData.email}
+              value={formData.userEmail}
             />
           </div>
 
@@ -70,10 +76,10 @@ const Login = () => {
             <input
               type="password"
               className="form-control"
-              name="password"
+              name="userPassword"
               required
               onChange={handleChange}
-              value={formData.password}
+              value={formData.userPassword}
             />
           </div>
 

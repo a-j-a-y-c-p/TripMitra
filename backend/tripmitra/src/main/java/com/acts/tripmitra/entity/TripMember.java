@@ -21,4 +21,6 @@ public class TripMember {
 	@Column(name="status")
 	@Enumerated(EnumType.STRING)
 	private Status status;
+	@Column(name="istriphost")
+	private boolean isTripHost;
 }

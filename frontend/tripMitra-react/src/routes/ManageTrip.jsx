@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '../api/axiosConfig';
+import { AuthContext } from '../contexts/AuthContext';
 
 const ManageTrip = () => {
   const [trips, setTrips] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
-  const username = 'admin';
-  const password = 'TripAdmin';
-  const userId = 1; // TODO: Set dynamically (e.g., from useParams or auth)
 
+  const userId = user?.userId;
   // Fetch trips from backend on component mount
   useEffect(() => {
     const fetchTrips = async () => {
@@ -20,18 +20,14 @@ const ManageTrip = () => {
       try {
 
         // Step 1: Fetch list of trip IDs for the user
-        const response = await api.get(`/members/${userId}`, {
-          auth: { username, password }
-        });
+        const response = await api.get(`/members/${userId}`);
         if (!Array.isArray(response.data)) {
           throw new Error('Expected an array of trip IDs');
         }
 
         // Step 2: Fetch full trip details for each trip ID
         const tripPromises = response.data.map(tripId =>
-          api.get(`/trips/${tripId}`, {
-            auth: { username, password }
-          })
+          api.get(`/trips/${tripId}`)
         );
         const tripResponses = await Promise.all(tripPromises);
         const tripData = tripResponses.map(res => res.data);

@@ -1,14 +1,13 @@
 
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api/axiosConfig'
 import { useNavigate } from 'react-router-dom';
 const Signup = () => {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
+    userEmail: "",
+    userName: "",
+    userPassword: "",
     confirmPassword: "",
   });
 
@@ -24,16 +23,16 @@ const Signup = () => {
     e.preventDefault();
     setError("");
 
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.userPassword !== formData.confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
 
     try {
-      const res = await axios.post("http://localhost:8910/auth/Signup", {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
+      const res = await api.post("/auth/signup", {
+        userEmail: formData.userEmail,
+        userName: formData.userName,
+        userPassword: formData.userPassword,
       });
 
       if (res.status === 200 || res.status === 201) {
@@ -63,10 +62,10 @@ const Signup = () => {
             <input
               type="text"
               className="form-control"
-              name="username"
+              name="userName"
               required
               placeholder="Enter your username"
-              value={formData.username}
+              value={formData.userName}
               onChange={handleChange}
             />
           </div>
@@ -76,10 +75,10 @@ const Signup = () => {
             <input
               type="email"
               className="form-control"
-              name="email"
+              name="userEmail"
               required
               placeholder="Enter your email"
-              value={formData.email}
+              value={formData.userEmail}
               onChange={handleChange}
             />
           </div>
@@ -90,10 +89,10 @@ const Signup = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 className="form-control"
-                name="password"
+                name="userPassword"
                 required
                 placeholder="Enter password"
-                value={formData.password}
+                value={formData.userPassword}
                 onChange={handleChange}
               />
               <span
