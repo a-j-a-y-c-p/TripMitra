@@ -12,7 +12,7 @@ public class TripDto {
 		
 	String mode;
 	
-	Integer curMembers;
+	Integer currMembers;
 	
 	Integer maxMembers;
 	
