@@ -6,6 +6,7 @@ import { AuthContext } from '../contexts/AuthContext';
 const Navbar = () => {
 
   const { token, user, logout } = useContext(AuthContext);
+  const dashboardPath = user?.role === 'ADMIN' ? "/admin_dashboard" : "/dashboard";
 
   const handleLogout = () => {
     logout();
@@ -26,9 +27,11 @@ const Navbar = () => {
             <li className="nav-item">
               <NavLink className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} aria-current="page" to="/">Home</NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} to="/dashboard">Dashboard</NavLink>
-            </li>
+            {token && (
+              <li className="nav-item">
+                <NavLink className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} to={dashboardPath}>Dashboard</NavLink>
+              </li>)
+            }
 
             {token ? (
               <li className="nav-item dropdown">
