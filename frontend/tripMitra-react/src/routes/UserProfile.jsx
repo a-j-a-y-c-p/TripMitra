@@ -38,10 +38,12 @@
 // export default UserProfile;
 
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // ✅ Needed for navigation
 import '../CSS/UserProfile.css';
 
 const UserProfile = ({ userId }) => {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Simulate API delay with dummy data
@@ -63,6 +65,10 @@ const UserProfile = ({ userId }) => {
 
   if (!user) return <div className="loading">Loading...</div>;
 
+  const handleUpdateProfile = () => {
+    navigate('/UpdateProfile'); // ✅ Navigates to update page
+  };
+
   return (
     <div className="profile-wrapper">
       <div className="profile-container glass">
@@ -79,11 +85,10 @@ const UserProfile = ({ userId }) => {
           <p><strong>Trip Host:</strong> {user.isTripHost ? 'Yes' : 'No'}</p>
           <p><strong>Address ID:</strong> {user.addressId}</p>
         </div>
-        <button type="submit">Update Profile</button>
+        <button type="button" onClick={handleUpdateProfile}>Update Profile</button>
       </div>
     </div>
   );
 };
 
 export default UserProfile;
-
