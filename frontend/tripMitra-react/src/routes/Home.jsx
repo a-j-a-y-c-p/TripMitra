@@ -15,7 +15,7 @@ const Home = () => {
             <div className="col-md-6">
               <h2 className="fw-bold mb-3">🔍 Smart Search & Filter</h2>
               <p className="mb-4">
-                Users can search for trips based on source, destination, travel date, and time. Filter by preferences like budget, mode of travel (car/bike), and gender preference.
+                Users can search for trips based on source, destination, travel date, and time. Filter by preferences like budget, mode of travel and gender preference.
               </p>
               <button className="btn btn-light text-primary fw-semibold px-4">Learn More</button>
             </div>
