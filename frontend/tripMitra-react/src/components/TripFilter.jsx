@@ -6,18 +6,24 @@ const TripFilter = ({ onFilterChange = () => {} }) => {
   const [destination, setDestination] = useState('');
   const [priceRange, setPriceRange] = useState([0, 10000]);
   const [departureRange, setDepartureRange] = useState([0, 24]);
-  const [remainingSeats, setRemainingSeats] = useState([1, 50]);
+  const [remainingSeats, setRemainingSeats] = useState([1, 100]);
 
-  // useEffect to send updated filters on any change
   useEffect(() => {
-    onFilterChange({
-      ...(source && { source }),
-      ...(destination && { destination }),
-      ...(priceRange && { priceRange }),
-      ...(departureRange && { departureRange }),
-      ...(remainingSeats && { remainingSeats }),
-    });
-  }, [source, destination, priceRange, departureRange, remainingSeats]);
+  const filterObject = {
+    ...(source && { source }),
+    ...(destination && { destination }),
+    ...(priceRange && {
+      minPrice: priceRange[0],
+      maxPrice: priceRange[1]
+    }),
+    ...(remainingSeats && {
+      minSeats: remainingSeats[0],
+      maxSeats: remainingSeats[1]
+    }),
+  };
+
+  onFilterChange(filterObject);
+}, [source, destination, priceRange, departureRange, remainingSeats]);
 
   return (
     <div className="w-full lg:w-80 p-4 border-r border-gray-200 bg-white shadow-sm">
@@ -89,7 +95,7 @@ const TripFilter = ({ onFilterChange = () => {} }) => {
           onChange={(e, newVal) => setRemainingSeats(newVal)}
           valueLabelDisplay="auto"
           min={1}
-          max={50}
+          max={100}
         />
         <div className="text-xs text-gray-600">
           {remainingSeats[0]} - {remainingSeats[1]} seats
