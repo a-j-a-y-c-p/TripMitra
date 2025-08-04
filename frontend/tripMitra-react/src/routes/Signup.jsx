@@ -1,7 +1,8 @@
-
 import React, { useState } from 'react';
-import api from '../api/axiosConfig'
+import api from '../api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 const Signup = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -88,7 +89,7 @@ const Signup = () => {
             <div className="position-relative">
               <input
                 type={showPassword ? "text" : "password"}
-                className="form-control"
+                className="form-control pe-5"
                 name="userPassword"
                 required
                 placeholder="Enter password"
@@ -97,15 +98,16 @@ const Signup = () => {
               />
               <span
                 onClick={() => setShowPassword(!showPassword)}
+                className="position-absolute"
                 style={{
-                  position: "absolute",
-                  right: "10px",
                   top: "50%",
+                  right: "15px",
                   transform: "translateY(-50%)",
                   cursor: "pointer",
+                  color: "#6c757d"
                 }}
               >
-                {showPassword ? "🙈" : "👁️"}
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
           </div>
@@ -115,7 +117,7 @@ const Signup = () => {
             <div className="position-relative">
               <input
                 type={showConfirmPassword ? "text" : "password"}
-                className="form-control"
+                className="form-control pe-5"
                 name="confirmPassword"
                 required
                 placeholder="Re-enter password"
@@ -124,15 +126,16 @@ const Signup = () => {
               />
               <span
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="position-absolute"
                 style={{
-                  position: "absolute",
-                  right: "10px",
                   top: "50%",
+                  right: "15px",
                   transform: "translateY(-50%)",
                   cursor: "pointer",
+                  color: "#6c757d"
                 }}
               >
-                {showConfirmPassword ? "🙈" : "👁️"}
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
           </div>
