@@ -1,125 +1,140 @@
-import React, { useState, useEffect } from 'react';
-import '../CSS/UpdateProfile.css';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // ✅ import navigate hook
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../CSS/UserProfile.css';
 
-const UpdateProfile = ({ userId }) => {
+const UpdateProfile = () => {
+  const navigate = useNavigate(); // ✅ initialize navigate
   const [formData, setFormData] = useState({
-    userDetailsId: '',
+    userName: '',
+    addressLine1: '',
+    addressLine2: '',
+    district: '',
+    state: '',
+    pincode: '',
+    dateOfBirth: '',
+    gender: '',
     phoneNumber: '',
     alterPhone: '',
-    gender: '',
-    dateOfBirth: '',
-    addressId: '',
+    userEmail: '',
+    userPassword: '',
     imageUrl: '',
-    isTripHost: false,
+    userRole: '',
   });
 
   useEffect(() => {
-    // Simulate fetching current user data
     const dummyUser = {
-      userDetailsId: 'USR123456',
+      userName: 'Aman Gupta',
+      addressLine1: 'Flat No. 203, Palm Residency',
+      addressLine2: 'Near Infinity Mall, Andheri West',
+      district: 'Mumbai Suburban',
+      state: 'Maharashtra',
+      pincode: '400053',
+      dateOfBirth: '1992-09-21',
+      gender: 'Male',
       phoneNumber: '+91-9876543210',
       alterPhone: '+91-9123456780',
-      gender: 'Male',
-      dateOfBirth: '1998-04-25',
-      addressId: 'ADDR7890',
-      imageUrl: 'https://randomuser.me/api/portraits/men/75.jpg',
-      isTripHost: true,
+      userEmail: 'ag@gmail.com',
+      userPassword: 'password123',
+      imageUrl: 'https://randomuser.me/api/portraits/men/73.jpg',
+      userRole: 'User',
     };
 
-    setTimeout(() => {
-      setFormData(dummyUser);
-    }, 1000);
-  }, [userId]);
+    setFormData(dummyUser);
+  }, []);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Updated data:', formData);
-    // TODO: Make API call to save data
+
+    console.log('Updated Profile:', formData);
+    // Simulate save delay (e.g., API call)
+    setTimeout(() => {
+      alert('Changes Saved');         // ✅ Show alert popup
+      navigate('/dashboard');         // ✅ Redirect to dashboard
+    }, 500); // Optional delay for UX feel
   };
 
   return (
-    <div className="update-wrapper">
-      <form className="update-container glass" onSubmit={handleSubmit}>
-        <div className="profile-image">
-          <img src={formData.imageUrl || '/default-profile.png'} alt="User" />
-        </div>
-        <h2>Update Profile</h2>
+    <div className="profile-bg">
+      <div className="container py-5 d-flex justify-content-center align-items-center min-vh-100">
+        <form className="glass-card row w-100 p-4 shadow-lg rounded" style={{ maxWidth: '1000px' }} onSubmit={handleSubmit}>
+          
+          {/* Profile Image & Name */}
+          <div className="col-md-4 text-center d-flex flex-column align-items-center justify-content-center">
+            <img src={formData.imageUrl} alt="Profile" className="profile-pic-glass shadow" />
+            <h4 className="mt-3 fw-bold">{formData.userName}</h4>
+            <span className="text-muted">{formData.userRole}</span>
+          </div>
 
-        <input
-          type="text"
-          name="userDetailsId"
-          value={formData.userDetailsId}
-          onChange={handleChange}
-          placeholder="User ID"
-          disabled // Optional: remove if editable
-        />
+          {/* Editable Info */}
+          <div className="col-md-8 mt-4 mt-md-0">
+            <h4 className="mb-3 border-bottom pb-2 text-purple">Edit Personal Information</h4>
+            <div className="row g-3">
+              <div className="col-md-6">
+                <label className="form-label">User Name</label>
+                <input name="userName" className="form-control custom-input" value={formData.userName} onChange={handleChange} />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Email</label>
+                <input name="userEmail" className="form-control custom-input" value={formData.userEmail} onChange={handleChange} />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Gender</label>
+                <input name="gender" className="form-control custom-input" value={formData.gender} onChange={handleChange} />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Date of Birth</label>
+                <input type="date" name="dateOfBirth" className="form-control custom-input" value={formData.dateOfBirth} onChange={handleChange} />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Phone Number</label>
+                <input name="phoneNumber" className="form-control custom-input" value={formData.phoneNumber} onChange={handleChange} />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Alternate Phone</label>
+                <input name="alterPhone" className="form-control custom-input" value={formData.alterPhone} onChange={handleChange} />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Profile Photo</label>
+                <input name="imageUrl" className="form-control custom-input" value={formData.imageUrl} onChange={handleChange} />
+              </div>
+            </div>
 
-        <input
-          type="text"
-          name="phoneNumber"
-          value={formData.phoneNumber}
-          onChange={handleChange}
-          placeholder="Phone Number"
-          required
-        />
+            <h4 className="mt-4 mb-3 border-bottom pb-2 text-purple">Edit Address Information</h4>
+            <div className="row g-3">
+              <div className="col-md-6">
+                <label className="form-label">Address Line 1</label>
+                <input name="addressLine1" className="form-control custom-input" value={formData.addressLine1} onChange={handleChange} />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Address Line 2</label>
+                <input name="addressLine2" className="form-control custom-input" value={formData.addressLine2} onChange={handleChange} />
+              </div>
+              <div className="col-md-4">
+                <label className="form-label">District</label>
+                <input name="district" className="form-control custom-input" value={formData.district} onChange={handleChange} />
+              </div>
+              <div className="col-md-4">
+                <label className="form-label">State</label>
+                <input name="state" className="form-control custom-input" value={formData.state} onChange={handleChange} />
+              </div>
+              <div className="col-md-4">
+                <label className="form-label">Pincode</label>
+                <input name="pincode" className="form-control custom-input" value={formData.pincode} onChange={handleChange} />
+              </div>
+            </div>
 
-        <input
-          type="text"
-          name="alterPhone"
-          value={formData.alterPhone}
-          onChange={handleChange}
-          placeholder="Alternate Phone Number"
-        />
-
-        <select
-          name="gender"
-          value={formData.gender}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
-        </select>
-
-        <input
-          type="date"
-          name="dateOfBirth"
-          value={formData.dateOfBirth}
-          onChange={handleChange}
-          required
-        />
-
-        <input
-          type="text"
-          name="addressId"
-          value={formData.addressId}
-          onChange={handleChange}
-          placeholder="Address ID"
-          required
-        />
-
-        <label className="checkbox-label">
-          <input
-            type="checkbox"
-            name="isTripHost"
-            checked={formData.isTripHost}
-            onChange={handleChange}
-          />
-          Trip Host?
-        </label>
-
-        <button type="submit">Update Profile</button>
-      </form>
+            <div className="text-end mt-4">
+              <button type="submit" className="btn custom-btn">Save Changes</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

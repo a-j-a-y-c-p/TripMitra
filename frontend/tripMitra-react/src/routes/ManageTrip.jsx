@@ -18,7 +18,6 @@ const ManageTrip = () => {
     const fetchTrips = async () => {
       setIsLoading(true);
       try {
-
         // Step 1: Fetch list of trip IDs for the user
         const response = await api.get(`/members/${userId}`);
         if (!Array.isArray(response.data)) {
@@ -49,9 +48,7 @@ const ManageTrip = () => {
     if (!window.confirm('Are you sure you want to delete this trip?')) return;
     setIsLoading(true);
     try {
-      await api.delete(`/trips/delete/${id}`, {
-        auth: { username, password }
-      });
+      await api.delete(`/trips/delete/${id}`);
       setTrips(trips.filter(trip => trip.id !== id));
       setError(null);
       alert('Trip deleted successfully!');
@@ -89,11 +86,13 @@ const ManageTrip = () => {
           {trips.length > 0 && (
             <>
               {trips.map(trip => (
-                <div key={trip.id} className="mb-4">
+                <div key={trip.tripId} className="mb-4">
                   <div className="card shadow-sm border-0" style={{ borderRadius: '8px' }}>
                     <div className="card-body d-flex justify-content-between align-items-center">
                       {/* Left section: route and dates */}
                       <div>
+                        {/* <div>Trip :  {trip}</div> */}
+                      
                         <h5 className="fw-bold mb-1" style={{ fontSize: '1.25rem' }}>
                           {trip.tripDetails?.source || 'N/A'} → {trip.tripDetails?.destination || 'N/A'}
                         </h5>
@@ -108,7 +107,7 @@ const ManageTrip = () => {
                           <strong>Mode:</strong> {trip.mode || 'N/A'}
                         </p>
                         <p className="mb-1">
-                          <strong>Members:</strong> {trip.curMembers}/{trip.maxMembers}
+                          <strong>Members:</strong> {trip.currMembers}/{trip.maxMembers}
                         </p>
                       </div>
 
@@ -120,14 +119,14 @@ const ManageTrip = () => {
                         <div className="d-flex gap-2">
                           <button
                             className="btn btn-primary btn-sm"
-                            onClick={() => handleEdit(trip.id)}
+                            onClick={() => handleEdit(trip.tripId)}
                             disabled={isLoading}
                           >
                             Edit
                           </button>
                           <button
                             className="btn btn-danger btn-sm"
-                            onClick={() => handleDelete(trip.id)}
+                            onClick={() => handleDelete(trip.tripId)}
                             disabled={isLoading}
                           >
                             Delete

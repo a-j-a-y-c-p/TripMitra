@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import api from '../api/axiosConfig'
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -33,7 +34,11 @@ const Login = () => {
         const { token } = res.data;
         if (token) {
           login(token);
-          navigate("/dashboard");
+          const decoded = jwtDecode(token);
+          if(decoded.role === "ADMIN")
+            navigate("/admin_dashboard");
+          else
+            navigate("/dashboard");
         }
         else{
           setError("Token not received");
