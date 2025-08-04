@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // ✅ import useNavigate
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../CSS/UserProfile.css';
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate(); // ✅ initialize navigate
 
   useEffect(() => {
     const dummyUser = {
@@ -95,7 +97,9 @@ const UserProfile = () => {
             </div>
 
             <div className="text-end mt-4">
-              <button className="btn custom-btn">Edit Profile</button>
+              <button className="btn custom-btn" onClick={() => navigate('/UpdateProfile')}>
+                Edit Profile
+              </button>
             </div>
           </div>
         </div>
@@ -105,4 +109,3 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
