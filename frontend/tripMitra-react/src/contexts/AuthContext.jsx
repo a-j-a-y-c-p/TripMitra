@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [user, setUser] = useState(null);
+  const [loading , setLoading] = useState(true);
 
   const login = (newToken) => {
     localStorage.setItem('token', newToken);
@@ -30,10 +31,11 @@ export const AuthProvider = ({ children }) => {
         logout();
       }
     }
+    setLoading(false);
   }, [token]);
 
   return (
-    <AuthContext.Provider value={{ token, user, login, logout }}>
+    <AuthContext.Provider value={{ token, user, login, logout , loading }}>
       {children}
     </AuthContext.Provider>
   );
