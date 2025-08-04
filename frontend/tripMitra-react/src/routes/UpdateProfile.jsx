@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // ✅ import navigate hook
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../CSS/UserProfile.css';
 
 const UpdateProfile = () => {
+  const navigate = useNavigate(); // ✅ initialize navigate
   const [formData, setFormData] = useState({
     userName: '',
     addressLine1: '',
@@ -21,7 +23,6 @@ const UpdateProfile = () => {
   });
 
   useEffect(() => {
-    // Dummy data for demo purposes
     const dummyUser = {
       userName: 'Aman Gupta',
       addressLine1: 'Flat No. 203, Palm Residency',
@@ -49,8 +50,13 @@ const UpdateProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     console.log('Updated Profile:', formData);
-    // Submit logic here
+    // Simulate save delay (e.g., API call)
+    setTimeout(() => {
+      alert('Changes Saved');         // ✅ Show alert popup
+      navigate('/dashboard');         // ✅ Redirect to dashboard
+    }, 500); // Optional delay for UX feel
   };
 
   return (
