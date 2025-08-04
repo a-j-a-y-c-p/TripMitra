@@ -19,13 +19,11 @@ public class AddressServiceImpl implements AddressService {
     private AddressRepository addressRepository;
 
     @Override
-    public AddressDto createAddress(AddressDto dto) {
+    public Integer createAddress(AddressDto dto) {
         Address address = new Address();
         BeanUtils.copyProperties(dto, address);
         Address saved = addressRepository.save(address);
-        AddressDto result = new AddressDto();
-        BeanUtils.copyProperties(saved, result);
-        return result;
+        return saved.getAddressId();
     }
 
     @Override

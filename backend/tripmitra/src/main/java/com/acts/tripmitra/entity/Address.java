@@ -1,5 +1,7 @@
 package com.acts.tripmitra.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,4 +32,8 @@ public class Address {
 
     @Column(name = "addressline2")
     private String addressLine2;
+    
+    @OneToOne(mappedBy = "address")
+	@JsonBackReference
+	UserDetails userDetails;
 }

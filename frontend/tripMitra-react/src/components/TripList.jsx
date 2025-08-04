@@ -15,22 +15,22 @@ const TripList = ({ filters }) => {
         setLoading(true);
 
         // Build query params from filters
-        const queryParams = new URLSearchParams({
-          ...(filters.source && { source: filters.source }),
-          ...(filters.destination && { destination: filters.destination }),
-          ...(filters.priceRange && {
-            minPrice: filters.priceRange[0],
-            maxPrice: filters.priceRange[1]
-          }),
-          ...(filters.departureRange && {
-            minDeparture: filters.departureRange[0],
-            maxDeparture: filters.departureRange[1]
-          }),
-          ...(filters.remainingSeats && {
-            minSeats: filters.remainingSeats[0],
-            maxSeats: filters.remainingSeats[1]
-          })
-        });
+        // const queryParams = new URLSearchParams({
+        //   ...(filters.source && { source: filters.source }),
+        //   ...(filters.destination && { destination: filters.destination }),
+        //   ...(filters.priceRange && {
+        //     minPrice: filters.priceRange[0],
+        //     maxPrice: filters.priceRange[1]
+        //   }),
+        //   ...(filters.departureRange && {
+        //     minDeparture: filters.departureRange[0],
+        //     maxDeparture: filters.departureRange[1]
+        //   }),
+        //   ...(filters.remainingSeats && {
+        //     minSeats: filters.remainingSeats[0],
+        //     maxSeats: filters.remainingSeats[1]
+        //   })
+        // });
 
         const response = await axiosInstance.get(`/trips/filter?${queryParams.toString()}`, {
           auth: { username, password }
@@ -92,3 +92,47 @@ const TripList = ({ filters }) => {
 };
 
 export default TripList;
+
+
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+const TripList = () => {
+  const [trips, setTrips] = useState([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/api/trips")
+      .then(response => {
+        setTrips(response.data);
+        setError(""); // clear error if successful
+      })
+      .catch(err => {
+        console.error("Error fetching trips:", err);
+        setError("Failed to load trips.");
+      });
+  }, []);
+
+  if (error) {
+    return <div className="text-red-600 font-bold">{error}</div>;
+  }
+
+  if (trips.length === 0) {
+    return <div>No trips available</div>;
+  }
+
+  return (
+    <div className="grid grid-cols-3 gap-4 p-4">
+      {trips.map(trip => (
+        <div key={trip.id} className="p-4 border shadow rounded">
+          <h2 className="text-xl font-bold mb-2">{trip.destination}</h2>
+          <p>Price: ₹{trip.price}</p>
+          <p>Date: {trip.date}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default TripList;
+
