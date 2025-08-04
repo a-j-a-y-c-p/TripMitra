@@ -28,19 +28,19 @@ public class TripMemberController {
 	TripMemberService service;
 
 	@PostMapping("/add")
-	public String add(@RequestBody MemberId memberId) throws UserAlreadyExistsException {
+	public String addTripMember(@RequestBody MemberId memberId) throws UserAlreadyExistsException {
 		service.addMember(memberId);
 		return "Member Added! ";
 	}
 
 	@DeleteMapping("/remove")
-	public String remove(@RequestBody MemberId memberId) {
+	public String removeTripMember(@RequestBody MemberId memberId) {
 		service.removeMember(memberId);
 		return "Member Removed!";
 	}
 
 	@PutMapping("/update")
-	public String update(@RequestBody TripMember tripMember) {
+	public String updateTripMember(@RequestBody TripMember tripMember) {
 		service.updateStatus(tripMember);
 		return "Member Updated!";
 	}
@@ -63,9 +63,9 @@ public class TripMemberController {
 		
 	}
 	
-	@GetMapping("/getalltrips/{id}")
+	@GetMapping("/trips/all/{id}")
 	List<Integer> getAllTripIdByUserId(@PathVariable int id){
-//		return null;
+
 		return service.findAllTripsByUserId(id);
 		
 	}
