@@ -1,8 +1,17 @@
-/* Animation */
+/* Ensure full height */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #e0f7fa;
+}
+
+/* Fade-in animation */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -10,109 +19,125 @@
   }
 }
 
-/* Centering Wrapper */
-.profile-wrapper {
+/* Animate wrapper */
+.container-fluid {
+  animation: fadeInUp 0.8s ease-in-out;
+}
+
+/* Background */
+.profile-bg {
+  background: linear-gradient(145deg, #cfeffd, #00b4db);
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   padding: 2rem;
-  background: linear-gradient(to right, #e0f7fa, #ffffff);
 }
 
-/* Profile Card Container */
-.profile-container {
-  width: 320px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem 1.5rem;
-  border-radius: 20px;
-  backdrop-filter: blur(12px);
+/* Glassmorphism Card */
+.glass-card {
   background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-  color: #333;
-  animation: fadeInUp 0.6s ease;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 1.5rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  padding: 2rem;
+  width: 100%;
+  max-width: 850px;
+  transition: transform 0.3s ease;
 }
 
-.profile-container:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+.glass-card:hover {
+  transform: translateY(-5px);
 }
 
 /* Profile Image */
-.profile-image img {
+.profile-pic-glass {
   width: 140px;
   height: 140px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #00ADB5;
-  margin-bottom: 1rem;
-  transition: transform 0.3s ease;
+  border: 5px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
-.profile-image img:hover {
+/* Form labels */
+.form-label {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+/* Custom Input */
+.custom-input {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #222;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.custom-input:focus {
+  outline: none;
+  border-color: #00a8e8;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 0 3px rgba(0, 168, 232, 0.2);
+}
+
+/* Section Heading */
+h4 {
+  font-weight: 700;
+  color: #0a58ca;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+/* Custom Button */
+.custom-btn {
+  background: linear-gradient(135deg, #007bff, #00a8e8);
+  color: #fff;
+  padding: 0.65rem 2rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.25);
+}
+
+.custom-btn:hover {
+  background: linear-gradient(135deg, #0056b3, #007bff);
   transform: scale(1.05);
 }
 
-/* Text Section */
-.profile-info {
-  text-align: center;
-  width: 100%;
-}
-
-.profile-info h2 {
-  margin-bottom: 0.5rem;
-  color: #00ADB5;
-  font-size: 1.5rem;
-}
-
-.profile-info p {
-  margin: 0.3rem 0;
-  font-size: 0.95rem;
-  line-height: 1.4;
-  color: #222;
-}
-
-.profile-info p strong {
-  color: #006064;
-}
-
-.profile-info p:last-child {
-  margin-top: 1rem;
-  font-style: italic;
-  color: #444;
-}
-
-/* Loading placeholder */
+/* Loading Placeholder */
 .loading {
   text-align: center;
   padding: 3rem;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: #555;
 }
 
-/* Responsive */
+/* Responsive Styles */
 @media (max-width: 768px) {
-  .profile-container {
-    width: 90%;
+  .glass-card {
+    flex-direction: column;
+    padding: 1.5rem;
   }
-}
 
-button {
-  background-color: #00ADB5;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  margin-top: 10px;
-}
+  .custom-btn {
+    width: 100%;
+    margin-top: 1rem;
+  }
 
-button:hover {
-  background-color: #0097a7;
-  transform: translateY(-2px);
+  .profile-pic-glass {
+    width: 110px;
+    height: 110px;
+    margin-bottom: 1rem;
+  }
 }
