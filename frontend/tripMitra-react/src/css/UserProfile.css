@@ -26,7 +26,7 @@ html, body, #root {
 
 /* Background */
 .profile-bg {
-  background: linear-gradient(145deg, #cfeffd, #00b4db);
+  background: linear-gradient(145deg, #cfeffd, #00ADB5);
   min-height: 100vh;
   display: flex;
   justify-content: center;
