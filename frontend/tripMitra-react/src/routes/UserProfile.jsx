@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // ✅ import useNavigate
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../CSS/UserProfile.css';
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate(); // ✅ initialize navigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const dummyUser = {
@@ -28,13 +28,21 @@ const UserProfile = () => {
     setTimeout(() => setUser(dummyUser), 1000);
   }, []);
 
+  const handleDeleteProfile = (e) => {
+    e.preventDefault();
+    const confirmDelete = window.confirm('Are you sure you want to delete your profile?');
+    if (confirmDelete) {
+      alert('Profile deleted (functionality not implemented yet).');
+      // navigate('/home');
+    }
+  };
+
   if (!user) return <div className="loading">Loading Profile...</div>;
 
   return (
-    <div className="profile-bg">
-      <div className="container py-5 d-flex justify-content-center align-items-center min-vh-100">
-        <div className="glass-card row w-100 p-4 shadow-lg rounded" style={{ maxWidth: '1000px' }}>
-          
+    <div className="profile-bg position-relative min-vh-100">
+      <div className="container pb-5">
+        <div className="row">
           {/* Profile Image & Name */}
           <div className="col-md-4 text-center d-flex flex-column align-items-center justify-content-center">
             <img src={user.imageUrl} alt="Profile" className="profile-pic-glass shadow" />
@@ -103,6 +111,13 @@ const UserProfile = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Bottom Center Delete Profile Link */}
+      <div className="delete-profile-link">
+        <a href="#" className="text-danger fw-bold" onClick={handleDeleteProfile}>
+          Delete Profile
+        </a>
       </div>
     </div>
   );
