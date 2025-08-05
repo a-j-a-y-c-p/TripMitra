@@ -8,41 +8,38 @@ const TripHistory = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { user } = useContext(AuthContext);
-  
-  const userId = user?.userId;
 
-  // Current date for filtering past trips
-  const currentDate = new Date('2025-07-27');
+  const userId = user?.userId;
 
   // Fetch trips from backend on component mount
   useEffect(() => {
     const fetchTrips = async () => {
       setIsLoading(true);
       try {
-        const response = await api.get(`/members/trips/all/${userId}`,
-        );
+        const response = await api.get(`/members/trips/all/${userId}`);
         if (!Array.isArray(response.data)) {
-                  throw new Error('Expected an array of trip IDs');
-                }
-        
-                // Step 2: Fetch full trip details for each trip ID
-                const tripPromises = response.data.map(tripId =>
-                  api.get(`/trips/${tripId}`)
-                );
-                const tripResponses = await Promise.all(tripPromises);
-                const tripData = tripResponses.map(res => res.data);
-                setTrips(tripData);
-        
-                setError(null);
-              } catch (err) {
-                setError('Failed to fetch trips. Please try again.');
-                console.error('Error fetching trips:', err);
-              } finally {
-                setIsLoading(false);
-              }
-            };
-            fetchTrips();
-          }, [userId]);
+          throw new Error('Expected an array of trip IDs');
+        }
+
+        // Step 2: Fetch full trip details for each trip ID
+        const tripPromises = response.data.map((tripId) =>
+          api.get(`/trips/${tripId}`)
+        );
+        const tripResponses = await Promise.all(tripPromises);
+        const tripData = tripResponses.map((res) => res.data);
+        setTrips(tripData);
+
+        setError(null);
+      } catch (err) {
+        setError('Failed to fetch trips. Please try again.');
+        console.error('Error fetching trips:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchTrips();
+  }, [userId]);
+
   return (
     <div className="container mt-4 mt-md-5">
       <h1 className="text-center mb-4 fs-3 fs-md-2">Trip History</h1>
@@ -62,18 +59,29 @@ const TripHistory = () => {
             <p className="text-center">No past trips found.</p>
           )}
           {trips.length > 0 && (
-            <> 
-               {trips.map(trip => (
+            <>
+              {trips.map((trip) => (
                 <div key={trip.id} className="mb-4">
-                  <div className="card shadow-sm border-0" style={{ borderRadius: '8px' }}>
+                  <div
+                    className="card shadow-sm border-0"
+                    style={{ borderRadius: '8px' }}
+                  >
                     <div className="card-body d-flex justify-content-between align-items-center">
                       {/* Left section: route and dates */}
                       <div>
-                        <h5 className="fw-bold mb-1" style={{ fontSize: '1.25rem' }}>
-                          {trip.tripDetails?.source || 'N/A'} → {trip.tripDetails?.destination || 'N/A'}
+                        <h5
+                          className="fw-bold mb-1"
+                          style={{ fontSize: '1.25rem' }}
+                        >
+                          {trip.tripDetails?.source || 'N/A'} →{' '}
+                          {trip.tripDetails?.destination || 'N/A'}
                         </h5>
-                        <p className="mb-1 text-muted" style={{ fontSize: '0.9rem' }}>
-                          {trip.tripDetails?.startDate || 'N/A'} – {trip.tripDetails?.endDate || 'N/A'}
+                        <p
+                          className="mb-1 text-muted"
+                          style={{ fontSize: '0.9rem' }}
+                        >
+                          {trip.tripDetails?.startDate || 'N/A'} –{' '}
+                          {trip.tripDetails?.endDate || 'N/A'}
                         </p>
                       </div>
 
@@ -83,15 +91,34 @@ const TripHistory = () => {
                           <strong>Mode:</strong> {trip.mode || 'N/A'}
                         </p>
                         <p className="mb-1">
-                          <strong>Members:</strong> {trip.currMembers}/{trip.maxMembers}
+                          <strong>Members:</strong> {trip.currMembers}/
+                          {trip.maxMembers}
                         </p>
                       </div>
 
-                      {/* Right section: cost and buttons */}
-                      <div className="text-end">
-                        <p className="mb-2 fw-bold" style={{ fontSize: '1.25rem' }}>
+                      {/* Right section: cost and status */}
+                      <div className="text-end d-flex flex-column align-items-end">
+                        <p
+                          className="mb-2 fw-bold"
+                          style={{ fontSize: '1.25rem' }}
+                        >
                           ₹{trip.estimateCost}
                         </p>
+                        {trip.status && (
+                          <span
+                            className={`badge ${
+                              trip.status === 'COMPLETED' || trip.endDate < Date.now
+                                ? 'bg-primary'
+                                : trip.status === 'CANCELLED'
+                                ? 'bg-danger'
+                                : 'bg-success'
+                            }`}
+                            style={{ fontSize: '0.8rem' }}
+                          >
+                            {trip.status.charAt(0) +
+                              trip.status.slice(1).toLowerCase()}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
