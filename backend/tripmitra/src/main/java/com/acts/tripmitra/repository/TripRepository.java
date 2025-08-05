@@ -39,4 +39,5 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
 		        @Param("minSeats") int minSeats,
 		        @Param("maxSeats") int maxSeats,
 		        Pageable pageable);
+
 }

@@ -34,6 +34,9 @@ public class Trip {
 	@Column(name="estimatecost")
 	Float estimateCost;
 	
+	@Column(name="description")
+	String description;
+	
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tripdetailsid", referencedColumnName = "tripdetailsid")
     @JsonManagedReference

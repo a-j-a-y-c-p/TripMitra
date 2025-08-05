@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,8 +30,8 @@ public class TripController {
 	TripService tripService;
 	
 	@PostMapping("/new")
-	public String createTrip(@RequestBody TripDto trip) {
-		return tripService.createTrip(trip);
+	public String createTrip(@RequestBody TripDto trip, @RequestHeader("Authorization") String authHeader) {
+		return tripService.createTrip(trip, authHeader);
 	}
 	
 	@GetMapping("/")
@@ -45,6 +47,16 @@ public class TripController {
 	@DeleteMapping("/delete/{id}")
 	public String deleteTripById(@PathVariable("id") Integer id) {
 		return tripService.deleteTrip(id);
+	}
+	
+	@PutMapping("/update/{id}")
+	public String updateTripById(@PathVariable("id") Integer id , @RequestBody TripDto trip) {
+		return tripService.updateTripById(id,trip);
+	}
+	
+	@PostMapping("/cancel/{id}")
+	public String cancelTripById(@PathVariable("id") Integer id) {
+		return tripService.cancelTrip(id);
 	}
 
 	@GetMapping("/filter")
