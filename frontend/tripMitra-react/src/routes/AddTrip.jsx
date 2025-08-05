@@ -15,7 +15,7 @@ const AddTripForm = () => {
     },
     description: ''
   });
-
+  const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({
     memberLimit: false,
     dateOrder: false
@@ -25,7 +25,7 @@ const AddTripForm = () => {
     const { name, value } = e.target;
     setTrip((prev) => ({
       ...prev,
-      [name]: ['currMembers', 'maxMembers', 'estimateCost','description'].includes(name)
+      [name]: ['currMembers', 'maxMembers', 'estimateCost', 'description'].includes(name)
         ? value.replace(/\D/g, '') // Only numbers
         : value
     }));
@@ -53,6 +53,8 @@ const AddTripForm = () => {
     e.preventDefault();
     if (!validate()) return;
 
+    setSubmitting(true); // Disable button
+
     try {
       const payload = {
         ...trip,
@@ -64,6 +66,7 @@ const AddTripForm = () => {
       const response = await api.post('/trips/new', payload);
       console.log('Trip added successfully:', response.data);
       alert('Trip added successfully!');
+
       setTrip({
         mode: '',
         currMembers: '1',
@@ -81,8 +84,11 @@ const AddTripForm = () => {
     } catch (error) {
       console.error('Error adding trip:', error);
       alert('Failed to add trip. Please try again.');
+    } finally {
+      setSubmitting(false); // Re-enable button
     }
   };
+
 
   return (
     <div className="container mt-4 mt-md-5">
@@ -219,9 +225,14 @@ const AddTripForm = () => {
                   </div>
                 </div>
 
-                <button type="submit" className="btn btn-primary w-100 py-2">
-                  Add Trip
+                <button
+                  type="submit"
+                  className="btn btn-primary w-100 py-2"
+                  disabled={submitting}
+                >
+                  {submitting ? 'Adding Trip...' : 'Add Trip'}
                 </button>
+
               </form>
             </div>
           </div>

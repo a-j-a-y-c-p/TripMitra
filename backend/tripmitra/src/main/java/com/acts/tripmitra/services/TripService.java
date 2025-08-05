@@ -11,7 +11,7 @@ import com.acts.tripmitra.entity.Trip;
 public interface TripService {
 	public String createTrip(TripDto trip, String authHeader);
 	public List<TripDto> getAllTrips();
-	public TripDto getTripById(Integer id);
+	public TripDto getActiveTripById(Integer id);
 	public String deleteTrip(Integer tripId);
 
 	public Page<Trip> getFilteredActiveTrips(String source, String destination,float minPrice, float maxPrice,int minSeats, 
@@ -20,5 +20,6 @@ public interface TripService {
 	public String updateTripById(Integer id, TripDto trip);
 	public List<TripDto> getAllCancelledTrips();
 	public List<TripDto> getAllCompletedTrips();
+	public TripDto getTripById(Integer id);
 	
 }

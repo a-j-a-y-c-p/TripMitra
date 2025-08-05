@@ -46,7 +46,7 @@ public class TripMemberController {
 	}
 
 	@GetMapping("/")
-	List<TripMember> getTripMembers(@RequestParam(name = "tripId") int tripId,
+	List<TripMember> getTripMembers(@RequestParam(name = "tripId") Integer tripId,
 			@RequestParam(name = "status", required = false) String status) {
 
 		if (null != status) {

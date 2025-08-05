@@ -46,7 +46,7 @@ public class TripServiceImpl implements TripService {
 	public String createTrip(TripDto tripdto , String authHeader) {
 		Trip trip = new Trip();
 		BeanUtils.copyProperties(tripdto, trip);
-
+		trip.setStatus(TripStatusEnum.ACTIVE);
 		try {
 			tripRepository.save(trip);
 			
@@ -77,6 +77,17 @@ public class TripServiceImpl implements TripService {
 		return tripDtoList;
 	}
 
+	@Override
+	public TripDto getActiveTripById(Integer id) {
+		Optional<Trip> trip = tripRepository.findActiveTripById(id);
+		if(trip.isEmpty()) {
+			throw new TripNotFoundException("Trip with ID " + id + " not found.");
+		}
+		TripDto tripDto = new TripDto();
+		BeanUtils.copyProperties(trip.get(), tripDto);
+		return tripDto;
+	}
+	
 	@Override
 	public TripDto getTripById(Integer id) {
 		Optional<Trip> trip = tripRepository.findById(id);
@@ -124,6 +135,9 @@ public class TripServiceImpl implements TripService {
 			}
 			if(null != tripDto.getDescription()) {
 				trip.setDescription(tripDto.getDescription());
+			}
+			if(null != tripDto.getStatus()) {
+				trip.setStatus(tripDto.getStatus());
 			}
 			if(null != tripDto.getTripDetails()) {
 				TripDetails details = trip.getTripDetails();
@@ -198,6 +212,8 @@ public class TripServiceImpl implements TripService {
 		}
 		return tripDtoList;
 	}
+
+	
 	
 
 
