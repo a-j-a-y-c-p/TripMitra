@@ -70,7 +70,7 @@ const Navbar = () => {
                     className="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center me-2"
                     style={{ width: '32px', height: '32px', fontSize: '0.9rem' }}
                   >
-                    {user?.name
+                    {user?.userName
                       ? user.userName.charAt(0).toUpperCase()
                       : user?.sub?.charAt(0).toUpperCase() || 'U'}
                   </div>

@@ -89,12 +89,12 @@ public class TripController {
 	    return tripService.getFilteredActiveTrips(source, destination, minPrice, maxPrice, minSeats, maxSeats,pageable);
 	}
 	
-	@GetMapping("/cancelled")
+	@GetMapping("/Cancelled")
 	public List<TripDto> getAllCancelledTrips(){
 		return tripService.getAllCancelledTrips();
 	}
 	
-	@GetMapping("/completed")
+	@GetMapping("/Completed")
 	public List<TripDto> getAllCompletedTrips(){
 		return tripService.getAllCompletedTrips();
 	}
