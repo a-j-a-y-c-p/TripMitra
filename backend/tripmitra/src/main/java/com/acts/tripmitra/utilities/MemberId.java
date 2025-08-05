@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class MemberId {
 	
 	@Column(name="tripid")
-	private int tripId;
+	private Integer tripId;
 	@Column(name="userid")
-	private int userId;
+	private Integer userId;
 }

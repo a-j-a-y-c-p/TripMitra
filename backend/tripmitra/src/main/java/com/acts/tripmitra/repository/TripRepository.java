@@ -4,11 +4,17 @@ package com.acts.tripmitra.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.acts.tripmitra.entity.Trip;
+import com.acts.tripmitra.utilities.MemberId;
+import com.acts.tripmitra.utilities.TripMemberStatusEnum;
+import com.acts.tripmitra.utilities.TripStatusEnum;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface TripRepository extends JpaRepository<Trip, Integer> {
@@ -39,5 +45,11 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
 		        @Param("minSeats") int minSeats,
 		        @Param("maxSeats") int maxSeats,
 		        Pageable pageable);
+	
+	@Modifying
+	@Transactional
+    @Query(value="UPDATE trip t SET t.status = :status WHERE t.tripId = :tripId", nativeQuery=true)
+    int updateStatus(@Param("tripId") Integer tripId,
+                      @Param("status") TripStatusEnum status);
 
 }
