@@ -1,7 +1,6 @@
 package com.acts.tripmitra.services.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,9 +28,7 @@ public class TripServiceImpl implements TripService {
 
 	@Override
 	public String createTrip(TripDto tripdto) {
-		
 		Trip trip = new Trip();
-		
 		BeanUtils.copyProperties(tripdto, trip);
 		try {
 			tripRepository.save(trip);
@@ -39,12 +36,11 @@ public class TripServiceImpl implements TripService {
 		catch(Exception e) {
 			throw new TripAlreadyExistsException("Trip creation failed - duplicate or invalid data");
 		}
-		
 		return "trip created successfully";
 	}
 
 	@Override
-	public Iterator<TripDto> getAllTrips() {
+	public List<TripDto> getAllTrips() {
 		List<Trip> tripList = tripRepository.findAll();
 		List<TripDto> tripDtoList = new ArrayList<>();
 		for(Trip trip: tripList) {
@@ -52,7 +48,7 @@ public class TripServiceImpl implements TripService {
 			BeanUtils.copyProperties(trip, tripDto);
 			tripDtoList.add(tripDto);
 		}
-		return tripDtoList.iterator();
+		return tripDtoList;
 	}
 
 	@Override
@@ -78,18 +74,25 @@ public class TripServiceImpl implements TripService {
 		}
 		return "Trip deleted successfully";
 	}
-	
-	public List<Trip> filterTrips(
-		    String source,
-		    String destination,
-		    Double minPrice,
-		    Double maxPrice,
-		    Integer minSeats,
-		    Integer maxSeats
-		) {
-		    return tripRepository.findByDynamicFilters(source, destination, minPrice, maxPrice, minSeats, maxSeats);
-		}
 
+	@Override
+	public List<Trip> getFilteredTrips(String source, String destination, float minPrice, float maxPrice,
+	                                   int minSeats, int maxSeats) {
+	    return tripRepository.filterTrips(source, destination, minPrice, maxPrice, minSeats, maxSeats);
+	}
+
+	@Override
+	public String cancelTrip(Integer tripId) {
+		if (!tripRepository.existsById(tripId)) {
+			throw new TripNotFoundException("Cannot cancel Trip with ID " + tripId + " not found.");
+		}
+		try {
+//			tripRepository.cancelTripById(tripId);
+		} catch (Exception e) {
+			throw new TripDeletionException("Failed to delete trip with ID " + tripId);
+		}
+		return "Trip cancelled successfully";
+	}
 
 
 }

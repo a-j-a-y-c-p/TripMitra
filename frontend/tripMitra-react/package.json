@@ -18,6 +18,8 @@
     "bootstrap": "^5.3.7",
     "cors": "^2.8.5",
     "jwt-decode": "^4.0.0",
+    "loadsh": "^0.0.4",
+    "lodash": "^4.17.21",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.0",

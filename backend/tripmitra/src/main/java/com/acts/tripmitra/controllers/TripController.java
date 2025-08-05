@@ -31,7 +31,7 @@ public class TripController {
 	}
 	
 	@GetMapping("/")
-	public Iterator<TripDto> getAllTrips(){
+	public List<TripDto> getAllTrips(){
 		return tripService.getAllTrips();
 	}
 	
@@ -45,19 +45,22 @@ public class TripController {
 		return tripService.deleteTrip(id);
 	}
 	
+	@PostMapping("/cancel/{id}")
+	public String cancelTripById(@PathVariable("id") Integer id) {
+		return tripService.cancelTrip(id);
+	}
+
 	@GetMapping("/filter")
-	public ResponseEntity<List<Trip>> filterTrips(
-	    @RequestParam(required = false) String source,
-	    @RequestParam(required = false) String destination,
-	    @RequestParam(required = false) Double minPrice,
-	    @RequestParam(required = false) Double maxPrice,
-	    @RequestParam(required = false) Integer minSeats,
-	    @RequestParam(required = false) Integer maxSeats
+	public List<Trip> getFilteredTrips(
+	        @RequestParam(required = false) String source,
+	        @RequestParam(required = false) String destination,
+	        @RequestParam(required = false, defaultValue = "0") float minPrice,
+	        @RequestParam(required = false, defaultValue = "10000") float maxPrice,
+	        @RequestParam(required = false, defaultValue = "1") int minSeats,
+	        @RequestParam(required = false, defaultValue = "100") int maxSeats
 	) {
-	    List<Trip> trips = tripService.filterTrips(source, destination, minPrice, maxPrice, minSeats, maxSeats);
-	    return ResponseEntity.ok(trips);
+	    return tripService.getFilteredTrips(source, destination, minPrice, maxPrice, minSeats, maxSeats);
 	}
 
 	
-
 }

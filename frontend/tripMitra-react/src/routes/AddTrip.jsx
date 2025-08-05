@@ -6,9 +6,9 @@ const AddTripForm = () => {
   const [trip, settrip] = useState({
     
       mode: '',
-      currMembers: 1,
-      maxMembers: 1,
-      estimateCost: 0,
+      currMembers: '',
+      maxMembers: '1',
+      estimateCost: '0',
     tripDetails: {
       source: '',
       destination: '',
@@ -46,7 +46,7 @@ const AddTripForm = () => {
       console.log('Trip added successfully:', response.data);
       alert('Trip added successfully!');
       settrip({
-        mode: '', currMembers: 1, maxMembers: 1, estimateCost: 0,
+        mode: '', currMembers: '1', maxMembers: '1', estimateCost: '0',
           tripDetails: { source: '', destination: '', startDate: '', endDate: '' }
          },
         );
@@ -77,6 +77,7 @@ const AddTripForm = () => {
                       required
                     >
                       <option value="">Select Mode</option>
+                      <option value="Bike">Bike</option>
                       <option value="Car">Car</option>
                       <option value="Bus">Bus</option>
                       <option value="Train">Train</option>
@@ -87,7 +88,7 @@ const AddTripForm = () => {
                   <div className="mb-3">
                     <label htmlFor="currMembers" className="form-label">Current Members</label>
                     <input
-                      type="number"
+                      type="text"
                       id="currMembers"
                       name="currMembers"
                       value={trip.currMembers}
@@ -100,7 +101,7 @@ const AddTripForm = () => {
                   <div className="mb-3">
                     <label htmlFor="maxMembers" className="form-label">Maximum Members</label>
                     <input
-                      type="number"
+                      type="text"
                       id="maxMembers"
                       name="maxMembers"
                       value={trip.maxMembers}
@@ -113,7 +114,7 @@ const AddTripForm = () => {
                   <div className="mb-3">
                     <label htmlFor="estimateCost" className="form-label">Estimated Cost (₹)</label>
                     <input
-                      type="number"
+                      type="text"
                       id="estimateCost"
                       name="estimateCost"
                       value={trip.estimateCost}

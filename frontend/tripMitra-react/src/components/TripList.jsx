@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import debounce from 'lodash/debounce';
 import axiosInstance from '../api/axiosConfig';
 
 const TripList = ({ filters }) => {
@@ -6,47 +7,33 @@ const TripList = ({ filters }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const username = 'admin';
-  const password = 'TripAdmin';
-
-  useEffect(() => {
-    const fetchTrips = async () => {
+  const fetchTrips = useCallback(
+    debounce(async (filters) => {
       try {
         setLoading(true);
+        const params = {};
+        if (filters.source) params.source = filters.source;
+        if (filters.destination) params.destination = filters.destination;
+        if (filters.minPrice != null) params.minPrice = filters.minPrice;
+        if (filters.maxPrice != null) params.maxPrice = filters.maxPrice;
+        if (filters.minSeats != null) params.minSeats = filters.minSeats;
+        if (filters.maxSeats != null) params.maxSeats = filters.maxSeats;
 
-        // Build query params from filters
-        const queryParams = new URLSearchParams({
-          ...(filters.source && { source: filters.source }),
-          ...(filters.destination && { destination: filters.destination }),
-          ...(filters.priceRange && {
-            minPrice: filters.priceRange[0],
-            maxPrice: filters.priceRange[1]
-          }),
-          ...(filters.departureRange && {
-            minDeparture: filters.departureRange[0],
-            maxDeparture: filters.departureRange[1]
-          }),
-          ...(filters.remainingSeats && {
-            minSeats: filters.remainingSeats[0],
-            maxSeats: filters.remainingSeats[1]
-          })
-        });
-
-        const response = await axiosInstance.get(`/trips/filter?${queryParams.toString()}`, {
-          auth: { username, password }
-        });
-
+        const response = await axiosInstance.get('/trips/filter', { params });
         setTrips(response.data);
-        setLoading(false);
       } catch (err) {
         console.error(err);
         setError('Failed to load trips.');
+      } finally {
         setLoading(false);
       }
-    };
+    }, 400), // 400ms debounce
+    []
+  );
 
-    fetchTrips();
-  }, [filters]);
+  useEffect(() => {
+    fetchTrips(filters);
+  }, [filters, fetchTrips]);
 
   return (
     <div className="h-100 overflow-auto px-3 py-2" style={{ maxHeight: '100vh' }}>
@@ -75,7 +62,7 @@ const TripList = ({ filters }) => {
 
             <div className="text-center">
               <p className="mb-1"><strong>Mode:</strong> {trip.mode}</p>
-              <p className="mb-1"><strong>Members:</strong> {trip.curMembers}/{trip.maxMembers}</p>
+              <p className="mb-1"><strong>Members:</strong> {trip.currMembers}/{trip.maxMembers}</p>
             </div>
 
             <div className="text-end">
@@ -92,3 +79,4 @@ const TripList = ({ filters }) => {
 };
 
 export default TripList;
+
