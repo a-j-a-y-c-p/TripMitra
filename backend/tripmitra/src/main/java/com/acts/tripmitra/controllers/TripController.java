@@ -59,21 +59,6 @@ public class TripController {
 		return tripService.cancelTrip(id);
 	}
 
-//	@GetMapping("/filter")
-//	public List<Trip> getFilteredTrips(
-//	        @RequestParam(required = false) String source,
-//	        @RequestParam(required = false) String destination,
-//	        @RequestParam(required = false, defaultValue = "0") float minPrice,
-//	        @RequestParam(required = false, defaultValue = "10000") float maxPrice,
-//	        @RequestParam(required = false, defaultValue = "1") int minSeats,
-//	        @RequestParam(required = false, defaultValue = "100") int maxSeats,
-//	        @RequestParam(defaultValue = "0") int page,
-//	        @RequestParam(defaultValue = "6") int size
-//	) {
-//		Pageable pageable = (Pageable) PageRequest.of(page, size);
-//	    return tripService.getFilteredTrips(source, destination, minPrice, maxPrice, minSeats, maxSeats,pageable);
-//	}
-
 	@GetMapping("/filter")
 	public Page<Trip> getFilteredTrips(
 	    @RequestParam(required = false) String source,

@@ -100,7 +100,7 @@ public class TripServiceImpl implements TripService {
 		}
 		return "Trip deleted successfully";
 	}
-	
+
 	
 	@Override
 	public String updateTripById(Integer tripId, TripDto tripDto) {
@@ -153,6 +153,7 @@ public class TripServiceImpl implements TripService {
 //	                                   int minSeats, int maxSeats) {
 //	    return tripRepository.filterTrips(source, destination, minPrice, maxPrice, minSeats, maxSeats);
 //	}
+
 	
 	@Override
 	public Page<Trip> getFilteredTrips(String source, String destination,float minPrice, float maxPrice,int minSeats, 

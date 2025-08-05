@@ -8,7 +8,7 @@ const TripList = ({ filters }) => {
   const [error, setError] = useState('');
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  const pageSize = 5; // You can customize this
+  const pageSize = 5;
 
   const fetchTrips = useCallback(
     debounce(async (filters, page) => {
