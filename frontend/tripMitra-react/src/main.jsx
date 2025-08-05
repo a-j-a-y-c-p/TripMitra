@@ -9,6 +9,7 @@ import Dashboard from './routes/Dashboard.jsx'
 import Login from './routes/Login.jsx'
 import Profile from './routes/UserProfile.jsx';
 import AddTripForm from './routes/AddTrip.jsx'
+import About from './routes/About.jsx'
 import UpdateProfile from './routes/UpdateProfile';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Signup from './routes/Signup.jsx';
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
       { path: 'profile', element: <PrivateRoute><Profile /></PrivateRoute> },
       { path: 'UpdateProfile', element: <PrivateRoute><UpdateProfile /></PrivateRoute> },
       { path: 'triphistory', element: <PrivateRoute><TripHistory /> </PrivateRoute>},
+      { path: 'about', element: <About /> },
       { path: 'admin_dashboard', element: <PrivateRoute><Admin_Dashboard /></PrivateRoute> }
     ],
   }
