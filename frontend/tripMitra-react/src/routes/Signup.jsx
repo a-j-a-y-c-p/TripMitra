@@ -118,7 +118,7 @@ const Signup = () => {
                 onChange={handleChange}
               />
               <span
-                className="input-group-text"
+                className="input-group-text position-absolute"
                 onClick={() => setShowPassword(!showPassword)}
                 className="position-absolute"
                 style={{
@@ -149,7 +149,7 @@ const Signup = () => {
                 onChange={handleChange}
               />
               <span
-                className="input-group-text"
+                className="input-group-text position-absolute"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 className="position-absolute"
                 style={{
