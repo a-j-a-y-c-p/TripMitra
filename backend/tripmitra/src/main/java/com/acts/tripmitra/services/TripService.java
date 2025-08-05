@@ -12,4 +12,5 @@ public interface TripService {
 	public List<Trip> getFilteredTrips(String source, String destination, float minPrice, float maxPrice,int minSeats, int maxSeats);
 	public String cancelTrip(Integer id);
 	public String updateTripById(Integer id, TripDto trip);
+	
 }
