@@ -25,8 +25,6 @@ const TripList = ({ filters }) => {
         if (filters.maxPrice != null) params.maxPrice = filters.maxPrice;
         if (filters.minSeats != null) params.minSeats = filters.minSeats;
         if (filters.maxSeats != null) params.maxSeats = filters.maxSeats;
-        if (filters.minDepartureHour != null) params.minDepartureHour = filters.minDepartureHour;
-        if (filters.maxDepartureHour != null) params.maxDepartureHour = filters.maxDepartureHour;
 
         const response = await axiosInstance.get('/trips/filter', { params });
 
