@@ -4,24 +4,25 @@ import api from '../api/axiosConfig';
 
 const AddTripForm = () => {
   const [trip, settrip] = useState({
-    
-      mode: '',
-      currMembers: 1,
-      maxMembers: 1,
-      estimateCost: 0,
+
+    mode: '',
+    currMembers: '',
+    maxMembers: '1',
+    estimateCost: '0',
     tripDetails: {
       source: '',
       destination: '',
       startDate: '',
       endDate: ''
-    }
+    },
+    description: ''
   });
 
   const handleTripInfoChange = (e) => {
     const { name, value } = e.target;
     settrip((prev) => ({
       ...prev,
-      [name]: ['currMembers', 'maxMembers', 'estimateCost'].includes(name)
+      [name]: ['currMembers', 'maxMembers', 'estimateCost','description'].includes(name)
         ? parseInt(value) || 0
         : value,
     }));
@@ -46,10 +47,11 @@ const AddTripForm = () => {
       console.log('Trip added successfully:', response.data);
       alert('Trip added successfully!');
       settrip({
-        mode: '', currMembers: 1, maxMembers: 1, estimateCost: 0,
-          tripDetails: { source: '', destination: '', startDate: '', endDate: '' }
-         },
-        );
+        mode: '', currMembers: '1', maxMembers: '1', estimateCost: '0',
+        tripDetails: { source: '', destination: '', startDate: '', endDate: '' },
+        description : ''
+      },
+      );
     } catch (error) {
       console.error('Error adding trip:', error);
       alert('Failed to add trip. Please try again.');
@@ -77,6 +79,7 @@ const AddTripForm = () => {
                       required
                     >
                       <option value="">Select Mode</option>
+                      <option value="Bike">Bike</option>
                       <option value="Car">Car</option>
                       <option value="Bus">Bus</option>
                       <option value="Train">Train</option>
@@ -87,7 +90,7 @@ const AddTripForm = () => {
                   <div className="mb-3">
                     <label htmlFor="currMembers" className="form-label">Current Members</label>
                     <input
-                      type="number"
+                      type="text"
                       id="currMembers"
                       name="currMembers"
                       value={trip.currMembers}
@@ -100,7 +103,7 @@ const AddTripForm = () => {
                   <div className="mb-3">
                     <label htmlFor="maxMembers" className="form-label">Maximum Members</label>
                     <input
-                      type="number"
+                      type="text"
                       id="maxMembers"
                       name="maxMembers"
                       value={trip.maxMembers}
@@ -113,7 +116,7 @@ const AddTripForm = () => {
                   <div className="mb-3">
                     <label htmlFor="estimateCost" className="form-label">Estimated Cost (₹)</label>
                     <input
-                      type="number"
+                      type="text"
                       id="estimateCost"
                       name="estimateCost"
                       value={trip.estimateCost}
@@ -175,15 +178,19 @@ const AddTripForm = () => {
                       required
                     />
                   </div>
+                  <div className="mb-3">
+                    <label className="form-label">Trip Description</label>
+                    <textarea name="description" className="form-control" rows="3" value={trip.description} onChange={handleTripInfoChange} />
+                  </div>
                 </div>
 
                 <button
                   type="submit"
                   className="btn btn-primary w-100 py-2"
                   disabled={trip.currMembers > trip.maxMembers && (
-                  <div className="alert alert-danger">
-                  Current members cannot exceed maximum members.
-                  </div>
+                    <div className="alert alert-danger">
+                      Current members cannot exceed maximum members.
+                    </div>
                   )}
 
                 >

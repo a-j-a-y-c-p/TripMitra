@@ -7,9 +7,11 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class AddressDto {
+	
     private String district;
     private String state;
     private String pincode;
     private String addressLine1;
     private String addressLine2;
+    
 }

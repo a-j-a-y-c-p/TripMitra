@@ -8,12 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.acts.tripmitra.dto.AddressDto;
 import com.acts.tripmitra.dto.UserDetailsDto;
+import com.acts.tripmitra.dto.UserResponseDto;
 import com.acts.tripmitra.entity.Address;
-import com.acts.tripmitra.entity.User;
 import com.acts.tripmitra.entity.UserDetails;
-import com.acts.tripmitra.repository.AddressRepository;
 import com.acts.tripmitra.repository.UserDetailsRepository;
-import com.acts.tripmitra.repository.UserRepository;
 import com.acts.tripmitra.services.UserDetailsService;
 
 @Service
@@ -28,6 +26,10 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     		UserDetails details =  optional.get();
     		UserDetailsDto dto = new UserDetailsDto();
     		BeanUtils.copyProperties(details, dto);
+    		dto.setUser(new UserResponseDto());
+    		BeanUtils.copyProperties(details.getUser(), dto.getUser());
+    		dto.setAddress(new AddressDto());
+    		BeanUtils.copyProperties(details.getAddress(), dto.getAddress());
     		return dto;
     	}
     	return null;
@@ -50,7 +52,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
             userDetails.setDateOfBirth(dto.getDateOfBirth());
             userDetails.setImageUrl(dto.getImageUrl());
             Address newAddress = userDetails.getAddress();
-            Address address = dto.getAddress();
+            AddressDto address = dto.getAddress();
             newAddress.setAddressLine1(address.getAddressLine1());
             newAddress.setAddressLine2(address.getAddressLine2());
             newAddress.setDistrict(address.getDistrict());

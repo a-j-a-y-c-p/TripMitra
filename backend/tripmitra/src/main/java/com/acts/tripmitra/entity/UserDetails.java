@@ -2,6 +2,7 @@ package com.acts.tripmitra.entity;
 
 import java.sql.Date;
 
+import com.acts.tripmitra.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;

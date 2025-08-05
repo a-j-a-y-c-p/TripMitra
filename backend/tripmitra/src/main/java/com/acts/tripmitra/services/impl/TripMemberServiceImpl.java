@@ -11,7 +11,7 @@ import com.acts.tripmitra.repository.TripMemberRepository;
 import com.acts.tripmitra.services.TripMemberService;
 import com.acts.tripmitra.services.exceptions.UserAlreadyExistsException;
 import com.acts.tripmitra.utilities.MemberId;
-import com.acts.tripmitra.utilities.Status;
+import com.acts.tripmitra.utilities.TripMemberStatusEnum;
 
 @Service
 public class TripMemberServiceImpl implements TripMemberService {
@@ -26,7 +26,7 @@ public class TripMemberServiceImpl implements TripMemberService {
 		
 		TripMember tripMember = new TripMember();
 		tripMember.setMemberId(memberId);
-		tripMember.setStatus(Status.WAITING);
+		tripMember.setStatus(TripMemberStatusEnum.WAITING);
 		repository.save(tripMember);
 	}
 
@@ -49,7 +49,7 @@ public class TripMemberServiceImpl implements TripMemberService {
 
 	@Override
 	public List<TripMember> findByStatus(String status) {
-		return repository.findByStatus(Status.valueOf(status));
+		return repository.findByStatus(TripMemberStatusEnum.valueOf(status));
 	}
 
 	@Override

@@ -3,17 +3,19 @@ import api from '../api/axiosConfig'
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import { jwtDecode } from "jwt-decode";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // 👈 install if not already
 
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
+
   const [formData, setFormData] = useState({
     userEmail: "",
     userPassword: ""
   });
 
   const [error, setError] = useState("");
-
+  const [showPassword, setShowPassword] = useState(false); // 👈 NEW STATE
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,18 +31,14 @@ const Login = () => {
 
     try {
       const res = await api.post("/auth/login", formData);
-
       if (res.status === 200) {
         const { token } = res.data;
         if (token) {
           login(token);
           const decoded = jwtDecode(token);
-          if(decoded.role === "ADMIN")
-            navigate("/admin_dashboard");
-          else
-            navigate("/dashboard");
-        }
-        else{
+          if (decoded.role === "ADMIN") navigate("/admin_dashboard");
+          else navigate("/dashboard");
+        } else {
           setError("Token not received");
         }
       } else {
@@ -77,16 +75,32 @@ const Login = () => {
           </div>
 
           <div className="mb-3">
-            <label>Password</label>
-            <input
-              type="password"
-              className="form-control"
-              name="userPassword"
-              required
-              onChange={handleChange}
-              value={formData.userPassword}
-            />
-          </div>
+  <label>Password</label>
+  <div className="position-relative">
+    <input
+      type={showPassword ? "text" : "password"}
+      className="form-control pe-5"
+      name="userPassword"
+      required
+      onChange={handleChange}
+      value={formData.userPassword}
+    />
+    <span
+      onClick={() => setShowPassword(!showPassword)}
+      className="position-absolute"
+      style={{
+        top: "50%",
+        right: "15px",
+        transform: "translateY(-50%)",
+        cursor: "pointer",
+        color: "#6c757d",
+        fontSize: "1.1rem"
+      }}
+    >
+      {showPassword ? <FaEyeSlash /> : <FaEye />}
+    </span>
+  </div>
+</div>
 
           <button type="submit" className="btn btn-primary w-100">
             Login
