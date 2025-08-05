@@ -155,9 +155,9 @@ public class TripServiceImpl implements TripService {
 //	}
 	
 	@Override
-	public Page<Trip> getFilteredTrips(String source, String destination,float minPrice, float maxPrice,int minSeats, 
+	public Page<Trip> getFilteredActiveTrips(String source, String destination,float minPrice, float maxPrice,int minSeats, 
 										int maxSeats,Pageable pageable) {
-				return tripRepository.findFilteredTrips(source, destination,minPrice, maxPrice, minSeats, maxSeats, pageable);
+				return tripRepository.findFilteredTrips(source, destination,minPrice, maxPrice, minSeats, maxSeats,TripStatusEnum.ACTIVE.toString(), pageable);
 	}
 
 	@Override
@@ -166,13 +166,38 @@ public class TripServiceImpl implements TripService {
 			throw new TripNotFoundException("Cannot cancel Trip with ID " + tripId + " not found.");
 		}
 		try {
-			tripRepository.updateStatus(tripId, TripStatusEnum.CANCELLED);
+			tripRepository.updateStatus(tripId, TripStatusEnum.CANCELLED.toString());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			throw new TripDeletionException("Failed to cancel trip with ID " + tripId);
 		}
 		return "Trip cancelled successfully";
 	}
+
+	@Override
+	public List<TripDto> getAllCancelledTrips() {
+		List<Trip> tripList = tripRepository.findAllByStatus(TripStatusEnum.CANCELLED);
+		List<TripDto> tripDtoList = new ArrayList<>();
+		for(Trip trip: tripList) {
+			TripDto tripDto = new TripDto();
+			BeanUtils.copyProperties(trip, tripDto);
+			tripDtoList.add(tripDto);
+		}
+		return tripDtoList;
+	}
+
+	@Override
+	public List<TripDto> getAllCompletedTrips() {
+		List<Trip> tripList = tripRepository.findAllByStatus(TripStatusEnum.COMPLETED);
+		List<TripDto> tripDtoList = new ArrayList<>();
+		for(Trip trip: tripList) {
+			TripDto tripDto = new TripDto();
+			BeanUtils.copyProperties(trip, tripDto);
+			tripDtoList.add(tripDto);
+		}
+		return tripDtoList;
+	}
+	
 
 
 }

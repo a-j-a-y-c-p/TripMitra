@@ -14,9 +14,11 @@ public interface TripService {
 	public TripDto getTripById(Integer id);
 	public String deleteTrip(Integer tripId);
 
-	public Page<Trip> getFilteredTrips(String source, String destination,float minPrice, float maxPrice,int minSeats, 
+	public Page<Trip> getFilteredActiveTrips(String source, String destination,float minPrice, float maxPrice,int minSeats, 
 			int maxSeats,Pageable pageable);
 	public String cancelTrip(Integer id);
 	public String updateTripById(Integer id, TripDto trip);
+	public List<TripDto> getAllCancelledTrips();
+	public List<TripDto> getAllCompletedTrips();
 	
 }
