@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.acts.tripmitra.dto.TripDto;
 import com.acts.tripmitra.entity.Trip;
+import com.acts.tripmitra.entity.TripDetails;
 import com.acts.tripmitra.entity.TripMember;
 import com.acts.tripmitra.repository.TripDetailsRepository;
 import com.acts.tripmitra.repository.TripMemberRepository;
@@ -18,6 +19,7 @@ import com.acts.tripmitra.services.TripService;
 import com.acts.tripmitra.services.exceptions.TripAlreadyExistsException;
 import com.acts.tripmitra.services.exceptions.TripDeletionException;
 import com.acts.tripmitra.services.exceptions.TripNotFoundException;
+import com.acts.tripmitra.services.exceptions.TripUpdationException;
 import com.acts.tripmitra.utilities.JwtUtil;
 import com.acts.tripmitra.utilities.MemberId;
 import com.acts.tripmitra.utilities.TripMemberStatusEnum;
@@ -94,6 +96,53 @@ public class TripServiceImpl implements TripService {
 			throw new TripDeletionException("Failed to delete trip with ID " + tripId);
 		}
 		return "Trip deleted successfully";
+	}
+	
+	
+	@Override
+	public String updateTripById(Integer tripId, TripDto tripDto) {
+		try {
+			Optional<Trip> Otrip = tripRepository.findById(tripId);
+			if(Otrip.isEmpty()) {
+				throw new TripNotFoundException("Trip with ID " + tripId + " not found.");
+			}
+			Trip trip = Otrip.get();
+			if(null != tripDto.getCurrMembers()) {
+				trip.setCurrMembers(tripDto.getCurrMembers());
+			}
+			if(null != tripDto.getEstimateCost()) {
+				trip.setEstimateCost(tripDto.getEstimateCost());
+			}
+			if(null != tripDto.getMaxMembers()) {
+				trip.setMaxMembers(tripDto.getMaxMembers());
+			}
+			if(null != tripDto.getMode()) {
+				trip.setMode(tripDto.getMode());
+			}
+			if(null != tripDto.getDescription()) {
+				trip.setDescription(tripDto.getDescription());
+			}
+			if(null != tripDto.getTripDetails()) {
+				TripDetails details = trip.getTripDetails();
+				if(null != tripDto.getTripDetails().getDestination()) {
+					details.setDestination(tripDto.getTripDetails().getDestination());
+				}
+				if(null != tripDto.getTripDetails().getEndDate()) {
+					details.setEndDate(tripDto.getTripDetails().getEndDate());
+				}
+				if(null != tripDto.getTripDetails().getSource()) {
+					details.setSource(tripDto.getTripDetails().getSource());
+				}
+				if(null != tripDto.getTripDetails().getStartDate()) {
+					details.setStartDate(tripDto.getTripDetails().getStartDate());
+				}
+				trip.setTripDetails(details);
+			}
+			tripRepository.save(trip);
+		} catch(Exception e) {
+			throw new TripUpdationException("Failed to update trip with ID " + tripId);
+		}
+		return "Trip Updated successfully";
 	}
 
 	@Override
