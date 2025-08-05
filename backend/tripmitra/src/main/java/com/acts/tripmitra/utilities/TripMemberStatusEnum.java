@@ -1,9 +1,10 @@
 package com.acts.tripmitra.utilities;
 
-public enum Status {
+public enum TripMemberStatusEnum {
 	
 	ACCEPTED,
 	DECLINED,
-	WAITING
+	WAITING,
+	CANCELLED
 	
 }
