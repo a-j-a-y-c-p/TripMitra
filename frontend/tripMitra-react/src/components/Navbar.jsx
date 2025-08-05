@@ -71,11 +71,11 @@ const Navbar = () => {
                     style={{ width: '32px', height: '32px', fontSize: '0.9rem' }}
                   >
                     {user?.name
-                      ? user.name.charAt(0).toUpperCase()
-                      : user?.email?.charAt(0).toUpperCase() || 'U'}
+                      ? user.userName.charAt(0).toUpperCase()
+                      : user?.sub?.charAt(0).toUpperCase() || 'U'}
                   </div>
                   <span className="d-none d-lg-inline">
-                    {user?.name || user?.email || "User"}
+                    {user?.userName || user?.sub || "User"}
                   </span>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">

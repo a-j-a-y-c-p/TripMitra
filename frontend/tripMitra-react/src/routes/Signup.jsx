@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import api from '../api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
+
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -106,7 +108,9 @@ const Signup = () => {
             <div className="input-group">
               <input
                 type={showPassword ? "text" : "password"}
+
                 className="form-control border-end-0 bg-white"
+
                 name="userPassword"
                 required
                 placeholder="Enter password"
@@ -116,10 +120,13 @@ const Signup = () => {
               <span
                 className="input-group-text"
                 onClick={() => setShowPassword(!showPassword)}
+                className="position-absolute"
                 style={{
+
                   cursor: "pointer",
                   backgroundColor: "transparent",
                   borderLeft: "none",
+
                 }}
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -132,7 +139,9 @@ const Signup = () => {
             <div className="input-group">
               <input
                 type={showConfirmPassword ? "text" : "password"}
+
                 className="form-control border-end-0 bg-white"
+
                 name="confirmPassword"
                 required
                 placeholder="Re-enter password"
@@ -142,10 +151,13 @@ const Signup = () => {
               <span
                 className="input-group-text"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="position-absolute"
                 style={{
+
                   cursor: "pointer",
                   backgroundColor: "transparent",
                   borderLeft: "none",
+
                 }}
               >
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}

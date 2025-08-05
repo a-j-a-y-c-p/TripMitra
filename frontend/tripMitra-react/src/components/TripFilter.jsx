@@ -26,7 +26,8 @@ const TripFilter = ({ onFilterChange = () => {} }) => {
 }, [source, destination, priceRange, departureRange, remainingSeats]);
 
   return (
-    <div className="w-full lg:w-80 p-4 border-r border-gray-200 bg-white shadow-sm">
+    <div className="w-full lg:w-80 p-4 border-r border-gray-200 bg-white shadow-sm" 
+          style={{ height: "100%"}}>
       <h4 className="text-xl fw-bold text-gray-800" style={{ marginBottom: '1.5rem' }}>
         Filter Results
       </h4>

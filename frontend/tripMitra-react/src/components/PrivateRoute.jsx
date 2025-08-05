@@ -5,18 +5,18 @@ import Loading from './Loading';
 
 const PrivateRoute = ({ children, requiredRole }) => {
   const { user, loading } = useContext(AuthContext);
-
-  if(loading){
-    return <Loading/>
+  const currentTime = Math.floor(Date.now() / 1000);
+  if (loading) {
+    return <Loading />
   }
 
-  if (!user) {
+  if (!user || !user.exp || user.exp <= currentTime) {
     return <Navigate to="/login" />;
   }
 
-  
+
   if (requiredRole && user.role !== requiredRole) {
-    return <Navigate to="/" />; 
+    return <Navigate to="/" />;
   }
 
   return children;
