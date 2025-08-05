@@ -20,6 +20,7 @@ import PrivateRoute from './components/PrivateRoute.jsx';
 import { AuthProvider } from './contexts/AuthContext.jsx';
 import TripDetails from './routes/TripDetails.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import EditTripForm from './routes/EditTripForm.jsx';
 
 
 <Route path="/trip/:id" element={<TripDetails />} />
@@ -42,7 +43,8 @@ const router = createBrowserRouter([
       { path: 'triphistory', element: <PrivateRoute><TripHistory /> </PrivateRoute>},
       { path: 'about', element: <About /> },
       { path: 'admin_dashboard', element: <PrivateRoute requiredRole={'ADMIN'}><Admin_Dashboard /></PrivateRoute> },
-      { path: 'trip/:id', element: <PrivateRoute><TripDetails /></PrivateRoute> }
+      { path: 'trip/:id', element: <PrivateRoute><TripDetails /></PrivateRoute> },
+      { path: 'edit-trip/:tripId', element: <PrivateRoute><EditTripForm /></PrivateRoute>}
 
     ],
   }

@@ -4,24 +4,25 @@ import api from '../api/axiosConfig';
 
 const AddTripForm = () => {
   const [trip, settrip] = useState({
-    
-      mode: '',
-      currMembers: '',
-      maxMembers: '1',
-      estimateCost: '0',
+
+    mode: '',
+    currMembers: '',
+    maxMembers: '1',
+    estimateCost: '0',
     tripDetails: {
       source: '',
       destination: '',
       startDate: '',
       endDate: ''
-    }
+    },
+    description: ''
   });
 
   const handleTripInfoChange = (e) => {
     const { name, value } = e.target;
     settrip((prev) => ({
       ...prev,
-      [name]: ['currMembers', 'maxMembers', 'estimateCost'].includes(name)
+      [name]: ['currMembers', 'maxMembers', 'estimateCost','description'].includes(name)
         ? parseInt(value) || 0
         : value,
     }));
@@ -47,9 +48,10 @@ const AddTripForm = () => {
       alert('Trip added successfully!');
       settrip({
         mode: '', currMembers: '1', maxMembers: '1', estimateCost: '0',
-          tripDetails: { source: '', destination: '', startDate: '', endDate: '' }
-         },
-        );
+        tripDetails: { source: '', destination: '', startDate: '', endDate: '' },
+        description : ''
+      },
+      );
     } catch (error) {
       console.error('Error adding trip:', error);
       alert('Failed to add trip. Please try again.');
@@ -176,15 +178,19 @@ const AddTripForm = () => {
                       required
                     />
                   </div>
+                  <div className="mb-3">
+                    <label className="form-label">Trip Description</label>
+                    <textarea name="description" className="form-control" rows="3" value={trip.description} onChange={handleTripInfoChange} />
+                  </div>
                 </div>
 
                 <button
                   type="submit"
                   className="btn btn-primary w-100 py-2"
                   disabled={trip.currMembers > trip.maxMembers && (
-                  <div className="alert alert-danger">
-                  Current members cannot exceed maximum members.
-                  </div>
+                    <div className="alert alert-danger">
+                      Current members cannot exceed maximum members.
+                    </div>
                   )}
 
                 >

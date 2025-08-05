@@ -22,6 +22,9 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
     	    """, nativeQuery = true)
     	List<Trip> filterTrips(String source, String destination,float minPrice, float maxPrice,
     	                       int minSeats, int maxSeats);
+    	
+//    	@Query()
+//    	void cancelTripById(Integer id);
 
 
 	    
