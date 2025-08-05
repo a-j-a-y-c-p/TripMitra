@@ -18,4 +18,5 @@ public interface TripService {
 			int maxSeats,Pageable pageable);
 	public String cancelTrip(Integer id);
 	public String updateTripById(Integer id, TripDto trip);
+	
 }
