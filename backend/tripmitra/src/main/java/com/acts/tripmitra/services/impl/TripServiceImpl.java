@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.acts.tripmitra.dto.TripDto;
@@ -75,10 +77,16 @@ public class TripServiceImpl implements TripService {
 		return "Trip deleted successfully";
 	}
 
+//	@Override
+//	public List<Trip> getFilteredTrips(String source, String destination, float minPrice, float maxPrice,
+//	                                   int minSeats, int maxSeats) {
+//	    return tripRepository.filterTrips(source, destination, minPrice, maxPrice, minSeats, maxSeats);
+//	}
+	
 	@Override
-	public List<Trip> getFilteredTrips(String source, String destination, float minPrice, float maxPrice,
-	                                   int minSeats, int maxSeats) {
-	    return tripRepository.filterTrips(source, destination, minPrice, maxPrice, minSeats, maxSeats);
+	public Page<Trip> getFilteredTrips(String source, String destination,float minPrice, float maxPrice,int minSeats, 
+										int maxSeats,Pageable pageable) {
+				return tripRepository.findFilteredTrips(source, destination,minPrice, maxPrice, minSeats, maxSeats, pageable);
 	}
 
 
