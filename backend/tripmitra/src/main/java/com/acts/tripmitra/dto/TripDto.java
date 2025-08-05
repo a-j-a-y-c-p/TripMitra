@@ -18,6 +18,8 @@ public class TripDto {
 	
 	Float estimateCost;
 	
+	String description;
+	
 	TripDetails tripDetails;
 
 }

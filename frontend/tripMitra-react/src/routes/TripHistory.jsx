@@ -19,7 +19,7 @@ const TripHistory = () => {
     const fetchTrips = async () => {
       setIsLoading(true);
       try {
-        const response = await api.get(`/members/getalltrips/${userId}`,
+        const response = await api.get(`/members/trips/all/${userId}`,
         );
         if (!Array.isArray(response.data)) {
                   throw new Error('Expected an array of trip IDs');
