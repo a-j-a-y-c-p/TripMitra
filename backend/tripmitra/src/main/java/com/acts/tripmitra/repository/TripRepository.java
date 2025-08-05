@@ -2,6 +2,7 @@ package com.acts.tripmitra.repository;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.acts.tripmitra.dto.TripDto;
 import com.acts.tripmitra.entity.Trip;
 import com.acts.tripmitra.utilities.TripStatusEnum;
 
@@ -55,5 +57,10 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
                       @Param("status") String status);
 
 	List<Trip> findAllByStatus(TripStatusEnum status);
+
+	@Query(value="select * from trip where tripid = :id and status='ACTIVE'", nativeQuery = true)
+	Optional<Trip> findActiveTripById(Integer id);
+	
+	
 
 }

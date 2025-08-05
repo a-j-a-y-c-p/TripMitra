@@ -39,10 +39,17 @@ public class TripController {
 		return tripService.getAllTrips();
 	}
 	
+	@GetMapping("/active/{id}")
+	public TripDto getActiveTripById(@PathVariable("id") Integer id){
+		return tripService.getActiveTripById(id);
+	}
+	
 	@GetMapping("/{id}")
 	public TripDto getTripById(@PathVariable("id") Integer id){
 		return tripService.getTripById(id);
 	}
+	
+	
 	
 	@DeleteMapping("/delete/{id}")
 	public String deleteTripById(@PathVariable("id") Integer id) {

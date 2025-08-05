@@ -11,30 +11,31 @@ const ManageTrip = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
 
-
   const userId = user?.userId;
-  // Fetch trips from backend on component mount
+
   useEffect(() => {
     const fetchTrips = async () => {
       setIsLoading(true);
       try {
-        // Step 1: Fetch list of trip IDs for the user
         const response = await api.get(`/members/${userId}`);
         if (!Array.isArray(response.data)) {
           throw new Error('Expected an array of trip IDs');
         }
-
-        // Step 2: Fetch full trip details for each trip ID
-        const tripPromises = response.data.map(tripId =>
-          api.get(`/trips/${tripId}`)
+        const tripPromises = response.data.map((tripId) =>
+          api.get(`/trips/active/${tripId}`).catch((err) => null)
         );
-        const tripResponses = await Promise.all(tripPromises);
-        const tripData = tripResponses.map(res => res.data);
-        setTrips(tripData);
 
+        const tripResponses = await Promise.all(tripPromises);
+
+        // Filter out null responses (failed calls)
+        const trips = tripResponses
+          .filter((res) => res !== null && res.data)
+          .map((res) => res.data);
+
+        setTrips(trips);
         setError(null);
       } catch (err) {
-        setError('Failed to fetch trips. Please try again.');
+        setError('No trips found !');
         console.error('Error fetching trips:', err);
       } finally {
         setIsLoading(false);
@@ -43,13 +44,12 @@ const ManageTrip = () => {
     fetchTrips();
   }, [userId]);
 
-  // Handle delete button click
   const handleCancel = async (id) => {
     if (!window.confirm('Are you sure you want to cancel this trip?')) return;
     setIsLoading(true);
     try {
       await api.post(`/trips/cancel/${id}`);
-      setTrips(trips.filter(trip => trip.id !== id));
+      setTrips(trips.filter((trip) => trip.tripId !== id));
       setError(null);
       alert('Trip cancelled successfully!');
     } catch (err) {
@@ -60,7 +60,6 @@ const ManageTrip = () => {
     }
   };
 
-  // Handle edit button click
   const handleEdit = (tripId) => {
     navigate(`/edit-trip/${tripId}`);
   };
@@ -77,7 +76,6 @@ const ManageTrip = () => {
         </div>
       )}
 
-      {/* Trip Cards */}
       <div className="row justify-content-center g-2">
         <div className="col-12 col-md-8">
           {trips.length === 0 && !isLoading && (
@@ -85,14 +83,12 @@ const ManageTrip = () => {
           )}
           {trips.length > 0 && (
             <>
-              {trips.map(trip => (
+              {trips.map((trip) => (
                 <div key={trip.tripId} className="mb-4">
                   <div className="card shadow-sm border-0" style={{ borderRadius: '8px' }}>
                     <div className="card-body d-flex justify-content-between align-items-center">
                       {/* Left section: route and dates */}
                       <div>
-                        {/* <div>Trip :  {trip}</div> */}
-                      
                         <h5 className="fw-bold mb-1" style={{ fontSize: '1.25rem' }}>
                           {trip.tripDetails?.source || 'N/A'} → {trip.tripDetails?.destination || 'N/A'}
                         </h5>
@@ -111,11 +107,12 @@ const ManageTrip = () => {
                         </p>
                       </div>
 
-                      {/* Right section: cost and buttons */}
-                      <div className="text-end">
+                      {/* Right section: cost, status, buttons */}
+                      <div className="text-end d-flex flex-column align-items-end">
                         <p className="mb-2 fw-bold" style={{ fontSize: '1.25rem' }}>
                           ₹{trip.estimateCost}
                         </p>
+
                         <div className="d-flex gap-2">
                           <button
                             className="btn btn-primary btn-sm"
@@ -132,6 +129,16 @@ const ManageTrip = () => {
                             Cancel
                           </button>
                         </div>
+
+                        {/* New Manage Members Button */}
+                        <button
+                          className="btn btn-secondary btn-sm mt-2"
+                          onClick={() => navigate(`/trip-members/${trip.tripId}`)}
+                          disabled={isLoading}
+                        >
+                          Manage Members
+                        </button>
+
                       </div>
                     </div>
                   </div>
