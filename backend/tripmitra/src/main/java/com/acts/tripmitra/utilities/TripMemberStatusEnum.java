@@ -4,7 +4,6 @@ public enum TripMemberStatusEnum {
 	
 	ACCEPTED,
 	DECLINED,
-	WAITING,
-	CANCELLED
+	WAITING
 	
 }

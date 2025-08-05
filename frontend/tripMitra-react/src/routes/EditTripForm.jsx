@@ -9,7 +9,7 @@ const EditTripForm = () => {
     mode: '',
     currMembers: '',
     maxMembers: '',
-    estimatedCost: '',
+    estimateCost: '',
     tripDetails: {
       source: '',
       destination: '',
@@ -113,7 +113,7 @@ const EditTripForm = () => {
 
           <div className="mb-3">
             <label className="form-label">Estimated Cost (₹)</label>
-            <input type="number" name="estimatedCost" className="form-control" value={trip.estimatedCost} onChange={handleChange} />
+            <input type="number" name="estimateCost" className="form-control" value={trip.estimateCost} onChange={handleChange} />
           </div>
 
           <div className="mb-3">
