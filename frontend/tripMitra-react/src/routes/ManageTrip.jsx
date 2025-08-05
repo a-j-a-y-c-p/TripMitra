@@ -51,9 +51,9 @@ const ManageTrip = () => {
       await api.post(`/trips/cancel/${id}`);
       setTrips(trips.filter(trip => trip.id !== id));
       setError(null);
-      alert('Trip deleted successfully!');
+      alert('Trip cancelled successfully!');
     } catch (err) {
-      setError('Failed to delete trip. Please try again.');
+      setError('Failed to cancel trip. Please try again.');
       console.error('Error deleting trip:', err);
     } finally {
       setIsLoading(false);
