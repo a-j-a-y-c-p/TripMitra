@@ -1,7 +1,10 @@
 
-import React, { useState } from 'react';
-import api from '../api/axiosConfig'
+import React, { useState, useEffect } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import api from '../api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
+
+
 const Signup = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -14,6 +17,14 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    // Forcefully set body background to white
+    document.body.style.backgroundColor = "#fff";
+    return () => {
+      document.body.style.backgroundColor = ""; // cleanup
+    };
+  }, []);
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -46,7 +57,16 @@ const Signup = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center min-vh-100">
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{
+        minHeight: "100vh",
+        width: "100vw",
+        backgroundColor: "#fff",
+        margin: 0,
+        padding: 0,
+      }}
+    >
       <div className="card p-4 shadow-lg" style={{ maxWidth: "400px", width: "100%" }}>
         <h2 className="text-center mb-4">Signup</h2>
 
@@ -85,10 +105,12 @@ const Signup = () => {
 
           <div className="mb-3">
             <label>Password</label>
-            <div className="position-relative">
+            <div className="input-group">
               <input
                 type={showPassword ? "text" : "password"}
-                className="form-control"
+
+                className="form-control border-end-0 bg-white"
+
                 name="userPassword"
                 required
                 placeholder="Enter password"
@@ -96,26 +118,30 @@ const Signup = () => {
                 onChange={handleChange}
               />
               <span
+                className="input-group-text"
                 onClick={() => setShowPassword(!showPassword)}
+                className="position-absolute"
                 style={{
-                  position: "absolute",
-                  right: "10px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
+
                   cursor: "pointer",
+                  backgroundColor: "transparent",
+                  borderLeft: "none",
+
                 }}
               >
-                {showPassword ? "🙈" : "👁️"}
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
           </div>
 
           <div className="mb-3">
             <label>Confirm Password</label>
-            <div className="position-relative">
+            <div className="input-group">
               <input
                 type={showConfirmPassword ? "text" : "password"}
-                className="form-control"
+
+                className="form-control border-end-0 bg-white"
+
                 name="confirmPassword"
                 required
                 placeholder="Re-enter password"
@@ -123,16 +149,18 @@ const Signup = () => {
                 onChange={handleChange}
               />
               <span
+                className="input-group-text"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="position-absolute"
                 style={{
-                  position: "absolute",
-                  right: "10px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
+
                   cursor: "pointer",
+                  backgroundColor: "transparent",
+                  borderLeft: "none",
+
                 }}
               >
-                {showConfirmPassword ? "🙈" : "👁️"}
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
           </div>

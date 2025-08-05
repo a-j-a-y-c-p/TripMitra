@@ -1,10 +1,25 @@
 import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
+import Loading from './Loading';
 
-const ProtectedRoute = ({ children }) => {
-  const { token } = useContext(AuthContext);
-  return token ? children : <Navigate to="/login" />;
+const PrivateRoute = ({ children, requiredRole }) => {
+  const { user, loading } = useContext(AuthContext);
+
+  if(loading){
+    return <Loading/>
+  }
+
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  
+  if (requiredRole && user.role !== requiredRole) {
+    return <Navigate to="/" />; 
+  }
+
+  return children;
 };
 
-export default ProtectedRoute;
+export default PrivateRoute;

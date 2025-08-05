@@ -1,6 +1,6 @@
 package com.acts.tripmitra.services.exceptions;
 
-public class UserAlreadyExistsException extends Exception {
+public class UserAlreadyExistsException extends RuntimeException {
 
 	/**
 	 * 

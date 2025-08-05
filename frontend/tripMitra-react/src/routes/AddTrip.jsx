@@ -3,14 +3,13 @@ import api from '../api/axiosConfig';
 
 
 const AddTripForm = () => {
-  const [tripDetails, setTripDetails] = useState({
-    tripInfo: {
+  const [trip, settrip] = useState({
+    
       mode: '',
-      currMembers: 1,
-      maxMembers: 1,
-      estimatedCost: 0
-    },
-    itinerary: {
+      currMembers: '',
+      maxMembers: '1',
+      estimateCost: '0',
+    tripDetails: {
       source: '',
       destination: '',
       startDate: '',
@@ -20,38 +19,37 @@ const AddTripForm = () => {
 
   const handleTripInfoChange = (e) => {
     const { name, value } = e.target;
-    setTripDetails(prev => ({
+    settrip((prev) => ({
       ...prev,
-      tripInfo: {
-        ...prev.tripInfo,
-        [name]: name === 'currMembers' || name === 'maxMembers' || name === 'estimatedCost' 
-          ? parseInt(value) || 0 
-          : value
-      }
+      [name]: ['currMembers', 'maxMembers', 'estimateCost'].includes(name)
+        ? parseInt(value) || 0
+        : value,
     }));
   };
 
   const handleItineraryChange = (e) => {
     const { name, value } = e.target;
-    setTripDetails(prev => ({
+    settrip((prev) => ({
       ...prev,
-      itinerary: {
-        ...prev.itinerary,
-        [name]: value
-      }
+      tripDetails: {
+        ...prev.tripDetails,
+        [name]: value,
+      },
     }));
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('/trips/new', tripDetails);
+      const response = await api.post('/trips/new', trip);
       console.log('Trip added successfully:', response.data);
       alert('Trip added successfully!');
-      setTripDetails({
-        tripInfo: { mode: '', currMembers: 1, maxMembers: 1, estimatedCost: 0 },
-        itinerary: { source: '', destination: '', startDate: '', endDate: '' }
-      });
+      settrip({
+        mode: '', currMembers: '1', maxMembers: '1', estimateCost: '0',
+          tripDetails: { source: '', destination: '', startDate: '', endDate: '' }
+         },
+        );
     } catch (error) {
       console.error('Error adding trip:', error);
       alert('Failed to add trip. Please try again.');
@@ -73,12 +71,13 @@ const AddTripForm = () => {
                     <select
                       id="mode"
                       name="mode"
-                      value={tripDetails.tripInfo.mode}
+                      value={trip.mode}
                       onChange={handleTripInfoChange}
                       className="form-select"
                       required
                     >
                       <option value="">Select Mode</option>
+                      <option value="Bike">Bike</option>
                       <option value="Car">Car</option>
                       <option value="Bus">Bus</option>
                       <option value="Train">Train</option>
@@ -89,10 +88,10 @@ const AddTripForm = () => {
                   <div className="mb-3">
                     <label htmlFor="currMembers" className="form-label">Current Members</label>
                     <input
-                      type="number"
+                      type="text"
                       id="currMembers"
                       name="currMembers"
-                      value={tripDetails.tripInfo.currMembers}
+                      value={trip.currMembers}
                       onChange={handleTripInfoChange}
                       min="1"
                       className="form-control"
@@ -102,10 +101,10 @@ const AddTripForm = () => {
                   <div className="mb-3">
                     <label htmlFor="maxMembers" className="form-label">Maximum Members</label>
                     <input
-                      type="number"
+                      type="text"
                       id="maxMembers"
                       name="maxMembers"
-                      value={tripDetails.tripInfo.maxMembers}
+                      value={trip.maxMembers}
                       onChange={handleTripInfoChange}
                       min="1"
                       className="form-control"
@@ -113,12 +112,12 @@ const AddTripForm = () => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="estimatedCost" className="form-label">Estimated Cost (₹)</label>
+                    <label htmlFor="estimateCost" className="form-label">Estimated Cost (₹)</label>
                     <input
-                      type="number"
-                      id="estimatedCost"
-                      name="estimatedCost"
-                      value={tripDetails.tripInfo.estimatedCost}
+                      type="text"
+                      id="estimateCost"
+                      name="estimateCost"
+                      value={trip.estimateCost}
                       onChange={handleTripInfoChange}
                       min="0"
                       className="form-control"
@@ -135,7 +134,7 @@ const AddTripForm = () => {
                       type="text"
                       id="source"
                       name="source"
-                      value={tripDetails.itinerary.source}
+                      value={trip.tripDetails.source}
                       onChange={handleItineraryChange}
                       className="form-control"
                       required
@@ -147,7 +146,7 @@ const AddTripForm = () => {
                       type="text"
                       id="destination"
                       name="destination"
-                      value={tripDetails.itinerary.destination}
+                      value={trip.tripDetails.destination}
                       onChange={handleItineraryChange}
                       className="form-control"
                       required
@@ -159,7 +158,7 @@ const AddTripForm = () => {
                       type="date"
                       id="startDate"
                       name="startDate"
-                      value={tripDetails.itinerary.startDate}
+                      value={trip.tripDetails.startDate}
                       onChange={handleItineraryChange}
                       className="form-control"
                       required
@@ -171,7 +170,7 @@ const AddTripForm = () => {
                       type="date"
                       id="endDate"
                       name="endDate"
-                      value={tripDetails.itinerary.endDate}
+                      value={trip.tripDetails.endDate}
                       onChange={handleItineraryChange}
                       className="form-control"
                       required
@@ -182,7 +181,12 @@ const AddTripForm = () => {
                 <button
                   type="submit"
                   className="btn btn-primary w-100 py-2"
-                  disabled={tripDetails.tripInfo.currMembers > tripDetails.tripInfo.maxMembers}
+                  disabled={trip.currMembers > trip.maxMembers && (
+                  <div className="alert alert-danger">
+                  Current members cannot exceed maximum members.
+                  </div>
+                  )}
+
                 >
                   Add Trip
                 </button>
