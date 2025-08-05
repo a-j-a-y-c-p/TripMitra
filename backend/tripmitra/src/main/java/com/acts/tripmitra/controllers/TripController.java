@@ -60,7 +60,7 @@ public class TripController {
 	}
 
 	@GetMapping("/filter")
-	public Page<Trip> getFilteredTrips(
+	public Page<Trip> getFilteredActiveTrips(
 	    @RequestParam(required = false) String source,
 	    @RequestParam(required = false) String destination,
 	    @RequestParam(required = false, defaultValue = "0") float minPrice,
@@ -71,7 +71,17 @@ public class TripController {
 	    @RequestParam(defaultValue = "6") int size
 	) {
 	    Pageable pageable = PageRequest.of(page, size);
-	    return tripService.getFilteredTrips(source, destination, minPrice, maxPrice, minSeats, maxSeats,pageable);
+	    return tripService.getFilteredActiveTrips(source, destination, minPrice, maxPrice, minSeats, maxSeats,pageable);
+	}
+	
+	@GetMapping("/Cancelled")
+	public List<TripDto> getAllCancelledTrips(){
+		return tripService.getAllCancelledTrips();
+	}
+	
+	@GetMapping("/Completed")
+	public List<TripDto> getAllCompletedTrips(){
+		return tripService.getAllCompletedTrips();
 	}
 	
 }
