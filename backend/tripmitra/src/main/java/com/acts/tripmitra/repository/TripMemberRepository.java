@@ -16,9 +16,10 @@ public interface TripMemberRepository extends JpaRepository<TripMember, MemberId
 	
 	@Modifying
     @Transactional
-    @Query("UPDATE TripMember tm SET tm.status = :status WHERE tm.memberId = :memberId")
-    void updateStatus(@Param("memberId") MemberId memberId,
-                      @Param("status") TripMemberStatusEnum status);
+    @Query(value = "UPDATE tripmembers tm SET tm.status = :status WHERE tm.tripid = :tripId and tm.userid = :userId", nativeQuery = true)
+    void updateStatus(@Param("tripId") Integer tripId,
+    				@Param("userId") Integer userId,
+                      @Param("status") String status);
 	
 	@Query(value = "select * from tripmembers where tripid = :tripId", nativeQuery = true)
 	List<TripMember> findByTripId(@Param("tripId") int tId);
