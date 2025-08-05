@@ -44,11 +44,11 @@ const ManageTrip = () => {
   }, [userId]);
 
   // Handle delete button click
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this trip?')) return;
+  const handleCancel = async (id) => {
+    if (!window.confirm('Are you sure you want to cancel this trip?')) return;
     setIsLoading(true);
     try {
-      await api.delete(`/trips/delete/${id}`);
+      await api.post(`/trips/cancel/${id}`);
       setTrips(trips.filter(trip => trip.id !== id));
       setError(null);
       alert('Trip deleted successfully!');
@@ -126,10 +126,10 @@ const ManageTrip = () => {
                           </button>
                           <button
                             className="btn btn-danger btn-sm"
-                            onClick={() => handleDelete(trip.tripId)}
+                            onClick={() => handleCancel(trip.tripId)}
                             disabled={isLoading}
                           >
-                            Delete
+                            Cancel
                           </button>
                         </div>
                       </div>

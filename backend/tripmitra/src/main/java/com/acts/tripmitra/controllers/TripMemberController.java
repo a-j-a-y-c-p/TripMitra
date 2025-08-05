@@ -18,7 +18,7 @@ import com.acts.tripmitra.entity.TripMember;
 import com.acts.tripmitra.services.TripMemberService;
 import com.acts.tripmitra.services.exceptions.UserAlreadyExistsException;
 import com.acts.tripmitra.utilities.MemberId;
-import com.acts.tripmitra.utilities.Status;
+import com.acts.tripmitra.utilities.TripMemberStatusEnum;
 
 @RestController
 @RequestMapping("/members")

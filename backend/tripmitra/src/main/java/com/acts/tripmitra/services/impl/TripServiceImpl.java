@@ -81,5 +81,18 @@ public class TripServiceImpl implements TripService {
 	    return tripRepository.filterTrips(source, destination, minPrice, maxPrice, minSeats, maxSeats);
 	}
 
+	@Override
+	public String cancelTrip(Integer tripId) {
+		if (!tripRepository.existsById(tripId)) {
+			throw new TripNotFoundException("Cannot cancel Trip with ID " + tripId + " not found.");
+		}
+		try {
+//			tripRepository.cancelTripById(tripId);
+		} catch (Exception e) {
+			throw new TripDeletionException("Failed to delete trip with ID " + tripId);
+		}
+		return "Trip cancelled successfully";
+	}
+
 
 }

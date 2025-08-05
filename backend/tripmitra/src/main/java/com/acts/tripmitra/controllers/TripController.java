@@ -44,6 +44,11 @@ public class TripController {
 	public String deleteTripById(@PathVariable("id") Integer id) {
 		return tripService.deleteTrip(id);
 	}
+	
+	@PostMapping("/cancel/{id}")
+	public String cancelTripById(@PathVariable("id") Integer id) {
+		return tripService.cancelTrip(id);
+	}
 
 	@GetMapping("/filter")
 	public List<Trip> getFilteredTrips(
