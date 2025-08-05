@@ -1,7 +1,7 @@
 package com.acts.tripmitra.entity;
 
 import com.acts.tripmitra.utilities.MemberId;
-import com.acts.tripmitra.utilities.Status;
+import com.acts.tripmitra.utilities.TripMemberStatusEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
@@ -9,9 +9,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="tripmembers")
 public class TripMember {
@@ -20,7 +24,7 @@ public class TripMember {
 	private MemberId memberId;
 	@Column(name="status")
 	@Enumerated(EnumType.STRING)
-	private Status status;
+	private TripMemberStatusEnum status;
 	@Column(name="istriphost")
 	private boolean isTripHost;
 }

@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.acts.tripmitra.entity.TripMember;
 import com.acts.tripmitra.utilities.MemberId;
-import com.acts.tripmitra.utilities.Status;
+import com.acts.tripmitra.utilities.TripMemberStatusEnum;
 
 import jakarta.transaction.Transactional;
 
@@ -16,14 +16,15 @@ public interface TripMemberRepository extends JpaRepository<TripMember, MemberId
 	
 	@Modifying
     @Transactional
-    @Query("UPDATE TripMember tm SET tm.status = :status WHERE tm.memberId = :memberId")
-    void updateStatus(@Param("memberId") MemberId memberId,
-                      @Param("status") Status status);
+    @Query(value = "UPDATE tripmembers tm SET tm.status = :status WHERE tm.tripid = :tripId and tm.userid = :userId", nativeQuery = true)
+    void updateStatus(@Param("tripId") Integer tripId,
+    				@Param("userId") Integer userId,
+                      @Param("status") String status);
 	
 	@Query(value = "select * from tripmembers where tripid = :tripId", nativeQuery = true)
 	List<TripMember> findByTripId(@Param("tripId") int tId);
 	
-	List<TripMember> findByStatus(Status status);
+	List<TripMember> findByStatus(TripMemberStatusEnum status);
 	
 	@Query(value = "select tripid from tripmembers where userid = :userId and isTripHost = 1", nativeQuery = true)
 	List<Integer> findHostedTripsByUserId(@Param("userId")int id);

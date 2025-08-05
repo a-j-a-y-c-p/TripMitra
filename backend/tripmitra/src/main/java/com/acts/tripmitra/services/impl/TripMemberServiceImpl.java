@@ -9,9 +9,10 @@ import com.acts.tripmitra.entity.Trip;
 import com.acts.tripmitra.entity.TripMember;
 import com.acts.tripmitra.repository.TripMemberRepository;
 import com.acts.tripmitra.services.TripMemberService;
+import com.acts.tripmitra.services.exceptions.TripUpdationException;
 import com.acts.tripmitra.services.exceptions.UserAlreadyExistsException;
 import com.acts.tripmitra.utilities.MemberId;
-import com.acts.tripmitra.utilities.Status;
+import com.acts.tripmitra.utilities.TripMemberStatusEnum;
 
 @Service
 public class TripMemberServiceImpl implements TripMemberService {
@@ -26,7 +27,8 @@ public class TripMemberServiceImpl implements TripMemberService {
 		
 		TripMember tripMember = new TripMember();
 		tripMember.setMemberId(memberId);
-		tripMember.setStatus(Status.WAITING);
+		tripMember.setStatus(TripMemberStatusEnum.WAITING);
+		tripMember.setTripHost(false);
 		repository.save(tripMember);
 	}
 
@@ -37,8 +39,15 @@ public class TripMemberServiceImpl implements TripMemberService {
 
 	@Override
 	public void updateStatus(TripMember tripMember) {
-		repository.updateStatus(tripMember.getMemberId(),
-								tripMember.getStatus());
+		try {
+			repository.updateStatus(tripMember.getMemberId().getTripId(),
+					tripMember.getMemberId().getUserId(),
+					tripMember.getStatus().toString());
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			throw new TripUpdationException("Updation failed");
+		}
+		
 	}
 
 	@Override
@@ -49,7 +58,7 @@ public class TripMemberServiceImpl implements TripMemberService {
 
 	@Override
 	public List<TripMember> findByStatus(String status) {
-		return repository.findByStatus(Status.valueOf(status));
+		return repository.findByStatus(TripMemberStatusEnum.valueOf(status));
 	}
 
 	@Override

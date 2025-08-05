@@ -49,9 +49,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(TripDeletionException.class)
     public ResponseEntity<ErrorResponse> handleTripDeletion(TripDeletionException ex) {
-        return buildResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return buildResponse(ex.getMessage(), HttpStatus.CONFLICT);
     }
-
+    
+    @ExceptionHandler(TripUpdationException.class)
+    public ResponseEntity<ErrorResponse> handleTripUpdation(TripUpdationException ex) {
+        return buildResponse(ex.getMessage(), HttpStatus.CONFLICT);
+    }
     
     
     // JWT exception handlers
