@@ -25,6 +25,7 @@ import com.acts.tripmitra.services.exceptions.TripUpdationException;
 import com.acts.tripmitra.utilities.JwtUtil;
 import com.acts.tripmitra.utilities.MemberId;
 import com.acts.tripmitra.utilities.TripMemberStatusEnum;
+import com.acts.tripmitra.utilities.TripStatusEnum;
 
 @Service
 public class TripServiceImpl implements TripService {
@@ -166,9 +167,10 @@ public class TripServiceImpl implements TripService {
 			throw new TripNotFoundException("Cannot cancel Trip with ID " + tripId + " not found.");
 		}
 		try {
-//			tripRepository.cancelTripById(tripId);
+			tripRepository.updateStatus(tripId, TripStatusEnum.CANCELLED);
 		} catch (Exception e) {
-			throw new TripDeletionException("Failed to delete trip with ID " + tripId);
+			System.out.println(e.getMessage());
+			throw new TripDeletionException("Failed to cancel trip with ID " + tripId);
 		}
 		return "Trip cancelled successfully";
 	}

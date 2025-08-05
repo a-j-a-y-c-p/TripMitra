@@ -1,10 +1,13 @@
 package com.acts.tripmitra.entity;
 
+import com.acts.tripmitra.utilities.TripStatusEnum;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -36,6 +39,10 @@ public class Trip {
 	
 	@Column(name="description")
 	String description;
+	
+	@Column(name="status")
+	@Enumerated(EnumType.STRING)
+	TripStatusEnum status;
 	
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tripdetailsid", referencedColumnName = "tripdetailsid")
