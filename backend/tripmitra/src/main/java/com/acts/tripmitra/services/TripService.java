@@ -13,7 +13,6 @@ public interface TripService {
 	public List<TripDto> getAllTrips();
 	public TripDto getTripById(Integer id);
 	public String deleteTrip(Integer tripId);
-	//public List<Trip> getFilteredTrips(String source, String destination, float minPrice, float maxPrice,int minSeats, int maxSeats);
 	public Page<Trip> getFilteredTrips(String source, String destination,float minPrice, float maxPrice,int minSeats, 
 			int maxSeats,Pageable pageable);
 }

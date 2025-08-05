@@ -76,12 +76,6 @@ public class TripServiceImpl implements TripService {
 		}
 		return "Trip deleted successfully";
 	}
-
-//	@Override
-//	public List<Trip> getFilteredTrips(String source, String destination, float minPrice, float maxPrice,
-//	                                   int minSeats, int maxSeats) {
-//	    return tripRepository.filterTrips(source, destination, minPrice, maxPrice, minSeats, maxSeats);
-//	}
 	
 	@Override
 	public Page<Trip> getFilteredTrips(String source, String destination,float minPrice, float maxPrice,int minSeats, 
