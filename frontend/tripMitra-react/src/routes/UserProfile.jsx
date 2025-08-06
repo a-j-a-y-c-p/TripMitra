@@ -100,24 +100,12 @@ const UserProfile = () => {
                 <input className="form-control custom-input" value={basicInfo.userName || ''} readOnly />
               </div>
               <div className="col-md-6">
-                <label className="form-label">Email</label>
-                <input className="form-control custom-input" value={basicInfo.userEmail || ''} readOnly />
-              </div>
-              <div className="col-md-6">
                 <label className="form-label">Gender</label>
                 <input className="form-control custom-input" value={preferences.gender || ''} readOnly />
               </div>
               <div className="col-md-6">
                 <label className="form-label">Date of Birth</label>
                 <input className="form-control custom-input" value={preferences.dateOfBirth || ''} readOnly />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label">Phone Number</label>
-                <input className="form-control custom-input" value={preferences.phoneNumber || ''} readOnly />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label">Alternate Phone</label>
-                <input className="form-control custom-input" value={preferences.alterPhone || ''} readOnly />
               </div>
             </div>
 

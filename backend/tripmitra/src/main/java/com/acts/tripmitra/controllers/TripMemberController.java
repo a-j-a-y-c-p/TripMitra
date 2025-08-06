@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.acts.tripmitra.dto.UserDetailsDto;
 import com.acts.tripmitra.entity.TripMember;
+import com.acts.tripmitra.entity.UserDetails;
 import com.acts.tripmitra.services.TripMemberService;
 import com.acts.tripmitra.services.exceptions.UserAlreadyExistsException;
 import com.acts.tripmitra.utilities.MemberId;
@@ -60,6 +61,12 @@ public class TripMemberController {
 		return service.findAcceptedUsersByTripId(tripId);
 		
 	}
+
+	@GetMapping("/requests/{tripId}")
+	List<UserDetails> getWaitingUsersByTripId(@PathVariable("tripId") Integer tripId){
+		return service.findWaitingUsersByTripId(tripId);
+
+	}
 	
 	@GetMapping("/{id}")
 	List<Integer> getHostedTripIdByUserId(@PathVariable("id") int id){
@@ -74,5 +81,7 @@ public class TripMemberController {
 		return service.findAllTripsByUserId(id);
 		
 	}
+	
+	
 	
 }

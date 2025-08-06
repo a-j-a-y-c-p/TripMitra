@@ -9,6 +9,7 @@ import authAxios from '../api/axiosConfig';
 const UpdateProfile = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+  const dashboardPath = user?.role === 'ADMIN' ? "/admin_dashboard" : "/dashboard";
 
   const [formData, setFormData] = useState({
     userName: '',
@@ -88,6 +89,11 @@ const UpdateProfile = () => {
     const userId = user?.userId;
     if (!userId) return alert('User not found');
 
+    const today = new Date().toISOString().split("T")[0];
+    if (formData.dateOfBirth > today) {
+      return alert("Date of birth cannot be a future date");
+    }
+
     try {
       await Promise.all([
         authAxios.put(`/users/update`, {
@@ -95,7 +101,7 @@ const UpdateProfile = () => {
           userEmail: formData.userEmail,
           userRole: formData.userRole,
         }),
-        authAxios.put(`/api/addresses/addressPut`, { // ✅ updated route
+        authAxios.put(`/api/addresses/addressPut`, {
           addressLine1: formData.addressLine1,
           addressLine2: formData.addressLine2,
           district: formData.district,
@@ -112,7 +118,7 @@ const UpdateProfile = () => {
       ]);
 
       alert('Profile updated successfully');
-      navigate('/dashboard');
+      navigate(dashboardPath);
     } catch (err) {
       console.error('Update failed:', err);
       alert('Failed to update profile. Please try again.');
@@ -161,17 +167,33 @@ const UpdateProfile = () => {
         <div className="col-md-8 mt-4 mt-md-0">
           <h4 className="mb-3 border-bottom pb-2 text-purple">Edit Personal Information</h4>
           <div className="row g-3">
-            {[['User Name', 'userName'], ['Email', 'userEmail'], ['Gender', 'gender'], ['Phone Number', 'phoneNumber'], ['Alternate Phone', 'alterPhone']].map(([label, name], idx) => (
-              <div className="col-md-6" key={idx}>
-                <label className="form-label">{label}</label>
-                <input
-                  name={name}
-                  className="form-control custom-input"
-                  value={formData[name]}
-                  onChange={handleChange}
-                />
-              </div>
-            ))}
+            <div className="col-md-6">
+              <label className="form-label">User Name</label>
+              <input
+                name="userName"
+                className="form-control custom-input"
+                value={formData.userName}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="col-md-6">
+              <label className="form-label">Gender</label>
+              <select
+                name="gender"
+                className="form-select custom-input"
+                value={formData.gender}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
+
             <div className="col-md-6">
               <label className="form-label">Date of Birth</label>
               <input
@@ -180,13 +202,21 @@ const UpdateProfile = () => {
                 className="form-control custom-input"
                 value={formData.dateOfBirth}
                 onChange={handleChange}
+                max={new Date().toISOString().split("T")[0]}
+                required
               />
             </div>
           </div>
 
           <h4 className="mt-4 mb-3 border-bottom pb-2 text-purple">Edit Address Information</h4>
           <div className="row g-3">
-            {[['Address Line 1', 'addressLine1'], ['Address Line 2', 'addressLine2'], ['District', 'district'], ['State', 'state'], ['Pincode', 'pincode']].map(([label, name], idx) => (
+            {[
+              ['Address Line 1', 'addressLine1'],
+              ['Address Line 2', 'addressLine2'],
+              ['District', 'district'],
+              ['State', 'state'],
+              ['Pincode', 'pincode'],
+            ].map(([label, name], idx) => (
               <div className={`col-md-${name === 'pincode' ? 4 : 6}`} key={idx}>
                 <label className="form-label">{label}</label>
                 <input
@@ -194,6 +224,7 @@ const UpdateProfile = () => {
                   className="form-control custom-input"
                   value={formData[name]}
                   onChange={handleChange}
+                  required
                 />
               </div>
             ))}
