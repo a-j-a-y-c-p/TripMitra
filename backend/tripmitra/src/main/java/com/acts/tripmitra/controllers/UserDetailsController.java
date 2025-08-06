@@ -27,12 +27,19 @@ public class UserDetailsController {
         return userDetailsService.getUserDetailsById(id);
     }
     
-    @GetMapping("/b")
+    @GetMapping("/userdetailsGet")
     public UserDetailsDto getUserDetailsByToken(@RequestHeader("Authorization") String authHeader) {
         return userDetailsService.getDetailsByUserId(authHeader);
     }
 
-    
+    @PutMapping("/userdetailsPut")
+    public UserDetailsDto updateUserDetailsByToken(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody UserDetailsDto dto) {
+        return userDetailsService.updateByToken(authHeader, dto);
+    }
+
+
     @PostMapping
     public UserDetailsDto create(@RequestBody UserDetailsDto dto) {
         return userDetailsService.create(dto);

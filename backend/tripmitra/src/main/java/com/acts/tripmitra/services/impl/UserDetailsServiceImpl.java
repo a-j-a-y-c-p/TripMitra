@@ -83,7 +83,47 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         }
         return null;
     }
+    
+    @Override
+    public UserDetailsDto updateByToken(String authHeader, UserDetailsDto dto) {
+        String token = authHeader.substring(7);
+        Integer userId = jwtUtil.extractUserId(token);
 
+        UserDetails userDetails = userDetailsRepository.findByUserId(userId)
+            .orElseThrow(() -> new RuntimeException("Details not found for userId: " + userId));
+
+        userDetails.setPhoneNumber(dto.getPhoneNumber());
+        userDetails.setAlterPhone(dto.getAlterPhone());
+        userDetails.setGender(dto.getGender());
+        userDetails.setDateOfBirth(dto.getDateOfBirth());
+        userDetails.setImageUrl(dto.getImageUrl());
+
+        Address newAddress = userDetails.getAddress();
+        AddressDto address = dto.getAddress();
+
+        if (newAddress != null && address != null) {
+            newAddress.setAddressLine1(address.getAddressLine1());
+            newAddress.setAddressLine2(address.getAddressLine2());
+            newAddress.setDistrict(address.getDistrict());
+            newAddress.setPincode(address.getPincode());
+            newAddress.setState(address.getState());
+            userDetails.setAddress(newAddress);
+        }
+
+        userDetailsRepository.save(userDetails);
+
+        return dto;
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public void delete(Integer id) {
     	Optional<UserDetails> optional = userDetailsRepository.findById(id);
     	if(optional.isPresent())

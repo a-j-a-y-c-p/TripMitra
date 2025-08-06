@@ -34,8 +34,15 @@ public class AddressController {
     public AddressDto getAddress(@PathVariable Integer id) {
         return addressService.getAddressById(id);
     }
-    
-    @GetMapping("/a")
+        
+    @PutMapping("/addressPut")
+    public AddressDto updateAddressByUserId(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody AddressDto addressDto) {
+        return addressService.updateAddressByUserId(authHeader, addressDto);
+    }
+  
+    @GetMapping("/addressGet")
     public AddressDto getAddress(@RequestHeader("Authorization") String authHeader) {
         return addressService.getAddressByUserId(authHeader);
     }

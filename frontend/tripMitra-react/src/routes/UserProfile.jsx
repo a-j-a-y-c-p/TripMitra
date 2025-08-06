@@ -29,8 +29,8 @@ const UserProfile = () => {
 
         const [basicRes, addressRes, prefRes] = await Promise.all([
           authAxios.get(`/users/getUser/${userId}`),
-          authAxios.get(`/api/addresses/a`),
-          authAxios.get(`/userdetails/b`),
+          authAxios.get(`/api/addresses/addressGet`),
+          authAxios.get(`/userdetails/userdetailsGet`),
         ]);
 
         console.log("Fetched basic:", basicRes.data);
