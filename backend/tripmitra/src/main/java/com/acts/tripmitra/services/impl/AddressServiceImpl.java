@@ -11,12 +11,16 @@ import com.acts.tripmitra.dto.AddressDto;
 import com.acts.tripmitra.entity.Address;
 import com.acts.tripmitra.repository.AddressRepository;
 import com.acts.tripmitra.services.AddressService;
+import com.acts.tripmitra.utilities.JwtUtil;
 
 @Service
 public class AddressServiceImpl implements AddressService {
 
     @Autowired
     private AddressRepository addressRepository;
+    
+    @Autowired 
+    JwtUtil jwtUtil;
 
     @Override
     public Integer createAddress(AddressDto dto) {
@@ -30,6 +34,17 @@ public class AddressServiceImpl implements AddressService {
     public AddressDto getAddressById(Integer id) {
         Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Address not found with id: " + id));
+        AddressDto dto = new AddressDto();
+        BeanUtils.copyProperties(address, dto);
+        return dto;
+    }
+    
+    @Override
+    public AddressDto getAddressByUserId(String authHeader) {
+    	String token = authHeader.substring(7);
+    	Integer userId = jwtUtil.extractUserId(token);
+        Address address = addressRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Address not found with id: " + userId));
         AddressDto dto = new AddressDto();
         BeanUtils.copyProperties(address, dto);
         return dto;

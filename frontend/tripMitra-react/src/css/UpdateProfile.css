@@ -98,3 +98,8 @@
     font-size: 0.95rem;
   }
 }
+
+.profile-pic-glass {
+  border: 4px solid #fff;
+  background-color: #f0f0f0;
+}

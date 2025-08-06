@@ -45,4 +45,6 @@ public class UserServiceImpl implements  UserService{
             return userRepository.save(user);
         }).orElseThrow(() -> new RuntimeException("User not found"));
     }
+    
 }
+

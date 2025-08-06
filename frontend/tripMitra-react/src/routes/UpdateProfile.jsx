@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css'; // For camera icon
 import '../CSS/UserProfile.css';
 
 const UpdateProfile = () => {
@@ -48,6 +49,14 @@ const UpdateProfile = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setFormData((prev) => ({ ...prev, imageUrl }));
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Updated Profile:', formData);
@@ -63,11 +72,33 @@ const UpdateProfile = () => {
       <form className="row" onSubmit={handleSubmit}>
         {/* Profile Image & Name */}
         <div className="col-md-4 text-center d-flex flex-column align-items-center justify-content-center">
-          <img
-            src={formData.imageUrl}
-            alt="Profile"
-            className="profile-pic-glass shadow"
-          />
+          <div className="position-relative">
+            <img
+              src={formData.imageUrl}
+              alt="Profile"
+              className="profile-pic-glass shadow"
+              style={{
+                width: '150px',
+                height: '150px',
+                objectFit: 'cover',
+                borderRadius: '50%',
+              }}
+            />
+            <label
+              htmlFor="upload-image"
+              className="position-absolute bottom-0 end-0 bg-light p-2 rounded-circle shadow"
+              style={{ cursor: 'pointer' }}
+            >
+              <i className="bi bi-camera-fill"></i>
+            </label>
+            <input
+              id="upload-image"
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handleImageUpload}
+            />
+          </div>
           <h4 className="mt-3 fw-bold">{formData.userName}</h4>
           <span className="text-muted">{formData.userRole}</span>
         </div>
@@ -130,15 +161,6 @@ const UpdateProfile = () => {
                 name="alterPhone"
                 className="form-control custom-input"
                 value={formData.alterPhone}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="col-md-6">
-              <label className="form-label">Profile Photo</label>
-              <input
-                name="imageUrl"
-                className="form-control custom-input"
-                value={formData.imageUrl}
                 onChange={handleChange}
               />
             </div>
