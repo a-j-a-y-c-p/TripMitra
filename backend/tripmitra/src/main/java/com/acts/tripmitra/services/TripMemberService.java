@@ -20,6 +20,12 @@ public interface TripMemberService {
 	List<Integer> findAllTripsByUserId(int id);
 	List<UserDetailsDto> findAcceptedUsersByTripId(Integer tripId);
 
+	void leave(MemberId memberId) ;
+	boolean memberExist(MemberId memberId) ;
+	
+
+
 	List<UserDetails> findWaitingUsersByTripId(Integer tripId);
+
 
 }

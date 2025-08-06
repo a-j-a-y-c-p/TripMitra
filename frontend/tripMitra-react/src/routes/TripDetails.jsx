@@ -16,35 +16,54 @@ const TripDetails = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
   const [alreadyJoined, setAlreadyJoined] = useState(false); // ✅ Added state
+  const [withdrawing, setWithdrawing] = useState(false);
+  const [withdrawRequested, setWithdrawRequested] = useState(false);
 
   const userId = user?.userId;
 
   useEffect(() => {
-    const fetchTripDetails = async () => {
-      try {
-        const tripRes = await api.get(`/trips/${id}`);
-        const tripData = tripRes.data;
-        setTrip(tripData);
+  const fetchTripDetails = async () => {
+    try {
+      const tripRes = await api.get(`/trips/${id}`);
+      const tripData = tripRes.data;
+      setTrip(tripData);
 
-        const usersRes = await api.get(`/members/users/${id}`);
-        setJoinedUsers(usersRes.data);
+      const usersRes = await api.get(`/members/users/${id}`);
+      setJoinedUsers(usersRes.data);
 
-        const isJoined = usersRes.data.some(u => u.userId === userId);
-        setAlreadyJoined(isJoined);
-      } catch (err) {
-        console.error(err);
-        setError('Failed to load trip details.');
-      } finally {
-        setLoading(false);
-      }
-    };
+      // ✅ Check if current user has joined the trip
+      const existsRes = await api.post('/members/exists', {
+  userId: userId,
+  tripId: id
+});
 
-    if (userId) {
-      fetchTripDetails();
+if (existsRes.data === 'pending') {
+  setWithdrawRequested(true);
+  setAlreadyJoined(true); // Still part of trip
+} else if (existsRes.data === true) {
+  setAlreadyJoined(true);
+  setWithdrawRequested(false);
+} else {
+  setAlreadyJoined(false);
+  setWithdrawRequested(false);
+}
+      setAlreadyJoined(existsRes.data === true);
+    } catch (err) {
+      console.error(err);
+      setError('Failed to load trip details.');
+    } finally {
+      setLoading(false);
     }
-  }, [id, userId]);
+  };
+
+  if (userId) {
+    fetchTripDetails();
+  }
+}, [id, userId]);
 
   const tripFull = trip && trip.currMembers >= trip.maxMembers;
+
+
 
   const handleJoinTrip = async () => {
     if (alreadyJoined) {
@@ -70,6 +89,10 @@ const TripDetails = () => {
       if (response.status === 200 || response.status === 201) {
         setSuccessMessage('Successfully joined the trip!');
         setJoinedUsers(prev => [...prev, { userId, username: user.username }]);
+        setTrip(prev => ({
+  ...prev,
+  
+}));
         setAlreadyJoined(true);
       } else {
         throw new Error('Failed to join the trip.');
@@ -80,6 +103,38 @@ const TripDetails = () => {
       setJoining(false);
     }
   };
+
+  const handleLeaveTrip = async () => {
+  if (!userId) {
+    setError('You must be logged in to leave the trip.');
+    return;
+  }
+
+  setJoining(true);
+  setWithdrawing(true); // ✅ Start showing "Withdraw Trip Requested"
+  setError('');
+  setSuccessMessage('');
+
+  try {
+    const response = await api.put('/members/leave', {
+      userId: parseInt(userId),
+      tripId: parseInt(id),
+    });
+
+    if (response.status === 200) {
+  setSuccessMessage('Withdraw trip request sent.');
+  setWithdrawRequested(true);
+}
+      else {
+      throw new Error('Failed to leave the trip.');
+    }
+  } catch (err) {
+    setError(err.response?.data?.message || err.message);
+  } finally {
+    setJoining(false);
+    // Optional: setWithdrawing(false) if you want to reset it after request
+  }
+};
 
   if (loading) return <p>Loading trip details...</p>;
   if (!trip) return <h2 className="error-msg">Trip not found.</h2>;
@@ -124,16 +179,35 @@ const TripDetails = () => {
         </div>
 
         <div className="join-trip-container">
-          <button
-            className="join-trip-button"
-            onClick={handleJoinTrip}
-            disabled={joining || alreadyJoined || tripFull}
-          >
-            {joining ? 'Joining...' : alreadyJoined ? 'Already Joined' : tripFull ? 'Trip Full' : 'Join Trip'}
-          </button>
-          {successMessage && <p className="success-msg">{successMessage}</p>}
-          {error && <p className="error-msg">{error}</p>}
-        </div>
+ {alreadyJoined ? (
+  withdrawRequested ? (
+    <button
+      className="join-trip-button pending"
+      disabled
+    >
+      Withdraw Trip Requested
+    </button>
+  ) : (
+    <button
+      className="join-trip-button leave"
+      onClick={handleLeaveTrip}
+      disabled={joining}
+    >
+      {joining ? 'Leaving...' : 'Leave Trip'}
+    </button>
+  )
+) : (
+  <button
+    className="join-trip-button"
+    onClick={handleJoinTrip}
+    disabled={joining || tripFull}
+  >
+    {joining ? 'Joining...' : tripFull ? 'Trip Full' : 'Join Trip'}
+  </button>
+)}
+  {successMessage && <p className="success-msg">{successMessage}</p>}
+  {error && <p className="error-msg">{error}</p>}
+</div>
       </div>
 
       <div className="trip-sidebar">

@@ -43,6 +43,9 @@ public interface TripMemberRepository extends JpaRepository<TripMember, MemberId
 			nativeQuery = true)
 	List<UserDetails> findAcceptedUsersByTripId(@Param ("tripId") Integer tripId);
 	
+
+	boolean existsByMemberId(MemberId memberId );
+
 	@Query(value = """ 
 			select * from userdetails where userid in 
 			(select userid from tripmembers
@@ -50,6 +53,7 @@ public interface TripMemberRepository extends JpaRepository<TripMember, MemberId
 			""",
 			nativeQuery = true)
 	List<UserDetails> findAcceptedandWaitingUsersByTripId(@Param("tripId") Integer tripId);
+
 
 	@Query(value = """ 
 			select * from userdetails where userid in 

@@ -38,6 +38,12 @@ public class TripMemberController {
 		service.removeMember(memberId);
 		return "Member Removed!";
 	}
+	
+	@PostMapping("/exists")
+	public boolean exists(@RequestBody MemberId memberId) {
+		return service.memberExist(memberId);
+		
+	}
 
 	@PutMapping("/update")
 	public String updateTripMember(@RequestBody TripMember tripMember) {
@@ -45,6 +51,12 @@ public class TripMemberController {
 		return "Member Updated!";
 	}
 
+	@PutMapping("/leave")
+	public String leave(@RequestBody MemberId memberId) {
+		service.leave(memberId);
+		return "Leave Request Sent!";
+	}
+	
 	@GetMapping("/")
 	List<TripMember> getTripMembers(@RequestParam(name = "tripId") Integer tripId,
 			@RequestParam(name = "status", required = false) String status) {
