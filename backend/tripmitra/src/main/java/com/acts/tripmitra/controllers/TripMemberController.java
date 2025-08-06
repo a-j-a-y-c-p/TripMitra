@@ -61,6 +61,11 @@ public class TripMemberController {
 		
 	}
 	
+	@GetMapping("/users/request/{tripId}")
+	List<UserDetailsDto> getAcceptedandWaitingUsersByTripId(@PathVariable("tripId") Integer tripId){
+		return service.findAcceptedandWaitingUsersByTripId(tripId);
+	}
+	
 	@GetMapping("/{id}")
 	List<Integer> getHostedTripIdByUserId(@PathVariable("id") int id){
 		

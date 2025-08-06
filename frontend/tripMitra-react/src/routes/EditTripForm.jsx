@@ -5,6 +5,8 @@ import api from '../api/axiosConfig';
 const EditTripForm = () => {
   const { tripId } = useParams();
   const navigate = useNavigate();
+  const [error, setError] = useState(''); 
+  const [submitting, setSubmitting] = useState(false);
 
   const [trip, setTrip] = useState({
     mode: '',
@@ -40,12 +42,14 @@ const EditTripForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+   const handleSubmit = (e) => {
     e.preventDefault();
-    api.put(`/trips/${tripId}`, trip)
+    
+    setSubmitting(true);
+    api.put(`/trips/update/${tripId}`, trip)
       .then(() => {
         alert('Trip updated successfully!');
-        navigate('/trips');
+        navigate('/trips/');
       })
       .catch(error => {
         console.error('Update failed:', error);
@@ -106,6 +110,7 @@ const EditTripForm = () => {
           />
         </div>
         <button type="submit" className="btn btn-primary w-100">Update Trip</button>
+        {error && <p className="error-msg">{error}</p>}
       </form>
     </div>
   );
