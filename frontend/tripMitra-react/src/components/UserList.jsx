@@ -26,7 +26,7 @@ const UserList = ({ filters }) => {
 
   useEffect(() => {
     fetchUsers();
-  }, [filters, page]);
+  }, [filters, page,users]);
 
   const handleDeleteUser = async (userId) => {
     try {
@@ -39,17 +39,15 @@ const UserList = ({ filters }) => {
 
   const handleBlockUser = async (user) => {
     try {
-      const updatedUser = {
-        ...user,
-        isBlocked: !user.isBlocked
-      };
-      await axiosInstance.put(`/userdetails/${user.userId}`, updatedUser);
-      // Update the local state with updated user
-      setUsers(prev =>
-        prev.map(u => u.userId === user.userId ? { ...u, isBlocked: !u.isBlocked } : u)
-      );
+        await axiosInstance.patch(`/userdetails/blockUser/${user.user.userId}`);
+        // Update the local state with toggled block status
+        setUsers(prev =>
+        prev.map(u =>
+            u.userId === user.user.userId ? { ...u, blocked: !u.blocked } : u
+        )
+        );
     } catch (err) {
-      console.error('Failed to update user block status', err);
+        console.error('Failed to update user block status', err);
     }
   };
 
@@ -58,21 +56,22 @@ const UserList = ({ filters }) => {
       <h4 className="mb-4 text-center fw-bold">User List</h4>
 
       {users.map(user => (
-        <div key={user.userId} className="card mb-3 shadow-sm">
+        <div key={user.user.userId} className="card mb-3 shadow-sm">
           <div className="card-body d-flex justify-content-between align-items-center">
             <div>
               <h5 className="fw-bold">{user.user.userName}</h5>
               <p className="mb-0"><strong>Email:</strong> {user.user.userEmail}</p>
               <p className="mb-0"><strong>Phone:</strong> {user.phoneNumber}</p>
               <p className="mb-0"><strong>Gender:</strong> {user.gender}</p>
-              <p className="mb-0"><strong>Status:</strong> {user.isBlocked ? 'Blocked' : 'Active'}</p>
+              {console.log(user.blocked)}
+              <p className="mb-0"><strong>Status:</strong> {user.blocked ? 'Blocked' : 'Active'}</p>
             </div>
             <div>
               <button
-                className={`btn btn-sm me-2 ${user.isBlocked ? 'btn-success' : 'btn-danger'}`}
+                className={`btn btn-sm me-2 ${user.blocked ? 'btn-success' : 'btn-danger'}`}
                 onClick={() => handleBlockUser(user)}
               >
-                {user.isBlocked ? 'Unblock' : 'Block'}
+                {user.blocked ? 'Unblock' : 'Block'}
               </button>
               <button
                 className="btn btn-outline-danger btn-sm me-2"
