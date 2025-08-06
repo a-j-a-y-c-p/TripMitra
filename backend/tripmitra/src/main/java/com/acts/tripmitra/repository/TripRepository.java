@@ -11,8 +11,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import com.acts.tripmitra.dto.TripDto;
 import com.acts.tripmitra.entity.Trip;
 import com.acts.tripmitra.utilities.TripStatusEnum;
 

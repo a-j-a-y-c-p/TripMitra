@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.acts.tripmitra.dto.UserDto;
+import com.acts.tripmitra.entity.Trip;
 import com.acts.tripmitra.entity.User;
 import com.acts.tripmitra.repository.UserRepository;
 import com.acts.tripmitra.services.UserService;
@@ -44,5 +45,9 @@ public class UserServiceImpl implements  UserService{
             user.setUserRole(updatedUser.getUserRole());
             return userRepository.save(user);
         }).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+    
+    public List<Trip> getAllTripsByUserId(Integer id){
+    	return userRepository.getAllTripByUserId(id);
     }
 }
