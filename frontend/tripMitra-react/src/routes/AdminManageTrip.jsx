@@ -1,0 +1,155 @@
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import api from '../api/axiosConfig';
+import { AuthContext } from '../contexts/AuthContext';
+
+const AdminManageTrip = () => {
+  const [trips, setTrips] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+
+  const userId = user?.userId;
+
+  useEffect(() => {
+    const fetchTrips = async () => {
+      setIsLoading(true);
+      try {
+        const response = await api.get(`/members/${userId}`);
+        if (!Array.isArray(response.data)) {
+          throw new Error('Expected an array of trip IDs');
+        }
+        const tripPromises = response.data.map((tripId) =>
+          api.get(`/trips/active/${tripId}`).catch((err) => null)
+        );
+
+        const tripResponses = await Promise.all(tripPromises);
+
+        // Filter out null responses (failed calls)
+        const trips = tripResponses
+          .filter((res) => res !== null && res.data)
+          .map((res) => res.data);
+
+        setTrips(trips);
+        setError(null);
+      } catch (err) {
+        setError('No trips found !');
+        console.error('Error fetching trips:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchTrips();
+  }, [userId]);
+
+  const handleCancel = async (id) => {
+    if (!window.confirm('Are you sure you want to cancel this trip?')) return;
+    setIsLoading(true);
+    try {
+      await api.post(`/trips/cancel/${id}`);
+      setTrips(trips.filter((trip) => trip.tripId !== id));
+      setError(null);
+      alert('Trip cancelled successfully!');
+    } catch (err) {
+      setError('Failed to cancel trip. Please try again.');
+      console.error('Error deleting trip:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleEdit = (tripId) => {
+    navigate(`/edit-trip/${tripId}`);
+  };
+
+  return (
+    <div className="container mt-4 mt-md-5">
+      <h1 className="text-center mb-4 fs-3 fs-md-2">Manage Trips</h1>
+      {error && <div className="alert alert-danger">{error}</div>}
+      {isLoading && (
+        <div className="text-center">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
+
+      <div className="row justify-content-center g-2">
+        <div className="col-12 col-md-8">
+          {trips.length === 0 && !isLoading && (
+            <p className="text-center">No trips available.</p>
+          )}
+          {trips.length > 0 && (
+            <>
+              {trips.map((trip) => (
+                <div key={trip.tripId} className="mb-4">
+                  <div className="card shadow-sm border-0" style={{ borderRadius: '8px' }}>
+                    <div className="card-body d-flex justify-content-between align-items-center">
+                      {/* Left section: route and dates */}
+                      <div>
+                        <h5 className="fw-bold mb-1" style={{ fontSize: '1.25rem' }}>
+                          {trip.tripDetails?.source || 'N/A'} → {trip.tripDetails?.destination || 'N/A'}
+                        </h5>
+                        <p className="mb-1 text-muted" style={{ fontSize: '0.9rem' }}>
+                          {trip.tripDetails?.startDate || 'N/A'} – {trip.tripDetails?.endDate || 'N/A'}
+                        </p>
+                      </div>
+
+                      {/* Middle section: details */}
+                      <div className="text-center">
+                        <p className="mb-1">
+                          <strong>Mode:</strong> {trip.mode || 'N/A'}
+                        </p>
+                        <p className="mb-1">
+                          <strong>Members:</strong> {trip.currMembers}/{trip.maxMembers}
+                        </p>
+                      </div>
+
+                      {/* Right section: cost, status, buttons */}
+                      <div className="text-end d-flex flex-column align-items-end">
+                        <p className="mb-2 fw-bold" style={{ fontSize: '1.25rem' }}>
+                          ₹{trip.estimateCost}
+                        </p>
+
+                        <div className="d-flex gap-2">
+                          <button
+                            className="btn btn-primary btn-sm"
+                            onClick={() => handleEdit(trip.tripId)}
+                            disabled={isLoading}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleCancel(trip.tripId)}
+                            disabled={isLoading}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+
+                        {/* New Manage Members Button */}
+                        <button
+                          className="btn btn-secondary btn-sm mt-2"
+                          onClick={() => navigate(`/trip-members/${trip.tripId}`)}
+                          disabled={isLoading}
+                        >
+                          Manage Members
+                        </button>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AdminManageTrip;
