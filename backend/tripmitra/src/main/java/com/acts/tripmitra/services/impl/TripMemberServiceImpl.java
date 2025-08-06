@@ -97,6 +97,22 @@ public class TripMemberServiceImpl implements TripMemberService {
 		return usersDetailsDtoList;
 	}
 
+	@Override
+	public List<UserDetailsDto> findAcceptedandWaitingUsersByTripId(Integer tripId) {
+		List<UserDetailsDto> usersDetailsDtoList = new ArrayList<>();
+		List<UserDetails> usersList = repository.findAcceptedandWaitingUsersByTripId(tripId);
+		for(UserDetails userDetails : usersList) {
+			UserDetailsDto userDetailsDto = new UserDetailsDto();
+			BeanUtils.copyProperties(userDetails, userDetailsDto);
+			userDetailsDto.setUser(new UserResponseDto());
+    		BeanUtils.copyProperties(userDetails.getUser(), userDetailsDto.getUser());
+    		userDetailsDto.setAddress(new AddressDto());
+    		BeanUtils.copyProperties(userDetails.getAddress(), userDetailsDto.getAddress());
+			usersDetailsDtoList.add(userDetailsDto);
+		}
+		return usersDetailsDtoList;
+	}
+
 	
 	
 	
