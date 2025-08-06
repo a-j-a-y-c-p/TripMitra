@@ -51,5 +51,13 @@ public interface TripMemberRepository extends JpaRepository<TripMember, MemberId
 			nativeQuery = true)
 	List<UserDetails> findAcceptedandWaitingUsersByTripId(@Param("tripId") Integer tripId);
 
+	@Query(value = """ 
+			select * from userdetails where userid in 
+			(select userid from tripmembers
+			where tripid = :tripId and status = 'WAITING' )
+			""",
+			nativeQuery = true)
+	List<UserDetails> findWaitingUsersByTripId(@Param ("tripId") Integer tripId);
+	
 	
 }

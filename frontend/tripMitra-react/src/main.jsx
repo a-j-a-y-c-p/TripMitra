@@ -54,9 +54,10 @@ const router = createBrowserRouter([
       { path: 'monitorTrips', element: <PrivateRoute requiredRole={'ADMIN'}><MonitorTrips /></PrivateRoute> },
       { path: 'trip/:id', element: <PrivateRoute><TripDetails /></PrivateRoute> },
       { path: 'edit-trip/:tripId', element: <PrivateRoute><EditTripForm /></PrivateRoute>},
-      { path: 'tripmembers', element: <PrivateRoute><TripMembers /></PrivateRoute> },
+      { path: 'trip-members/:tripId', element: <PrivateRoute><TripMembers /></PrivateRoute> },
       { path: 'accountsettings', element: <PrivateRoute><AccountSettings /></PrivateRoute> },
       { path: 'updateaccountsettings', element: <PrivateRoute><UpdateAccountSettings /></PrivateRoute> },
+
     ],
   }
 ])
