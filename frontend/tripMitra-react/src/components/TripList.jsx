@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import debounce from 'lodash/debounce';
 import axiosInstance from '../api/axiosConfig';
+import { useNavigate } from 'react-router-dom';
 
 const TripList = ({ filters }) => {
   const [trips, setTrips] = useState([]);
@@ -9,6 +10,7 @@ const TripList = ({ filters }) => {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 5;
+  const navigate = useNavigate();
 
   const fetchTrips = useCallback(
     debounce(async (filters, page) => {
@@ -55,10 +57,22 @@ const TripList = ({ filters }) => {
   const handleNext = () => {
     if (page < totalPages - 1) setPage(page + 1);
   };
+  
+  const handleClick = () => {
+    if (trip?.tripid) {
+      navigate(`/trip/${trip.tripid}`);
+    } else {
+      console.warn('Trip ID is undefined');
+    }
+  };
 
   return (
     <div className="h-100 overflow-auto px-3 py-2" style={{ maxHeight: '100vh' }}>
-      <h4 className="text-xl text-center fw-bold text-gray-800" style={{ margin: '1.5rem' }}>
+      {/* <h4 className="text-xl text-center fw-bold text-gray-800" style={{ margin: '1.5rem' }}>
+        Trip List
+      </h4> */}
+
+      <h4 className="mb-4 fw-bold text-center" style={{ fontSize: "1.5rem" }}>
         Trip List
       </h4>
 
@@ -90,7 +104,12 @@ const TripList = ({ filters }) => {
               <p className="mb-2 fw-bold" style={{ fontSize: '1.25rem' }}>
                 ₹{trip.estimateCost}
               </p>
-              <button className="btn btn-primary btn-sm">View Details</button>
+              <button className="btn btn-primary btn-sm"
+                      onClick={() => 
+                        trip?.tripId ? navigate(`/trip/${trip.tripId}`) 
+                                     : console.warn('Trip ID is undefined')}  
+                >
+                View Details</button>
             </div>
           </div>
         </div>
