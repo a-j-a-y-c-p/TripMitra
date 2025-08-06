@@ -1,126 +1,109 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import debounce from 'lodash/debounce';
+import React, { useState, useEffect } from 'react';
 import axiosInstance from '../api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
 
 const UserList = ({ filters }) => {
-  const [trips, setTrips] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [users, setUsers] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 5;
   const navigate = useNavigate();
 
-  const fetchTrips = useCallback(
-    debounce(async (filters, page) => {
-      try {
-        setLoading(true);
-        const params = {
-          page,
-          size: pageSize
-        };
-
-        if (filters.source) params.source = filters.source;
-        if (filters.destination) params.destination = filters.destination;
-        if (filters.minPrice != null) params.minPrice = filters.minPrice;
-        if (filters.maxPrice != null) params.maxPrice = filters.maxPrice;
-        if (filters.minSeats != null) params.minSeats = filters.minSeats;
-        if (filters.maxSeats != null) params.maxSeats = filters.maxSeats;
-
-        const response = await axiosInstance.get('/trips/filter', { params });
-
-        setTrips(response.data.content);
-        setTotalPages(response.data.totalPages);
-      } catch (err) {
-        console.error(err);
-        setError('Failed to load trips.');
-      } finally {
-        setLoading(false);
-      }
-    }, 400),
-    []
-  );
-
-  useEffect(() => {
-    setPage(0); // Reset to first page when filters change
-  }, [filters]);
-
-  useEffect(() => {
-    fetchTrips(filters, page);
-  }, [filters, page, fetchTrips]);
-
-  const handlePrevious = () => {
-    if (page > 0) setPage(page - 1);
+  const fetchUsers = async () => {
+    try {
+      const params = {
+        page,
+        size: pageSize,
+        ...filters
+      };
+      const res = await axiosInstance.get('/userdetails/getAllUser/filter', { params });
+      setUsers(res.data.content);
+      setTotalPages(res.data.totalPages);
+    } catch (err) {
+      console.error('Failed to fetch users', err);
+    }
   };
 
-  const handleNext = () => {
-    if (page < totalPages - 1) setPage(page + 1);
+  useEffect(() => {
+    fetchUsers();
+  }, [filters, page]);
+
+  const handleDeleteUser = async (userId) => {
+    try {
+      await axiosInstance.delete(`/userdetails/${userId}`);
+      setUsers(prev => prev.filter(user => user.userId !== userId));
+    } catch (err) {
+      console.error('Failed to delete user', err);
+    }
+  };
+
+  const handleBlockUser = async (user) => {
+    try {
+      const updatedUser = {
+        ...user,
+        isBlocked: !user.isBlocked
+      };
+      await axiosInstance.put(`/userdetails/${user.userId}`, updatedUser);
+      // Update the local state with updated user
+      setUsers(prev =>
+        prev.map(u => u.userId === user.userId ? { ...u, isBlocked: !u.isBlocked } : u)
+      );
+    } catch (err) {
+      console.error('Failed to update user block status', err);
+    }
   };
 
   return (
-    <div className="h-100 overflow-auto px-3 py-2" style={{ maxHeight: '100vh' }}>
-      {/* <h4 className="text-xl text-center fw-bold text-gray-800" style={{ margin: '1.5rem' }}>
-        Trip List
-      </h4> */}
+    <div className="p-4 overflow-auto">
+      <h4 className="mb-4 text-center fw-bold">User List</h4>
 
-      <h4 className="mb-4 fw-bold text-center" style={{ fontSize: "1.5rem" }}>
-        User List
-      </h4>
-
-      {loading && <p className="text-center text-muted">Loading trips...</p>}
-      {error && <p className="text-center text-danger">{error}</p>}
-
-      {trips.map((trip) => (
-        <div
-          key={trip.tripId}
-          className="card mb-4 shadow-sm border-0"
-          style={{ borderRadius: '8px' }}
-        >
+      {users.map(user => (
+        <div key={user.userId} className="card mb-3 shadow-sm">
           <div className="card-body d-flex justify-content-between align-items-center">
             <div>
-              <h5 className="fw-bold mb-1" style={{ fontSize: '1.25rem' }}>
-                {trip.tripDetails.source} → {trip.tripDetails.destination}
-              </h5>
-              <p className="mb-1 text-muted" style={{ fontSize: '0.9rem' }}>
-                {trip.tripDetails.startDate} – {trip.tripDetails.endDate}
-              </p>
+              <h5 className="fw-bold">{user.user.userName}</h5>
+              <p className="mb-0"><strong>Email:</strong> {user.user.userEmail}</p>
+              <p className="mb-0"><strong>Phone:</strong> {user.phoneNumber}</p>
+              <p className="mb-0"><strong>Gender:</strong> {user.gender}</p>
+              <p className="mb-0"><strong>Status:</strong> {user.isBlocked ? 'Blocked' : 'Active'}</p>
             </div>
-
-            <div className="text-center">
-              <p className="mb-1"><strong>Mode:</strong> {trip.mode}</p>
-              <p className="mb-1"><strong>Members:</strong> {trip.currMembers}/{trip.maxMembers}</p>
-            </div>
-
-            <div className="text-end">
-              <p className="mb-2 fw-bold" style={{ fontSize: '1.25rem' }}>
-                ₹{trip.estimateCost}
-              </p>
+            <div>
+              <button
+                className={`btn btn-sm me-2 ${user.isBlocked ? 'btn-success' : 'btn-danger'}`}
+                onClick={() => handleBlockUser(user)}
+              >
+                {user.isBlocked ? 'Unblock' : 'Block'}
+              </button>
+              <button
+                className="btn btn-outline-danger btn-sm me-2"
+                onClick={() => handleDeleteUser(user.userId)}
+              >
+                Delete
+              </button>
               <button className="btn btn-primary btn-sm"
-                      onClick={() => 
-                        trip?.tripId ? navigate(`/trip/${trip.tripId}`) 
-                                     : console.warn('Trip ID is undefined')}  
+                      onClick={() => navigate(`/profile`) }  
                 >
-                View Details</button>
+                View Profile
+                </button>
             </div>
           </div>
         </div>
       ))}
 
-      {/* Pagination Controls */}
-      <div className="d-flex justify-content-center my-4">
+      {/* Pagination */}
+      <div className="d-flex justify-content-center mt-3">
         <button
-          className="btn btn-outline-primary me-2"
-          onClick={handlePrevious}
+          className="btn btn-outline-secondary me-2"
           disabled={page === 0}
+          onClick={() => setPage(page - 1)}
         >
           Previous
         </button>
         <span className="align-self-center">Page {page + 1} of {totalPages}</span>
         <button
-          className="btn btn-outline-primary ms-2"
-          onClick={handleNext}
+          className="btn btn-outline-secondary ms-2"
           disabled={page >= totalPages - 1}
+          onClick={() => setPage(page + 1)}
         >
           Next
         </button>
@@ -130,3 +113,4 @@ const UserList = ({ filters }) => {
 };
 
 export default UserList;
+

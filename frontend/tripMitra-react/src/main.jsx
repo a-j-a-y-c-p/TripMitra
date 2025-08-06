@@ -24,6 +24,7 @@ import EditTripForm from './routes/EditTripForm.jsx';
 import MonitorTrips from './routes/MonitorTrips.jsx';
 import ManageUser from './routes/ManageUser.jsx';
 import AdminManageTrip from './routes/AdminManageTrip.jsx';
+import TripMembers from './routes/TripMembers.jsx';
 
 
 <Route path="/trip/:id" element={<TripDetails />} />
@@ -50,8 +51,8 @@ const router = createBrowserRouter([
       { path: 'admin_dashboard', element: <PrivateRoute requiredRole={'ADMIN'}><Admin_Dashboard /></PrivateRoute> },
       { path: 'monitorTrips', element: <PrivateRoute requiredRole={'ADMIN'}><MonitorTrips /></PrivateRoute> },
       { path: 'trip/:id', element: <PrivateRoute><TripDetails /></PrivateRoute> },
-      { path: 'edit-trip/:tripId', element: <PrivateRoute><EditTripForm /></PrivateRoute>}
-
+      { path: 'edit-trip/:tripId', element: <PrivateRoute><EditTripForm /></PrivateRoute>},
+      { path: 'tripmembers', element: <PrivateRoute><TripMembers /></PrivateRoute> },
     ],
   }
 ])

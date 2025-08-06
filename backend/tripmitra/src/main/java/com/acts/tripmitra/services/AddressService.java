@@ -10,4 +10,7 @@ public interface AddressService {
     AddressDto updateAddress(Integer id, AddressDto addressDto);
     void deleteAddress(Integer id);
     public AddressDto getAddressByUserId(String authHeader);
+    AddressDto updateAddressByUserId(String authHeader, AddressDto addressDto);
+
+
 }
