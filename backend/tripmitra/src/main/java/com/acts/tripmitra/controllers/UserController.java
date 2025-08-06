@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,6 +41,11 @@ public class UserController {
     public Optional<User> getUserById(@PathVariable Integer id) {
         return userService.getUserById(id);
     }
+    
+    @PutMapping("/update")
+    public User updateUserByToken(@RequestHeader("Authorization") String authHeader, @RequestBody User updatedUser) {
+        return userService.updateUserByToken(authHeader, updatedUser);
+    }
 
     @PutMapping("/updateUser/{id}")
     public User updateUser(@PathVariable Integer id, @RequestBody User user) {
@@ -51,8 +57,10 @@ public class UserController {
         userService.deleteUser(id);
     }
     
+
     @GetMapping("/getAllTrip/{id}")
     public List<Trip> getAllTripsByUserId(@PathVariable Integer id){
     	return userService.getAllTripsByUserId(id);
     }
+
 }

@@ -1,45 +1,94 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // ✅ import useNavigate
+import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../CSS/UserProfile.css';
+import { AuthContext } from '../contexts/AuthContext';
+import authAxios from '../api/axiosConfig'; // <-- using your pre-configured axios
 
 const UserProfile = () => {
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate(); // ✅ initialize navigate
+  const navigate = useNavigate();
+  const { user, logout } = useContext(AuthContext);
+
+  const [basicInfo, setBasicInfo] = useState({});
+  const [addressInfo, setAddressInfo] = useState({});
+  const [preferences, setPreferences] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const dummyUser = {
-      userName: 'Aman Gupta',
-      addressLine1: 'Flat No. 203, Palm Residency',
-      addressLine2: 'Near Infinity Mall, Andheri West',
-      district: 'Mumbai Suburban',
-      state: 'Maharashtra',
-      pincode: '400053',
-      dateOfBirth: '21-09-1992',
-      gender: 'Male',
-      phoneNumber: '+91-9876543210',
-      alterPhone: '+91-9123456780',
-      userEmail: 'ag@gmail.com',
-      userPassword: 'password123',
-      imageUrl: 'https://randomuser.me/api/portraits/men/73.jpg',
-      userRole: 'User',
+    const fetchProfile = async () => {
+      const userId =  user?.userId;
+
+      if (!userId) {
+        console.log("User not available yet");
+        setLoading(false); // Prevent infinite loader
+        return;
+      }
+
+      try {
+        console.log("Fetching data for user ID:", userId);
+
+        const [basicRes, addressRes, prefRes] = await Promise.all([
+          authAxios.get(`/users/getUser/${userId}`),
+          authAxios.get(`/api/addresses/addressGet`),
+          authAxios.get(`/userdetails/userdetailsGet`),
+        ]);
+
+        console.log("Fetched basic:", basicRes.data);
+        console.log("Fetched address:", addressRes.data);
+        console.log("Fetched preferences:", prefRes.data);
+
+        setBasicInfo(basicRes.data);
+        setAddressInfo(addressRes.data);
+        setPreferences(prefRes.data);
+      } catch (err) {
+        console.error('Error fetching profile:', err);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    setTimeout(() => setUser(dummyUser), 1000);
-  }, []);
+    fetchProfile();
+  }, [user]);
 
-  if (!user) return <div className="loading">Loading Profile...</div>;
+  const handleDeleteProfile = async (e) => {
+    e.preventDefault();
+    const confirmDelete = window.confirm('Are you sure you want to delete your profile? This action cannot be undone.');
+
+    const userId = user?.userId;
+    if (!confirmDelete || !userId) return;
+
+    try {
+      await Promise.all([
+        authAxios.delete(`/users/deleteUser/${userId}`),
+        authAxios.delete(`/api/addresses/${userId}`),
+        authAxios.delete(`/userdetails/${userId}`),
+      ]);
+
+      alert('Your profile has been deleted.');
+      logout();
+      navigate('/login');
+      window.location.reload();
+    } catch (err) {
+      console.error('Failed to delete profile:', err);
+      alert('Error deleting profile. Please try again.');
+    }
+  };
+
+  if (loading) return <div className="loading">Loading Profile...</div>;
 
   return (
-    <div className="profile-bg">
-      <div className="container py-5 d-flex justify-content-center align-items-center min-vh-100">
-        <div className="glass-card row w-100 p-4 shadow-lg rounded" style={{ maxWidth: '1000px' }}>
-          
+    <div className="profile-bg position-relative min-vh-100">
+      <div className="container pb-5">
+        <div className="row">
           {/* Profile Image & Name */}
           <div className="col-md-4 text-center d-flex flex-column align-items-center justify-content-center">
-            <img src={user.imageUrl} alt="Profile" className="profile-pic-glass shadow" />
-            <h4 className="mt-3 fw-bold">{user.userName}</h4>
-            <span className="text-muted">{user.userRole}</span>
+            <img
+              src={preferences.imageUrl || 'https://via.placeholder.com/150'}
+              alt="Profile"
+              className="profile-pic-glass shadow"
+            />
+            <h4 className="mt-3 fw-bold">{basicInfo.userName}</h4>
+            <span className="text-muted">{basicInfo.userRole}</span>
           </div>
 
           {/* User Info */}
@@ -48,27 +97,27 @@ const UserProfile = () => {
             <div className="row g-3">
               <div className="col-md-6">
                 <label className="form-label">User Name</label>
-                <input className="form-control custom-input" value={user.userName} readOnly />
+                <input className="form-control custom-input" value={basicInfo.userName || ''} readOnly />
               </div>
               <div className="col-md-6">
                 <label className="form-label">Email</label>
-                <input className="form-control custom-input" value={user.userEmail} readOnly />
+                <input className="form-control custom-input" value={basicInfo.userEmail || ''} readOnly />
               </div>
               <div className="col-md-6">
                 <label className="form-label">Gender</label>
-                <input className="form-control custom-input" value={user.gender} readOnly />
+                <input className="form-control custom-input" value={preferences.gender || ''} readOnly />
               </div>
               <div className="col-md-6">
                 <label className="form-label">Date of Birth</label>
-                <input className="form-control custom-input" value={user.dateOfBirth} readOnly />
+                <input className="form-control custom-input" value={preferences.dateOfBirth || ''} readOnly />
               </div>
               <div className="col-md-6">
                 <label className="form-label">Phone Number</label>
-                <input className="form-control custom-input" value={user.phoneNumber} readOnly />
+                <input className="form-control custom-input" value={preferences.phoneNumber || ''} readOnly />
               </div>
               <div className="col-md-6">
                 <label className="form-label">Alternate Phone</label>
-                <input className="form-control custom-input" value={user.alterPhone} readOnly />
+                <input className="form-control custom-input" value={preferences.alterPhone || ''} readOnly />
               </div>
             </div>
 
@@ -76,23 +125,23 @@ const UserProfile = () => {
             <div className="row g-3">
               <div className="col-md-6">
                 <label className="form-label">Address Line 1</label>
-                <input className="form-control custom-input" value={user.addressLine1} readOnly />
+                <input className="form-control custom-input" value={addressInfo.addressLine1 || ''} readOnly />
               </div>
               <div className="col-md-6">
                 <label className="form-label">Address Line 2</label>
-                <input className="form-control custom-input" value={user.addressLine2} readOnly />
+                <input className="form-control custom-input" value={addressInfo.addressLine2 || ''} readOnly />
               </div>
               <div className="col-md-4">
                 <label className="form-label">District</label>
-                <input className="form-control custom-input" value={user.district} readOnly />
+                <input className="form-control custom-input" value={addressInfo.district || ''} readOnly />
               </div>
               <div className="col-md-4">
                 <label className="form-label">State</label>
-                <input className="form-control custom-input" value={user.state} readOnly />
+                <input className="form-control custom-input" value={addressInfo.state || ''} readOnly />
               </div>
               <div className="col-md-4">
                 <label className="form-label">Pincode</label>
-                <input className="form-control custom-input" value={user.pincode} readOnly />
+                <input className="form-control custom-input" value={addressInfo.pincode || ''} readOnly />
               </div>
             </div>
 
@@ -103,6 +152,13 @@ const UserProfile = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Bottom Center Delete Profile Link */}
+      <div className="delete-profile-link text-center py-3">
+        <a href="#" className="text-danger fw-bold" onClick={handleDeleteProfile}>
+          Delete Profile
+        </a>
       </div>
     </div>
   );

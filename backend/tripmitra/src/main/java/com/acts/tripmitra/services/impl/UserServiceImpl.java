@@ -12,12 +12,16 @@ import com.acts.tripmitra.entity.Trip;
 import com.acts.tripmitra.entity.User;
 import com.acts.tripmitra.repository.UserRepository;
 import com.acts.tripmitra.services.UserService;
+import com.acts.tripmitra.utilities.JwtUtil;
 
 @Service
 public class UserServiceImpl implements  UserService{
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public User createUser(UserDto userDto) {
     	User user = new User();
@@ -37,6 +41,19 @@ public class UserServiceImpl implements  UserService{
         userRepository.deleteById(id);
     }
 
+    @Override
+    public User updateUserByToken(String authHeader, User updatedUser) {
+        String token = authHeader.substring(7); // Remove "Bearer "
+        Integer userId = jwtUtil.extractUserId(token);
+
+        return userRepository.findById(userId).map(user -> {
+            user.setUserEmail(updatedUser.getUserEmail());
+            user.setUserName(updatedUser.getUserName());
+            return userRepository.save(user);
+        }).orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+    }
+
+    
     public User updateUser(Integer id, User updatedUser) {
         return userRepository.findById(id).map(user -> {
             user.setUserEmail(updatedUser.getUserEmail());
@@ -50,4 +67,6 @@ public class UserServiceImpl implements  UserService{
     public List<Trip> getAllTripsByUserId(Integer id){
     	return userRepository.getAllTripByUserId(id);
     }
+
 }
+

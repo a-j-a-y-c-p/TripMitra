@@ -16,5 +16,8 @@ public interface UserDetailsService {
 	public void delete(Integer id);
 	public List<UserDetails> getAllUserDetails();
 	public Page<UserDetails> getFilteredUsers(String gender, Boolean isBlocked, String keyword, Pageable pageable);
+	public UserDetailsDto getDetailsByUserId(String authHeader);
+	UserDetailsDto updateByToken(String authHeader, UserDetailsDto dto);
+
 	
 }

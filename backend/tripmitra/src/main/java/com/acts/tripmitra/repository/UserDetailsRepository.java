@@ -1,7 +1,12 @@
 package com.acts.tripmitra.repository;
 
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
+
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,6 +16,7 @@ import com.acts.tripmitra.entity.UserDetails;
 
 @Repository
 public interface UserDetailsRepository extends JpaRepository<UserDetails, Integer> {
+
 
 	@Query(value = """
 	        SELECT ud FROM UserDetails ud
@@ -24,4 +30,8 @@ public interface UserDetailsRepository extends JpaRepository<UserDetails, Intege
 	                                        @Param("keyword") String keyword,
 	                                        Pageable pageable);
 	
+
+    @Query(value = "SELECT * FROM userdetails WHERE userId = :id", nativeQuery = true)
+    Optional<UserDetails> findByUserId(@Param("id") Integer userId);
+
 }

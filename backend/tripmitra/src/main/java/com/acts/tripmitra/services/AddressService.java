@@ -9,4 +9,8 @@ public interface AddressService {
     List<AddressDto> getAllAddresses();
     AddressDto updateAddress(Integer id, AddressDto addressDto);
     void deleteAddress(Integer id);
+    public AddressDto getAddressByUserId(String authHeader);
+    AddressDto updateAddressByUserId(String authHeader, AddressDto addressDto);
+
+
 }

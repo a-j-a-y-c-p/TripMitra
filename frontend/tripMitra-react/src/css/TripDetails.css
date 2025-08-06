@@ -1,8 +1,9 @@
 .trip-details-container {
+  background-color: white;
+  min-height: 70vh;
+  padding: 2rem;
   display: flex;
   gap: 2rem;
-  padding: 2rem;
-  background-color: white;
 }
 
 .trip-main {
@@ -10,46 +11,46 @@
   background: #fff;
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .trip-sidebar {
   flex: 1;
-  background: #f9f9f9;
+  background: #f7f9fb;
   padding: 1.5rem;
   border-radius: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid #e0e0e0;
 }
 
 .trip-header h1 {
+  font-size: 1.8rem;
   margin-bottom: 0.5rem;
-  font-size: 1.75rem;
 }
 
 .travel-mode {
   font-size: 1rem;
-  color: #777;
+  color: #555;
 }
 
 .trip-meta {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  margin-top: 1rem;
   gap: 1rem;
+  margin: 1rem 0;
 }
 
 .meta-item .label {
   font-weight: bold;
-  color: #555;
+  color: #444;
 }
 
 .meta-item .value {
-  margin-left: 0.5rem;
   color: #222;
 }
 
 .trip-description {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
+  line-height: 1.6;
 }
 
 .join-trip-container {
@@ -62,28 +63,72 @@
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
   font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.join-trip-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.success-msg, .error-msg {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.success-msg {
+  color: green;
+}
+
+.error-msg {
+  color: red;
 }
 
 .joined-users-box h3 {
   margin-bottom: 1rem;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
 }
 
 .joined-users-box ul {
-  list-style-type: none;
+  list-style: none;
   padding-left: 0;
+  margin-top: 1rem;
 }
 
 .joined-users-box li {
   padding: 0.5rem 0;
   border-bottom: 1px solid #eee;
+  font-weight: 500;
+  color: #333;
 }
-.trip-details-container {
-  background-color: white;
-  min-height: 63vh;
-  padding: 20px;
+
+.member-item {
   display: flex;
-  flex-direction: row;
-  gap: 2rem;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eaeaea;
 }
+
+.member-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.member-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.member-info p:first-child {
+  font-weight: bold;
+  font-size: 1rem;
+}
+

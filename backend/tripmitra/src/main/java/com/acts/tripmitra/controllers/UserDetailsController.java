@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,11 +35,24 @@ public class UserDetailsController {
         return userDetailsService.getUserDetailsById(id);
     }
     
+
     @GetMapping("/getAllUser")
     public List<UserDetails> getAllUserDetails(){
     	return userDetailsService.getAllUserDetails();
     }
-    
+
+    @GetMapping("/userdetailsGet")
+    public UserDetailsDto getUserDetailsByToken(@RequestHeader("Authorization") String authHeader) {
+        return userDetailsService.getDetailsByUserId(authHeader);
+    }
+
+    @PutMapping("/userdetailsPut")
+    public UserDetailsDto updateUserDetailsByToken(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody UserDetailsDto dto) {
+        return userDetailsService.updateByToken(authHeader, dto);
+    }
+
     @PostMapping
     public UserDetailsDto create(@RequestBody UserDetailsDto dto) {
         return userDetailsService.create(dto);
@@ -54,6 +68,7 @@ public class UserDetailsController {
         userDetailsService.delete(id);
     }
     
+
     @GetMapping("/getAllUser/filter")
     public ResponseEntity<Page<UserDetails>> filterUsers(
             @RequestParam(required = false) String gender,
@@ -66,5 +81,6 @@ public class UserDetailsController {
         Page<UserDetails> result = userDetailsService.getFilteredUsers(gender, isBlocked, keyword, pageable);
         return ResponseEntity.ok(result);
     }
+
 }
 

@@ -16,12 +16,17 @@ import com.acts.tripmitra.entity.Address;
 import com.acts.tripmitra.entity.UserDetails;
 import com.acts.tripmitra.repository.UserDetailsRepository;
 import com.acts.tripmitra.services.UserDetailsService;
+import com.acts.tripmitra.utilities.JwtUtil;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService{
 	
 	@Autowired
     private UserDetailsRepository userDetailsRepository;
+	
+	@Autowired
+	private JwtUtil jwtUtil;
+
 	
     public UserDetailsDto getUserDetailsById(Integer id) {
     	Optional<UserDetails> optional = userDetailsRepository.findById(id);
@@ -44,6 +49,20 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         userDetailsRepository.save(userDetails);
         return dto;
     }
+	
+	@Override
+	public UserDetailsDto getDetailsByUserId(String authHeader) {
+	    String token = authHeader.substring(7); // Remove "Bearer "
+	    Integer userId = jwtUtil.extractUserId(token); // Extract userId from JWT
+	    UserDetails details = userDetailsRepository.findByUserId(userId)
+	        .orElseThrow(() -> new RuntimeException("Details not found for userId: " + userId));
+	    
+	    UserDetailsDto dto = new UserDetailsDto();
+	    BeanUtils.copyProperties(details, dto);
+	    return dto;
+	}
+
+
 
     public UserDetailsDto update(Integer id, UserDetailsDto dto) {
         Optional<UserDetails> optional = userDetailsRepository.findById(id);
@@ -67,7 +86,47 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         }
         return null;
     }
+    
+    @Override
+    public UserDetailsDto updateByToken(String authHeader, UserDetailsDto dto) {
+        String token = authHeader.substring(7);
+        Integer userId = jwtUtil.extractUserId(token);
 
+        UserDetails userDetails = userDetailsRepository.findByUserId(userId)
+            .orElseThrow(() -> new RuntimeException("Details not found for userId: " + userId));
+
+        userDetails.setPhoneNumber(dto.getPhoneNumber());
+        userDetails.setAlterPhone(dto.getAlterPhone());
+        userDetails.setGender(dto.getGender());
+        userDetails.setDateOfBirth(dto.getDateOfBirth());
+        userDetails.setImageUrl(dto.getImageUrl());
+
+        Address newAddress = userDetails.getAddress();
+        AddressDto address = dto.getAddress();
+
+        if (newAddress != null && address != null) {
+            newAddress.setAddressLine1(address.getAddressLine1());
+            newAddress.setAddressLine2(address.getAddressLine2());
+            newAddress.setDistrict(address.getDistrict());
+            newAddress.setPincode(address.getPincode());
+            newAddress.setState(address.getState());
+            userDetails.setAddress(newAddress);
+        }
+
+        userDetailsRepository.save(userDetails);
+
+        return dto;
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public void delete(Integer id) {
     	Optional<UserDetails> optional = userDetailsRepository.findById(id);
     	if(optional.isPresent())
