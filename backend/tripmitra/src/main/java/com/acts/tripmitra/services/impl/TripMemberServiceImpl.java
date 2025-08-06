@@ -16,6 +16,7 @@ import com.acts.tripmitra.entity.TripMember;
 import com.acts.tripmitra.entity.User;
 import com.acts.tripmitra.entity.UserDetails;
 import com.acts.tripmitra.repository.TripMemberRepository;
+import com.acts.tripmitra.repository.TripRepository;
 import com.acts.tripmitra.services.TripMemberService;
 import com.acts.tripmitra.services.exceptions.TripUpdationException;
 import com.acts.tripmitra.services.exceptions.UserAlreadyExistsException;
@@ -26,7 +27,10 @@ import com.acts.tripmitra.utilities.TripMemberStatusEnum;
 public class TripMemberServiceImpl implements TripMemberService {
 	@Autowired
 	TripMemberRepository repository;
-
+	
+	@Autowired
+	TripRepository tripRepository;
+	
 	@Override
 	public void addMember(MemberId memberId) throws UserAlreadyExistsException {
 		 if (repository.existsById(memberId) ) {
@@ -115,7 +119,11 @@ public class TripMemberServiceImpl implements TripMemberService {
 		return usersDetailsDtoList;
 	}
 
-	
-	
-	
+	@Override
+
+	public List<UserDetails> findWaitingUsersByTripId(Integer tripId) {
+		
+		return repository.findWaitingUsersByTripId(tripId);
+	}
+
 }

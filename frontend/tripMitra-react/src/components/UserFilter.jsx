@@ -1,110 +1,57 @@
 import React, { useState, useEffect } from 'react';
-import { Slider } from '@mui/material';
+import _ from 'lodash';
 
 const UserFilter = ({ onFilterChange = () => {} }) => {
-  const [source, setSource] = useState('');
-  const [destination, setDestination] = useState('');
-  const [priceRange, setPriceRange] = useState([0, 10000]);
-  const [departureRange, setDepartureRange] = useState([0, 24]);
-  const [remainingSeats, setRemainingSeats] = useState([1, 100]);
+  const [gender, setGender] = useState('');
+  const [isBlocked, setIsBlocked] = useState('');
+  const [keyword, setKeyword] = useState('');
 
+  // Debounced filter change
   useEffect(() => {
-  const filterObject = {
-    ...(source && { source }),
-    ...(destination && { destination }),
-    ...(priceRange && {
-      minPrice: priceRange[0],
-      maxPrice: priceRange[1]
-    }),
-    ...(remainingSeats && {
-      minSeats: remainingSeats[0],
-      maxSeats: remainingSeats[1]
-    }),
-  };
+    const filters = {
+      ...(gender && { gender }),
+      ...(isBlocked !== '' && { isBlocked: isBlocked === 'true' }),
+      ...(keyword && { keyword })
+    };
 
-  onFilterChange(filterObject);
-}, [source, destination, priceRange, departureRange, remainingSeats]);
+    const debounced = _.debounce(() => onFilterChange(filters), 300);
+    debounced();
+
+    return () => debounced.cancel();
+  }, [gender, isBlocked, keyword]);
 
   return (
-    <div className="w-full lg:w-80 p-4 border-r border-gray-200 bg-white shadow-sm" 
+    <div className="p-4 border-end bg-white"
           style={{ height: "100%"}}>
-      {/* <h4 className="text-xl fw-bold text-gray-800 text-center" style={{ marginBottom: '1.5rem' }}>
-        Trip Filters 
-      </h4> */}
+      <h4 className="fw-bold text-center mb-4">User Filters</h4>
 
-      <h4 className="mb-4 fw-bold text-center" style={{ fontSize: "1.5rem" }}>
-        User Filters
-      </h4>
+      <div className="mb-3">
+        <label>Gender</label>
+        <select className="form-select" value={gender} onChange={(e) => setGender(e.target.value)}>
+          <option value="">All</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
 
-      {/* Source */}
-      <div className="mb-6" style={{ marginBottom: '1.5rem' }}>
-        <h6 className="text-sm font-medium text-gray-700 mb-1">Source</h6>
+      <div className="mb-3">
+        <label>Status</label>
+        <select className="form-select" value={isBlocked} onChange={(e) => setIsBlocked(e.target.value)}>
+          <option value="">All</option>
+          <option value="true">Blocked</option>
+          <option value="false">Active</option>
+        </select>
+      </div>
+
+      <div className="mb-3">
+        <label>Search</label>
         <input
+          className="form-control"
           type="text"
-          value={source}
-          onChange={(e) => setSource(e.target.value)}
-          placeholder="Enter source"
-          className="w-100 p-2 border rounded text-sm"
+          placeholder="Username or Email"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
         />
-      </div>
-
-      {/* Destination */}
-      <div className="mb-6" style={{ marginBottom: '1.5rem' }}>
-        <h6 className="text-sm font-medium text-gray-700 mb-1">Destination</h6>
-        <input
-          type="text"
-          value={destination}
-          onChange={(e) => setDestination(e.target.value)}
-          placeholder="Enter destination"
-          className="w-100 p-2 border rounded text-sm"
-        />
-      </div>
-
-      {/* Price Range */}
-      <div className="mb-6" style={{ marginBottom: '1.5rem' }}>
-        <h6 className="text-sm font-medium text-gray-700 mb-2">Price Range (₹)</h6>
-        <Slider
-          value={priceRange}
-          onChange={(e, newVal) => setPriceRange(newVal)}
-          valueLabelDisplay="auto"
-          min={0}
-          max={10000}
-          step={100}
-        />
-        <div className="text-xs text-gray-600">
-          ₹{priceRange[0]} - ₹{priceRange[1]}
-        </div>
-      </div>
-
-      {/* Departure Time */}
-      <div className="mb-6" style={{ marginBottom: '1.5rem' }}>
-        <h6 className="text-sm font-medium text-gray-700 mb-2">Departure Time (24hr)</h6>
-        <Slider
-          value={departureRange}
-          onChange={(e, newVal) => setDepartureRange(newVal)}
-          valueLabelDisplay="auto"
-          min={0}
-          max={24}
-          step={1}
-        />
-        <div className="text-xs text-gray-600">
-          {departureRange[0]}:00 - {departureRange[1]}:00
-        </div>
-      </div>
-
-      {/* Remaining Seats */}
-      <div className="mb-6" style={{ marginBottom: '1.5rem' }}>
-        <h6 className="text-sm font-medium text-gray-700 mb-2">Remaining Seats</h6>
-        <Slider
-          value={remainingSeats}
-          onChange={(e, newVal) => setRemainingSeats(newVal)}
-          valueLabelDisplay="auto"
-          min={1}
-          max={100}
-        />
-        <div className="text-xs text-gray-600">
-          {remainingSeats[0]} - {remainingSeats[1]} seats
-        </div>
       </div>
     </div>
   );

@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import api from '../api/axiosConfig';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { AuthContext } from '../contexts/AuthContext';
 
 const AddTripForm = () => {
+  const { token } = useContext(AuthContext);
+
   const [trip, setTrip] = useState({
     mode: '',
     currMembers: '',
-    maxMembers: '1',
-    estimateCost: '0',
+    maxMembers: '',
+    estimateCost: '',
     tripDetails: {
       source: '',
       destination: '',
@@ -20,16 +25,46 @@ const AddTripForm = () => {
     memberLimit: false,
     dateOrder: false
   });
+  useEffect(() => {
+    const checkErrors = () => {
+      const currMembers = parseInt(trip.currMembers || 0);
+      const maxMembers = parseInt(trip.maxMembers || 0);
+      const estimateCost = parseInt(trip.estimateCost || 0);
+      const startDate = new Date(trip.tripDetails.startDate);
+      const endDate = new Date(trip.tripDetails.endDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const newErrors = {
+        memberLimit: currMembers > maxMembers,
+        dateOrder: endDate < startDate,
+        startDatePast: startDate < today,
+        estCostInvalid: estimateCost < 100,
+        maxMemberInvalid: maxMembers < 1,
+        currMemberInvalid: currMembers < 1,
+        modeEmpty: trip.mode.trim() === '',
+        shortDescription: trip.description.trim().length < 10,
+        sameLocation:
+          trip.tripDetails.source.trim().toLowerCase() ===
+          trip.tripDetails.destination.trim().toLowerCase()
+      };
+
+      setErrors(newErrors);
+    };
+
+    checkErrors();
+  }, [trip]);
 
   const handleTripInfoChange = (e) => {
     const { name, value } = e.target;
     setTrip((prev) => ({
       ...prev,
-      [name]: ['currMembers', 'maxMembers', 'estimateCost', 'description'].includes(name)
+      [name]: ['currMembers', 'maxMembers', 'estimateCost'].includes(name)
         ? value.replace(/\D/g, '') // Only numbers
         : value
     }));
   };
+
 
   const handleItineraryChange = (e) => {
     const { name, value } = e.target;
@@ -41,20 +76,75 @@ const AddTripForm = () => {
       }
     }));
   };
+  const [showErrors, setShowErrors] = useState(false);
+  const validate = async () => {
+  const currMembers = parseInt(trip.currMembers || 0);
+  const maxMembers = parseInt(trip.maxMembers || 0);
+  const estimateCost = parseInt(trip.estimateCost || 0);
+  const startDate = new Date(trip.tripDetails.startDate);
+  const endDate = new Date(trip.tripDetails.endDate);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-  const validate = () => {
-    const memberLimit = parseInt(trip.currMembers || 0) > parseInt(trip.maxMembers || 1);
-    const dateOrder = new Date(trip.tripDetails.endDate) < new Date(trip.tripDetails.startDate);
-    setErrors({ memberLimit, dateOrder });
-    return !(memberLimit || dateOrder);
+  // Step 1: Try to get user details from backend
+  let userProfileMissing = false;
+  try {
+    const userDetailsResponse = await api.get("/userdetails/b", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("User details:", userDetailsResponse.data);
+    if (
+      !userDetailsResponse.data ||
+      Object.keys(userDetailsResponse.data).length === 0
+    ) {
+      userProfileMissing = true;
+    }
+  } catch (err) {
+    console.error("Error fetching user details:", err);
+    userProfileMissing = true;
+  }
+
+  if (userProfileMissing) {
+    toast.info("Please update your profile before adding a trip.");
+  }
+
+
+  // Step 2: Form validation
+  const errorsToSet = {
+    memberLimit: currMembers > maxMembers,
+    dateOrder: endDate < startDate,
+    startDatePast: startDate < today,
+    estCostInvalid: estimateCost < 100,
+    maxMemberInvalid: maxMembers < 1,
+    currMemberInvalid: currMembers < 1,
+    modeEmpty: trip.mode.trim() === "",
+    shortDescription: trip.description.trim().length < 10,
+    sameLocation:
+      trip.tripDetails.source.trim().toLowerCase() ===
+      trip.tripDetails.destination.trim().toLowerCase(),
   };
+
+  setErrors(errorsToSet);
+
+  const hasAnyValidationError = Object.values(errorsToSet).some(Boolean);
+
+  return !(userProfileMissing || hasAnyValidationError);
+};
+
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    setShowErrors(true);
+    const isValid = await validate();
 
-    setSubmitting(true); // Disable button
+    if (!isValid) return;
 
+    setSubmitting(true);
     try {
       const payload = {
         ...trip,
@@ -64,14 +154,15 @@ const AddTripForm = () => {
       };
 
       const response = await api.post('/trips/new', payload);
+      toast.done('Trip added successfully!');
       console.log('Trip added successfully:', response.data);
-      alert('Trip added successfully!');
 
+      // Reset form
       setTrip({
         mode: '',
-        currMembers: '1',
-        maxMembers: '1',
-        estimateCost: '0',
+        currMembers: '',
+        maxMembers: '',
+        estimateCost: '',
         tripDetails: {
           source: '',
           destination: '',
@@ -81,17 +172,22 @@ const AddTripForm = () => {
         description: ''
       });
       setErrors({ memberLimit: false, dateOrder: false });
+      setShowErrors(false);
     } catch (error) {
       console.error('Error adding trip:', error);
-      alert('Failed to add trip. Please try again.');
+      toast.error('Failed to add trip. Please try again.');
     } finally {
-      setSubmitting(false); // Re-enable button
+      setSubmitting(false);
     }
   };
 
+  const hasErrors = Object.values(errors).some(Boolean);
+
 
   return (
+
     <div className="container mt-4 mt-md-5">
+      <ToastContainer position="top-center" autoClose={3000} />
       <div className="row justify-content-center">
         <div className="col-12 col-md-8 col-lg-6">
           <div className="card shadow-sm">
@@ -118,7 +214,9 @@ const AddTripForm = () => {
                       <option value="Other">Other</option>
                     </select>
                   </div>
-
+                  {showErrors && errors.modeEmpty && (
+                    <div className="alert alert-danger">Please select a travel mode.</div>
+                  )}
                   <div className="mb-3">
                     <label className="form-label">Current Members</label>
                     <input
@@ -130,7 +228,9 @@ const AddTripForm = () => {
                       required
                     />
                   </div>
-
+                  {showErrors && errors.currMemberInvalid && (
+                    <div className="alert alert-danger">There must be at least one current member.</div>
+                  )}
                   <div className="mb-3">
                     <label className="form-label">Maximum Members</label>
                     <input
@@ -142,9 +242,14 @@ const AddTripForm = () => {
                       required
                     />
                   </div>
-                  {errors.memberLimit && (
+                  {showErrors && errors.memberLimit && (
                     <div className="alert alert-danger">
                       Current members cannot exceed maximum members.
+                    </div>
+                  )}
+                  {showErrors && errors.maxMemberInvalid && (
+                    <div className="alert alert-danger">
+                      Maximum members must be greater than 0.
                     </div>
                   )}
 
@@ -158,6 +263,11 @@ const AddTripForm = () => {
                       className="form-control"
                       required
                     />
+                    {showErrors && errors.estCostInvalid && (
+                      <div className="alert alert-danger">
+                        Estimated cost must be greater than 99.
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -185,6 +295,9 @@ const AddTripForm = () => {
                       required
                     />
                   </div>
+                  {showErrors && errors.sameLocation && (
+                    <div className="alert alert-danger">Source and destination cannot be the same.</div>
+                  )}
                   <div className="mb-3">
                     <label className="form-label">Start Date</label>
                     <input
@@ -196,6 +309,9 @@ const AddTripForm = () => {
                       required
                     />
                   </div>
+                  {showErrors && errors.startDatePast && (
+                    <div className="alert alert-danger">Start date cannot be in the past.</div>
+                  )}
                   <div className="mb-3">
                     <label className="form-label">End Date</label>
                     <input
@@ -207,7 +323,7 @@ const AddTripForm = () => {
                       required
                     />
                   </div>
-                  {errors.dateOrder && (
+                  {showErrors && errors.dateOrder && (
                     <div className="alert alert-danger">
                       End date must be after start date.
                     </div>
@@ -222,6 +338,9 @@ const AddTripForm = () => {
                       className="form-control"
                       rows="3"
                     />
+                    {showErrors && errors.shortDescription && (
+                      <div className="alert alert-danger">Description must be at least 10 characters.</div>
+                    )}
                   </div>
                 </div>
 
@@ -233,11 +352,14 @@ const AddTripForm = () => {
                   {submitting ? 'Adding Trip...' : 'Add Trip'}
                 </button>
 
+
               </form>
             </div>
           </div>
         </div>
       </div>
+      <ToastContainer position="top-center" autoClose={3000} />
+
     </div>
   );
 };

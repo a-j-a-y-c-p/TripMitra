@@ -40,6 +40,34 @@ public class AddressServiceImpl implements AddressService {
     }
     
     @Override
+    public AddressDto updateAddressByUserId(String authHeader, AddressDto addressDto) {
+        String token = authHeader.substring(7); // Remove "Bearer " prefix
+        Integer userId = jwtUtil.extractUserId(token);
+
+        Address address = addressRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Address not found for user id: " + userId));
+
+        address.setAddressLine1(addressDto.getAddressLine1());
+        address.setAddressLine2(addressDto.getAddressLine2());
+        address.setDistrict(addressDto.getDistrict());
+        address.setState(addressDto.getState());
+        address.setPincode(addressDto.getPincode());
+
+        addressRepository.save(address);
+
+        AddressDto dto = new AddressDto();
+        BeanUtils.copyProperties(address, dto);
+        return dto;
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    @Override
     public AddressDto getAddressByUserId(String authHeader) {
     	String token = authHeader.substring(7);
     	Integer userId = jwtUtil.extractUserId(token);
