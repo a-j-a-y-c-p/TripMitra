@@ -1,0 +1,113 @@
+import React, { useState, useEffect } from 'react';
+import { Slider } from '@mui/material';
+
+const UserFilter = ({ onFilterChange = () => {} }) => {
+  const [source, setSource] = useState('');
+  const [destination, setDestination] = useState('');
+  const [priceRange, setPriceRange] = useState([0, 10000]);
+  const [departureRange, setDepartureRange] = useState([0, 24]);
+  const [remainingSeats, setRemainingSeats] = useState([1, 100]);
+
+  useEffect(() => {
+  const filterObject = {
+    ...(source && { source }),
+    ...(destination && { destination }),
+    ...(priceRange && {
+      minPrice: priceRange[0],
+      maxPrice: priceRange[1]
+    }),
+    ...(remainingSeats && {
+      minSeats: remainingSeats[0],
+      maxSeats: remainingSeats[1]
+    }),
+  };
+
+  onFilterChange(filterObject);
+}, [source, destination, priceRange, departureRange, remainingSeats]);
+
+  return (
+    <div className="w-full lg:w-80 p-4 border-r border-gray-200 bg-white shadow-sm" 
+          style={{ height: "100%"}}>
+      {/* <h4 className="text-xl fw-bold text-gray-800 text-center" style={{ marginBottom: '1.5rem' }}>
+        Trip Filters 
+      </h4> */}
+
+      <h4 className="mb-4 fw-bold text-center" style={{ fontSize: "1.5rem" }}>
+        User Filters
+      </h4>
+
+      {/* Source */}
+      <div className="mb-6" style={{ marginBottom: '1.5rem' }}>
+        <h6 className="text-sm font-medium text-gray-700 mb-1">Source</h6>
+        <input
+          type="text"
+          value={source}
+          onChange={(e) => setSource(e.target.value)}
+          placeholder="Enter source"
+          className="w-100 p-2 border rounded text-sm"
+        />
+      </div>
+
+      {/* Destination */}
+      <div className="mb-6" style={{ marginBottom: '1.5rem' }}>
+        <h6 className="text-sm font-medium text-gray-700 mb-1">Destination</h6>
+        <input
+          type="text"
+          value={destination}
+          onChange={(e) => setDestination(e.target.value)}
+          placeholder="Enter destination"
+          className="w-100 p-2 border rounded text-sm"
+        />
+      </div>
+
+      {/* Price Range */}
+      <div className="mb-6" style={{ marginBottom: '1.5rem' }}>
+        <h6 className="text-sm font-medium text-gray-700 mb-2">Price Range (₹)</h6>
+        <Slider
+          value={priceRange}
+          onChange={(e, newVal) => setPriceRange(newVal)}
+          valueLabelDisplay="auto"
+          min={0}
+          max={10000}
+          step={100}
+        />
+        <div className="text-xs text-gray-600">
+          ₹{priceRange[0]} - ₹{priceRange[1]}
+        </div>
+      </div>
+
+      {/* Departure Time */}
+      <div className="mb-6" style={{ marginBottom: '1.5rem' }}>
+        <h6 className="text-sm font-medium text-gray-700 mb-2">Departure Time (24hr)</h6>
+        <Slider
+          value={departureRange}
+          onChange={(e, newVal) => setDepartureRange(newVal)}
+          valueLabelDisplay="auto"
+          min={0}
+          max={24}
+          step={1}
+        />
+        <div className="text-xs text-gray-600">
+          {departureRange[0]}:00 - {departureRange[1]}:00
+        </div>
+      </div>
+
+      {/* Remaining Seats */}
+      <div className="mb-6" style={{ marginBottom: '1.5rem' }}>
+        <h6 className="text-sm font-medium text-gray-700 mb-2">Remaining Seats</h6>
+        <Slider
+          value={remainingSeats}
+          onChange={(e, newVal) => setRemainingSeats(newVal)}
+          valueLabelDisplay="auto"
+          min={1}
+          max={100}
+        />
+        <div className="text-xs text-gray-600">
+          {remainingSeats[0]} - {remainingSeats[1]} seats
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default UserFilter;

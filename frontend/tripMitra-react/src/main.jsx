@@ -22,6 +22,7 @@ import TripDetails from './routes/TripDetails.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import EditTripForm from './routes/EditTripForm.jsx';
 import MonitorTrips from './routes/MonitorTrips.jsx';
+import ManageUser from './routes/ManageUser.jsx';
 
 
 <Route path="/trip/:id" element={<TripDetails />} />
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
       { path: 'login', element: <Login /> },
 
       { path: 'dashboard', element: <PrivateRoute><Dashboard /></PrivateRoute> },
+      { path: 'manageUser', element: <PrivateRoute><ManageUser /></PrivateRoute> },
       { path: 'addtrip', element: <PrivateRoute><AddTripForm /></PrivateRoute> },
       { path: 'managetrip', element: <PrivateRoute><ManageTrip /></PrivateRoute> },
       { path: 'profile', element: <PrivateRoute><Profile /></PrivateRoute> },
