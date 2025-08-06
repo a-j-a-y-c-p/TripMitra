@@ -14,5 +14,7 @@ public interface UserService {
     public Optional<User> getUserById(Integer id) ;
     public void deleteUser(Integer id);
     public User updateUser(Integer id, User updatedUser) ;
+    User updateUserByToken(String authHeader, User updatedUser);
+
 }
 
