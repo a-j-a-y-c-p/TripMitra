@@ -108,7 +108,7 @@ const AddTripForm = () => {
   }
 
   if (userProfileMissing) {
-    toast.error("Please update your profile before adding a trip.");
+    toast.info("Please update your profile before adding a trip.");
   }
 
   // Step 2: Form validation
@@ -153,7 +153,7 @@ const AddTripForm = () => {
       };
 
       const response = await api.post('/trips/new', payload);
-      alert('Trip added successfully!');
+      toast.done('Trip added successfully!');
       console.log('Trip added successfully:', response.data);
 
       // Reset form
