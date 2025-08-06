@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // ✅ ADDED useNavigate
+import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/axiosConfig';
 import '../css/TripDetails.css';
 import { AuthContext } from '../contexts/AuthContext.jsx';
@@ -7,7 +7,7 @@ import { AuthContext } from '../contexts/AuthContext.jsx';
 const TripDetails = () => {
   const { user } = useContext(AuthContext);
   const { id } = useParams();
-  const navigate = useNavigate(); // ✅ INITIALIZE NAVIGATE
+  const navigate = useNavigate();
 
   const [trip, setTrip] = useState(null);
   const [joinedUsers, setJoinedUsers] = useState([]);
@@ -15,6 +15,7 @@ const TripDetails = () => {
   const [joining, setJoining] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
+  const [alreadyJoined, setAlreadyJoined] = useState(false); // ✅ Added state
 
   const userId = user?.userId;
 
@@ -25,20 +26,24 @@ const TripDetails = () => {
         const tripData = tripRes.data;
         setTrip(tripData);
 
-        const usersRes = await api.get(`/members/?tripId=${id}`);
+        const usersRes = await api.get(`/members/users/${id}`);
         setJoinedUsers(usersRes.data);
 
-        setLoading(false);
+        const isJoined = usersRes.data.some(u => u.userId === userId);
+        setAlreadyJoined(isJoined);
       } catch (err) {
+        console.error(err);
         setError('Failed to load trip details.');
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchTripDetails();
-  }, [id]);
+    if (userId) {
+      fetchTripDetails();
+    }
+  }, [id, userId]);
 
-  const alreadyJoined = joinedUsers.some(u => u.userId === userId);
   const tripFull = trip && trip.currMembers >= trip.maxMembers;
 
   const handleJoinTrip = async () => {
@@ -64,7 +69,8 @@ const TripDetails = () => {
 
       if (response.status === 200 || response.status === 201) {
         setSuccessMessage('Successfully joined the trip!');
-        setJoinedUsers(prev => [...prev, { userId }]);
+        setJoinedUsers(prev => [...prev, { userId, username: user.username }]);
+        setAlreadyJoined(true);
       } else {
         throw new Error('Failed to join the trip.');
       }
@@ -80,9 +86,7 @@ const TripDetails = () => {
 
   return (
     <div className="trip-details-container">
-      {/* LEFT: Trip Info */}
       <div className="trip-main">
-        {/* ✅ Back Arrow */}
         <button
           className="back-button"
           onClick={() => navigate(-1)}
@@ -104,22 +108,10 @@ const TripDetails = () => {
         </div>
 
         <div className="trip-meta">
-          <div className="meta-item">
-            <span className="label">Current Members:</span>
-            <span className="value">{trip.currMembers}</span>
-          </div>
-          <div className="meta-item">
-            <span className="label">Max Members:</span>
-            <span className="value">{trip.maxMembers}</span>
-          </div>
-          <div className="meta-item">
-            <span className="label">Start Date:</span>
-            <span className="value">{trip.tripDetails.startDate}</span>
-          </div>
-          <div className="meta-item">
-            <span className="label">End Date:</span>
-            <span className="value">{trip.tripDetails.endDate}</span>
-          </div>
+          <div className="meta-item"><span className="label">Current Members:</span><span className="value">{trip.currMembers}</span></div>
+          <div className="meta-item"><span className="label">Max Members:</span><span className="value">{trip.maxMembers}</span></div>
+          <div className="meta-item"><span className="label">Start Date:</span><span className="value">{trip.tripDetails.startDate}</span></div>
+          <div className="meta-item"><span className="label">End Date:</span><span className="value">{trip.tripDetails.endDate}</span></div>
         </div>
 
         <div className="trip-description">
@@ -137,20 +129,13 @@ const TripDetails = () => {
             onClick={handleJoinTrip}
             disabled={joining || alreadyJoined || tripFull}
           >
-            {joining
-              ? 'Joining...'
-              : alreadyJoined
-              ? 'Already Joined'
-              : tripFull
-              ? 'Trip Full'
-              : 'Join Trip'}
+            {joining ? 'Joining...' : alreadyJoined ? 'Already Joined' : tripFull ? 'Trip Full' : 'Join Trip'}
           </button>
           {successMessage && <p className="success-msg">{successMessage}</p>}
           {error && <p className="error-msg">{error}</p>}
         </div>
       </div>
 
-      {/* RIGHT: Joined Members */}
       <div className="trip-sidebar">
         <div className="joined-users-box">
           <h3>Joined Members</h3>
@@ -158,10 +143,21 @@ const TripDetails = () => {
             <p>No one has joined yet.</p>
           ) : (
             <ul>
-              {joinedUsers.map((u, idx) => (
-                <li key={idx}>{u.username || `User ${u.userId}`}</li>
-              ))}
-            </ul>
+  {joinedUsers.map((u, idx) => (
+    <li key={idx} className="member-item">
+      <img
+        src={u.imageUrl}
+        alt={u.user?.userName}
+        className="member-image"
+      />
+      <div className="member-info">
+        <p><strong>{u.user?.userName}</strong></p>
+        <p>{u.user?.userEmail}</p>
+        <p>{u.gender}</p>
+      </div>
+    </li>
+  ))}
+</ul>
           )}
         </div>
       </div>
