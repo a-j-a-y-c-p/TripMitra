@@ -21,7 +21,7 @@ const Navigation = () => {
       </div>
 
       <div className="mb-3">
-        <Link to="/manage-trips" className="text-decoration-none text-dark">
+        <Link to="/adminmanagetrip" className="text-decoration-none text-dark">
           <div className="p-3 bg-white rounded hover-shadow" style={{ fontSize: "1.1rem" }}>
             Manage Trips
           </div>
@@ -29,7 +29,7 @@ const Navigation = () => {
       </div>
 
       <div className="mb-3">
-        <Link to="/monitorTrips" className="text-decoration-none text-dark">
+        <Link to="/monitorTrips" className="text-decoration-none text-dark" state={{ status: 'Completed' }}>
             <div className="p-3 bg-white rounded hover-shadow" style={{ fontSize: "1.1rem" }}>
             Completed Trips
             </div>
@@ -37,7 +37,7 @@ const Navigation = () => {
         </div>
 
       <div className="mb-3">
-        <Link to="/monitorTrips" className="text-decoration-none text-dark">
+        <Link to="/monitorTrips" className="text-decoration-none text-dark" state={{ status: 'Cancelled' }}>
           <div className="p-3 bg-white rounded hover-shadow" style={{ fontSize: "1.1rem" }}>
             Cancelled Trips
           </div>

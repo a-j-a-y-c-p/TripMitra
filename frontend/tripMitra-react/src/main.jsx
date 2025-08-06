@@ -23,6 +23,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import EditTripForm from './routes/EditTripForm.jsx';
 import MonitorTrips from './routes/MonitorTrips.jsx';
 import ManageUser from './routes/ManageUser.jsx';
+import AdminManageTrip from './routes/AdminManageTrip.jsx';
 
 
 <Route path="/trip/:id" element={<TripDetails />} />
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
       { path: 'manageUser', element: <PrivateRoute><ManageUser /></PrivateRoute> },
       { path: 'addtrip', element: <PrivateRoute><AddTripForm /></PrivateRoute> },
       { path: 'managetrip', element: <PrivateRoute><ManageTrip /></PrivateRoute> },
+      { path: 'adminmanagetrip', element: <PrivateRoute requiredRole={'ADMIN'}><AdminManageTrip /></PrivateRoute> },
       { path: 'profile', element: <PrivateRoute><Profile /></PrivateRoute> },
       { path: 'UpdateProfile', element: <PrivateRoute><UpdateProfile /></PrivateRoute> },
       { path: 'triphistory', element: <PrivateRoute><TripHistory /> </PrivateRoute>},

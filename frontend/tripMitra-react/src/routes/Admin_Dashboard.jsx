@@ -21,7 +21,7 @@ const Admin_Dashboard = () => {
     {
       title: 'Manage Trips',
       description: 'Create, delete, or update trip data',
-      path: '/manage-trips',
+      path: '/adminmanagetrip',
       color: 'success',
     },
     {
