@@ -82,6 +82,9 @@ const Navbar = () => {
                   <li>
                     <NavLink className="dropdown-item" to="/profile">My Profile</NavLink>
                   </li>
+                  <li>
+                    <NavLink className="dropdown-item" to="/accountsettings">Account Settings</NavLink>
+                  </li>
                   <li><hr className="dropdown-divider" /></li>
                   <li>
                     <button className="dropdown-item" onClick={handleLogout}>Logout</button>
