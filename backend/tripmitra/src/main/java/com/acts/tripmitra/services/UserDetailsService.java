@@ -8,5 +8,6 @@ public interface UserDetailsService {
 	public UserDetailsDto create(UserDetailsDto dto);
 	public UserDetailsDto update(Integer id, UserDetailsDto dto);
 	public void delete(Integer id);
+	public UserDetailsDto getDetailsByUserId(String authHeader);
 	
 }
