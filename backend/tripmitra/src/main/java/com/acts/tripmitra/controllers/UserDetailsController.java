@@ -87,6 +87,11 @@ public class UserDetailsController {
     public String blockUser(@PathVariable Integer id ){
     	return userDetailsService.blockUserById(id);
     }
+    
+    @PatchMapping("/unBlockUser/{id}")
+    public String unBlockUser(@PathVariable Integer id ){
+    	return userDetailsService.unBlockUserById(id);
+    }
 
 }
 
