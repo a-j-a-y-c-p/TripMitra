@@ -7,7 +7,7 @@ import App from './App.jsx'
 import Home from './routes/Home.jsx'
 import Dashboard from './routes/Dashboard.jsx'
 import Login from './routes/Login.jsx'
-import Profile from './routes/UserProfile.jsx';
+import UserProfile from './routes/UserProfile.jsx';
 import AddTripForm from './routes/AddTrip.jsx'
 import About from './routes/About.jsx'
 import UpdateProfile from './routes/UpdateProfile';
@@ -25,6 +25,7 @@ import MonitorTrips from './routes/MonitorTrips.jsx';
 import ManageUser from './routes/ManageUser.jsx';
 import AdminManageTrip from './routes/AdminManageTrip.jsx';
 import TripMembers from './routes/TripMembers.jsx';
+import Profile from './routes/Profile.jsx';
 
 
 <Route path="/trip/:id" element={<TripDetails />} />
@@ -44,7 +45,8 @@ const router = createBrowserRouter([
       { path: 'addtrip', element: <PrivateRoute><AddTripForm /></PrivateRoute> },
       { path: 'managetrip', element: <PrivateRoute><ManageTrip /></PrivateRoute> },
       { path: 'adminmanagetrip', element: <PrivateRoute requiredRole={'ADMIN'}><AdminManageTrip /></PrivateRoute> },
-      { path: 'profile', element: <PrivateRoute><Profile /></PrivateRoute> },
+      { path: 'profile', element: <PrivateRoute><UserProfile /></PrivateRoute> },
+      { path: 'viewProfile', element: <PrivateRoute><Profile /></PrivateRoute> },
       { path: 'UpdateProfile', element: <PrivateRoute><UpdateProfile /></PrivateRoute> },
       { path: 'triphistory', element: <PrivateRoute><TripHistory /> </PrivateRoute>},
       { path: 'about', element: <About /> },
