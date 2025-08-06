@@ -42,6 +42,8 @@ public interface TripMemberRepository extends JpaRepository<TripMember, MemberId
 			""",
 			nativeQuery = true)
 	List<UserDetails> findAcceptedUsersByTripId(@Param ("tripId") Integer tripId);
+	
+	boolean existsByMemberId(MemberId memberId );
 
 	
 }

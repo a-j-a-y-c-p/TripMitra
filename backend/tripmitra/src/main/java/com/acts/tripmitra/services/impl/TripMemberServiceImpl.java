@@ -44,6 +44,11 @@ public class TripMemberServiceImpl implements TripMemberService {
 	public void removeMember(MemberId memberId) {
 		repository.deleteById(memberId);
 	}
+	
+	@Override
+	public boolean memberExist(MemberId memberId) {
+		return repository.existsByMemberId(memberId);
+	}
 
 	@Override
 	public void updateStatus(TripMember tripMember) {
@@ -51,6 +56,19 @@ public class TripMemberServiceImpl implements TripMemberService {
 			repository.updateStatus(tripMember.getMemberId().getTripId(),
 					tripMember.getMemberId().getUserId(),
 					tripMember.getStatus().toString());
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			throw new TripUpdationException("Updation failed");
+		}
+		
+	}
+	
+	@Override
+	public void leave(MemberId memberId) {
+		try {
+			repository.updateStatus(memberId.getTripId(),
+					memberId.getUserId(),
+					TripMemberStatusEnum.LEAVING.toString());
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			throw new TripUpdationException("Updation failed");
