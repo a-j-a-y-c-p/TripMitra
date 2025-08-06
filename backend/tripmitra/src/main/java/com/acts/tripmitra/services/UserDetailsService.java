@@ -17,7 +17,8 @@ public interface UserDetailsService {
 	public List<UserDetails> getAllUserDetails();
 	public Page<UserDetails> getFilteredUsers(String gender, Boolean isBlocked, String keyword, Pageable pageable);
 	public UserDetailsDto getDetailsByUserId(String authHeader);
-	UserDetailsDto updateByToken(String authHeader, UserDetailsDto dto);
-
+	public UserDetailsDto updateByToken(String authHeader, UserDetailsDto dto);
+	public String blockUserById(Integer id);
+	public String unBlockUserById(Integer id);
 	
 }

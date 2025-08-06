@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -80,6 +81,16 @@ public class UserDetailsController {
         Pageable pageable = PageRequest.of(page, size);
         Page<UserDetails> result = userDetailsService.getFilteredUsers(gender, isBlocked, keyword, pageable);
         return ResponseEntity.ok(result);
+    }
+    
+    @PatchMapping("/blockUser/{id}")
+    public String blockUser(@PathVariable Integer id ){
+    	return userDetailsService.blockUserById(id);
+    }
+    
+    @PatchMapping("/unBlockUser/{id}")
+    public String unBlockUser(@PathVariable Integer id ){
+    	return userDetailsService.unBlockUserById(id);
     }
 
 }

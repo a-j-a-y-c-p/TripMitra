@@ -102,14 +102,10 @@ public class TripMemberServiceImpl implements TripMemberService {
 	}
 
 	@Override
+
 	public List<UserDetails> findWaitingUsersByTripId(Integer tripId) {
 		
 		return repository.findWaitingUsersByTripId(tripId);
 	}
 
-	
-
-	
-	
-	
 }

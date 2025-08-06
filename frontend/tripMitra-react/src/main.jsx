@@ -25,6 +25,8 @@ import MonitorTrips from './routes/MonitorTrips.jsx';
 import ManageUser from './routes/ManageUser.jsx';
 import AdminManageTrip from './routes/AdminManageTrip.jsx';
 import TripMembers from './routes/TripMembers.jsx';
+import AccountSettings from './routes/AccountSettings.jsx';
+import UpdateAccountSettings from './routes/UpdateAccountSettings.jsx';
 
 
 <Route path="/trip/:id" element={<TripDetails />} />
@@ -53,7 +55,9 @@ const router = createBrowserRouter([
       { path: 'trip/:id', element: <PrivateRoute><TripDetails /></PrivateRoute> },
       { path: 'edit-trip/:tripId', element: <PrivateRoute><EditTripForm /></PrivateRoute>},
       { path: 'trip-members/:tripId', element: <PrivateRoute><TripMembers /></PrivateRoute> },
-      
+      { path: 'accountsettings', element: <PrivateRoute><AccountSettings /></PrivateRoute> },
+      { path: 'updateaccountsettings', element: <PrivateRoute><UpdateAccountSettings /></PrivateRoute> },
+
     ],
   }
 ])

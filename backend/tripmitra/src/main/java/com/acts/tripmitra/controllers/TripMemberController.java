@@ -61,10 +61,11 @@ public class TripMemberController {
 		return service.findAcceptedUsersByTripId(tripId);
 		
 	}
-	
+
 	@GetMapping("/requests/{tripId}")
 	List<UserDetails> getWaitingUsersByTripId(@PathVariable("tripId") Integer tripId){
 		return service.findWaitingUsersByTripId(tripId);
+
 	}
 	
 	@GetMapping("/{id}")

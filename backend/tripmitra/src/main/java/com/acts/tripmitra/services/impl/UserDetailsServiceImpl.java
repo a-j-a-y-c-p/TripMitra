@@ -117,15 +117,6 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
         return dto;
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
     
     public void delete(Integer id) {
     	Optional<UserDetails> optional = userDetailsRepository.findById(id);
@@ -136,22 +127,28 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	@Override
 	public List<UserDetails> getAllUserDetails() {
 		return userDetailsRepository.findAll();
-//		List<UserDetailsDto> userDto = new ArrayList<>();
-//		BeanUtils.copyProperties(users, userDto);
-//		System.out.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+userDto.size());
-//		System.out.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+users.size());
-//		return userDto;
 	}
 	
 	public Page<UserDetails> getFilteredUsers(String gender, Boolean isBlocked, String keyword, Pageable pageable) {
 	    return userDetailsRepository.findFilteredUsers(gender, isBlocked, keyword, pageable);
-//	        .map(ud -> new UserListDto(
-//	            ud.getUser().getUserId(),
-//	            ud.getUser().getUserName(),
-//	            ud.getUser().getUserEmail(),
-//	            ud.getPhoneNumber(),
-//	            ud.getGender()
-//	        ));
+	}
+
+	@Override
+	public String blockUserById(Integer id) {
+		Optional<UserDetails> optional = userDetailsRepository.findByUserId(id);
+		UserDetails userDetails = optional.get();
+		userDetails.setBlocked(true);
+		userDetailsRepository.save(userDetails);
+		return "User Blocked";
+	}
+
+	@Override
+	public String unBlockUserById(Integer id) {
+		Optional<UserDetails> optional = userDetailsRepository.findByUserId(id);
+		UserDetails userDetails = optional.get();
+		userDetails.setBlocked(false);
+		userDetailsRepository.save(userDetails);
+		return "User Unblocked";
 	}
 
 }

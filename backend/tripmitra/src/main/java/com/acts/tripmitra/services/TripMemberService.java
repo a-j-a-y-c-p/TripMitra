@@ -19,6 +19,7 @@ public interface TripMemberService {
 	List<Integer> findHostedTripsByUserId(int id);
 	List<Integer> findAllTripsByUserId(int id);
 	List<UserDetailsDto> findAcceptedUsersByTripId(Integer tripId);
+
 	List<UserDetails> findWaitingUsersByTripId(Integer tripId);
-	
+
 }

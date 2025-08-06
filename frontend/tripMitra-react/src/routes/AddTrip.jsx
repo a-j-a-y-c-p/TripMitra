@@ -111,6 +111,7 @@ const AddTripForm = () => {
     toast.info("Please update your profile before adding a trip.");
   }
 
+
   // Step 2: Form validation
   const errorsToSet = {
     memberLimit: currMembers > maxMembers,
