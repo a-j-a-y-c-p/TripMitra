@@ -28,8 +28,12 @@ const TripFilter = ({ onFilterChange = () => {} }) => {
   return (
     <div className="w-full lg:w-80 p-4 border-r border-gray-200 bg-white shadow-sm" 
           style={{ height: "100%"}}>
-      <h4 className="text-xl fw-bold text-gray-800" style={{ marginBottom: '1.5rem' }}>
-        Filter Results
+      {/* <h4 className="text-xl fw-bold text-gray-800 text-center" style={{ marginBottom: '1.5rem' }}>
+        Trip Filters 
+      </h4> */}
+
+      <h4 className="mb-4 fw-bold text-center" style={{ fontSize: "1.5rem" }}>
+        Trip Filters
       </h4>
 
       {/* Source */}
