@@ -15,7 +15,7 @@ const Admin_Dashboard = () => {
     {
       title: 'Manage Users',
       description: 'Add, block, remove users and manage permissions',
-      path: '/manage-users',
+      path: '/manageUser',
       color: 'primary',
     },
     {
