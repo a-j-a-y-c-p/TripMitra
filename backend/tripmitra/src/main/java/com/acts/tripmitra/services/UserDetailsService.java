@@ -19,5 +19,6 @@ public interface UserDetailsService {
 	public UserDetailsDto getDetailsByUserId(String authHeader);
 	public UserDetailsDto updateByToken(String authHeader, UserDetailsDto dto);
 	public String blockUserById(Integer id);
+	public String unBlockUserById(Integer id);
 	
 }

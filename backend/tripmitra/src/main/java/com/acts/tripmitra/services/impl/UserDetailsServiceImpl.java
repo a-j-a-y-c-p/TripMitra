@@ -142,4 +142,13 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		return "User Blocked";
 	}
 
+	@Override
+	public String unBlockUserById(Integer id) {
+		Optional<UserDetails> optional = userDetailsRepository.findByUserId(id);
+		UserDetails userDetails = optional.get();
+		userDetails.setBlocked(false);
+		userDetailsRepository.save(userDetails);
+		return "User Unblocked";
+	}
+
 }
