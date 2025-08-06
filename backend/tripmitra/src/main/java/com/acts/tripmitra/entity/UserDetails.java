@@ -49,5 +49,8 @@ public class UserDetails {
     @JoinColumn(name = "addressid", referencedColumnName = "addressid")
     @JsonManagedReference
     private Address address;
+    
+    @Column(name = "isblocked")
+    private boolean isBlocked;
 }
 

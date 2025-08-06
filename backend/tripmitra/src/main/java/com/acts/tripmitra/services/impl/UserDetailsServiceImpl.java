@@ -1,9 +1,12 @@
 package com.acts.tripmitra.services.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.acts.tripmitra.dto.AddressDto;
@@ -70,5 +73,26 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     	if(optional.isPresent())
     		userDetailsRepository.deleteById(id);
     }
+
+	@Override
+	public List<UserDetails> getAllUserDetails() {
+		return userDetailsRepository.findAll();
+//		List<UserDetailsDto> userDto = new ArrayList<>();
+//		BeanUtils.copyProperties(users, userDto);
+//		System.out.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+userDto.size());
+//		System.out.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+users.size());
+//		return userDto;
+	}
+	
+	public Page<UserDetails> getFilteredUsers(String gender, Boolean isBlocked, String keyword, Pageable pageable) {
+	    return userDetailsRepository.findFilteredUsers(gender, isBlocked, keyword, pageable);
+//	        .map(ud -> new UserListDto(
+//	            ud.getUser().getUserId(),
+//	            ud.getUser().getUserName(),
+//	            ud.getUser().getUserEmail(),
+//	            ud.getPhoneNumber(),
+//	            ud.getGender()
+//	        ));
+	}
 
 }
