@@ -51,8 +51,10 @@ public class UserController {
         userService.deleteUser(id);
     }
     
+
     @GetMapping("/getAllTrip/{id}")
     public List<Trip> getAllTripsByUserId(@PathVariable Integer id){
     	return userService.getAllTripsByUserId(id);
     }
+
 }

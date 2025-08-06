@@ -1,12 +1,20 @@
 package com.acts.tripmitra.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.acts.tripmitra.dto.AddressDto;
+import com.acts.tripmitra.dto.UserDetailsDto;
+import com.acts.tripmitra.dto.UserDto;
+import com.acts.tripmitra.dto.UserResponseDto;
 import com.acts.tripmitra.entity.Trip;
 import com.acts.tripmitra.entity.TripMember;
+import com.acts.tripmitra.entity.User;
+import com.acts.tripmitra.entity.UserDetails;
 import com.acts.tripmitra.repository.TripMemberRepository;
 import com.acts.tripmitra.services.TripMemberService;
 import com.acts.tripmitra.services.exceptions.TripUpdationException;
@@ -71,6 +79,22 @@ public class TripMemberServiceImpl implements TripMemberService {
 	@Override
 	public List<Integer> findAllTripsByUserId(int id) {
 		return repository.findAllTripsByUserId(id);
+	}
+
+	@Override
+	public List<UserDetailsDto> findAcceptedUsersByTripId(Integer tripId) {
+		List<UserDetailsDto> usersDetailsDtoList = new ArrayList<>();
+		List<UserDetails> usersList = repository.findAcceptedUsersByTripId(tripId);
+		for(UserDetails userDetails : usersList) {
+			UserDetailsDto userDetailsDto = new UserDetailsDto();
+			BeanUtils.copyProperties(userDetails, userDetailsDto);
+			userDetailsDto.setUser(new UserResponseDto());
+    		BeanUtils.copyProperties(userDetails.getUser(), userDetailsDto.getUser());
+    		userDetailsDto.setAddress(new AddressDto());
+    		BeanUtils.copyProperties(userDetails.getAddress(), userDetailsDto.getAddress());
+			usersDetailsDtoList.add(userDetailsDto);
+		}
+		return usersDetailsDtoList;
 	}
 
 	

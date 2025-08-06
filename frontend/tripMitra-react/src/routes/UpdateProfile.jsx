@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // ✅ import navigate hook
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css'; // For camera icon
 import '../CSS/UserProfile.css';
 
 const UpdateProfile = () => {
-  const navigate = useNavigate(); // ✅ initialize navigate
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     userName: '',
     addressLine1: '',
@@ -45,96 +46,184 @@ const UpdateProfile = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setFormData((prev) => ({ ...prev, imageUrl }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     console.log('Updated Profile:', formData);
-    // Simulate save delay (e.g., API call)
+
     setTimeout(() => {
-      alert('Changes Saved');         // ✅ Show alert popup
-      navigate('/dashboard');         // ✅ Redirect to dashboard
-    }, 500); // Optional delay for UX feel
+      alert('Changes Saved');
+      navigate('/dashboard');
+    }, 500);
   };
 
   return (
     <div className="profile-bg">
-      <div className="container py-5 d-flex justify-content-center align-items-center min-vh-100">
-        <form className="glass-card row w-100 p-4 shadow-lg rounded" style={{ maxWidth: '1000px' }} onSubmit={handleSubmit}>
-          
-          {/* Profile Image & Name */}
-          <div className="col-md-4 text-center d-flex flex-column align-items-center justify-content-center">
-            <img src={formData.imageUrl} alt="Profile" className="profile-pic-glass shadow" />
-            <h4 className="mt-3 fw-bold">{formData.userName}</h4>
-            <span className="text-muted">{formData.userRole}</span>
+      <form className="row" onSubmit={handleSubmit}>
+        {/* Profile Image & Name */}
+        <div className="col-md-4 text-center d-flex flex-column align-items-center justify-content-center">
+          <div className="position-relative">
+            <img
+              src={formData.imageUrl}
+              alt="Profile"
+              className="profile-pic-glass shadow"
+              style={{
+                width: '150px',
+                height: '150px',
+                objectFit: 'cover',
+                borderRadius: '50%',
+              }}
+            />
+            <label
+              htmlFor="upload-image"
+              className="position-absolute bottom-0 end-0 bg-light p-2 rounded-circle shadow"
+              style={{ cursor: 'pointer' }}
+            >
+              <i className="bi bi-camera-fill"></i>
+            </label>
+            <input
+              id="upload-image"
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handleImageUpload}
+            />
+          </div>
+          <h4 className="mt-3 fw-bold">{formData.userName}</h4>
+          <span className="text-muted">{formData.userRole}</span>
+        </div>
+
+        {/* Editable Info */}
+        <div className="col-md-8 mt-4 mt-md-0">
+          <h4 className="mb-3 border-bottom pb-2 text-purple">
+            Edit Personal Information
+          </h4>
+          <div className="row g-3">
+            <div className="col-md-6">
+              <label className="form-label">User Name</label>
+              <input
+                name="userName"
+                className="form-control custom-input"
+                value={formData.userName}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="col-md-6">
+              <label className="form-label">Email</label>
+              <input
+                name="userEmail"
+                className="form-control custom-input"
+                value={formData.userEmail}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="col-md-6">
+              <label className="form-label">Gender</label>
+              <input
+                name="gender"
+                className="form-control custom-input"
+                value={formData.gender}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="col-md-6">
+              <label className="form-label">Date of Birth</label>
+              <input
+                type="date"
+                name="dateOfBirth"
+                className="form-control custom-input"
+                value={formData.dateOfBirth}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="col-md-6">
+              <label className="form-label">Phone Number</label>
+              <input
+                name="phoneNumber"
+                className="form-control custom-input"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="col-md-6">
+              <label className="form-label">Alternate Phone</label>
+              <input
+                name="alterPhone"
+                className="form-control custom-input"
+                value={formData.alterPhone}
+                onChange={handleChange}
+              />
+            </div>
           </div>
 
-          {/* Editable Info */}
-          <div className="col-md-8 mt-4 mt-md-0">
-            <h4 className="mb-3 border-bottom pb-2 text-purple">Edit Personal Information</h4>
-            <div className="row g-3">
-              <div className="col-md-6">
-                <label className="form-label">User Name</label>
-                <input name="userName" className="form-control custom-input" value={formData.userName} onChange={handleChange} />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label">Email</label>
-                <input name="userEmail" className="form-control custom-input" value={formData.userEmail} onChange={handleChange} />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label">Gender</label>
-                <input name="gender" className="form-control custom-input" value={formData.gender} onChange={handleChange} />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label">Date of Birth</label>
-                <input type="date" name="dateOfBirth" className="form-control custom-input" value={formData.dateOfBirth} onChange={handleChange} />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label">Phone Number</label>
-                <input name="phoneNumber" className="form-control custom-input" value={formData.phoneNumber} onChange={handleChange} />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label">Alternate Phone</label>
-                <input name="alterPhone" className="form-control custom-input" value={formData.alterPhone} onChange={handleChange} />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label">Profile Photo</label>
-                <input name="imageUrl" className="form-control custom-input" value={formData.imageUrl} onChange={handleChange} />
-              </div>
+          <h4 className="mt-4 mb-3 border-bottom pb-2 text-purple">
+            Edit Address Information
+          </h4>
+          <div className="row g-3">
+            <div className="col-md-6">
+              <label className="form-label">Address Line 1</label>
+              <input
+                name="addressLine1"
+                className="form-control custom-input"
+                value={formData.addressLine1}
+                onChange={handleChange}
+              />
             </div>
-
-            <h4 className="mt-4 mb-3 border-bottom pb-2 text-purple">Edit Address Information</h4>
-            <div className="row g-3">
-              <div className="col-md-6">
-                <label className="form-label">Address Line 1</label>
-                <input name="addressLine1" className="form-control custom-input" value={formData.addressLine1} onChange={handleChange} />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label">Address Line 2</label>
-                <input name="addressLine2" className="form-control custom-input" value={formData.addressLine2} onChange={handleChange} />
-              </div>
-              <div className="col-md-4">
-                <label className="form-label">District</label>
-                <input name="district" className="form-control custom-input" value={formData.district} onChange={handleChange} />
-              </div>
-              <div className="col-md-4">
-                <label className="form-label">State</label>
-                <input name="state" className="form-control custom-input" value={formData.state} onChange={handleChange} />
-              </div>
-              <div className="col-md-4">
-                <label className="form-label">Pincode</label>
-                <input name="pincode" className="form-control custom-input" value={formData.pincode} onChange={handleChange} />
-              </div>
+            <div className="col-md-6">
+              <label className="form-label">Address Line 2</label>
+              <input
+                name="addressLine2"
+                className="form-control custom-input"
+                value={formData.addressLine2}
+                onChange={handleChange}
+              />
             </div>
-
-            <div className="text-end mt-4">
-              <button type="submit" className="btn custom-btn">Save Changes</button>
+            <div className="col-md-4">
+              <label className="form-label">District</label>
+              <input
+                name="district"
+                className="form-control custom-input"
+                value={formData.district}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="col-md-4">
+              <label className="form-label">State</label>
+              <input
+                name="state"
+                className="form-control custom-input"
+                value={formData.state}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="col-md-4">
+              <label className="form-label">Pincode</label>
+              <input
+                name="pincode"
+                className="form-control custom-input"
+                value={formData.pincode}
+                onChange={handleChange}
+              />
             </div>
           </div>
-        </form>
-      </div>
+
+          <div className="text-end mt-4">
+            <button type="submit" className="btn custom-btn">
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   );
 };

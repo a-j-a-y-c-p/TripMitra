@@ -50,4 +50,6 @@ public class UserServiceImpl implements  UserService{
     public List<Trip> getAllTripsByUserId(Integer id){
     	return userRepository.getAllTripByUserId(id);
     }
+
 }
+

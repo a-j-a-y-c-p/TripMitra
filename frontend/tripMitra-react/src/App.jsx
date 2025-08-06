@@ -2,6 +2,8 @@ import './App.css';
 import { Outlet } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 import React from 'react';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
