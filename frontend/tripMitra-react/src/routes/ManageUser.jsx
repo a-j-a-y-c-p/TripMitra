@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
-import TripNavigation from '../components/TripNavigation';
-import TripList from '../components/TripList';
-import TripFilter from '../components/TripFilter';
+import Navigation from '../components/Navigation';
+import UserList from '../components/UserList';
+import UserFilter from '../components/UserFilter';
 
-const Dashboard = () => {
+const ManageUser = () => {
   const [filters, setFilters] = useState({}); // ✅ Track filters here
 
   return (
     <div className="container-fluid bg-light py-3">
       <div className="row g-3"> 
         <div className="col-sm-12 col-md-3 ">
-          <TripNavigation />
+          <Navigation />
         </div>
         <div className="col-sm-12 col-md-6 px-0 ">
-          <TripList filters={filters} /> {/* ✅ Pass filters */}
+          <UserList filters={filters} /> {/* ✅ Pass filters */}
         </div>
         <div className="col-sm-12 col-md-3">
-          <TripFilter onFilterChange={setFilters} /> {/* ✅ Receive filters */}
+          <UserFilter onFilterChange={setFilters} /> {/* ✅ Receive filters */}
         </div>
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default ManageUser;

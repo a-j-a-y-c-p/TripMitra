@@ -20,6 +20,10 @@ import PrivateRoute from './components/PrivateRoute.jsx';
 import { AuthProvider } from './contexts/AuthContext.jsx';
 import TripDetails from './routes/TripDetails.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import EditTripForm from './routes/EditTripForm.jsx';
+import MonitorTrips from './routes/MonitorTrips.jsx';
+import ManageUser from './routes/ManageUser.jsx';
+import AdminManageTrip from './routes/AdminManageTrip.jsx';
 
 
 <Route path="/trip/:id" element={<TripDetails />} />
@@ -35,18 +39,23 @@ const router = createBrowserRouter([
       { path: 'login', element: <Login /> },
 
       { path: 'dashboard', element: <PrivateRoute><Dashboard /></PrivateRoute> },
+      { path: 'manageUser', element: <PrivateRoute><ManageUser /></PrivateRoute> },
       { path: 'addtrip', element: <PrivateRoute><AddTripForm /></PrivateRoute> },
       { path: 'managetrip', element: <PrivateRoute><ManageTrip /></PrivateRoute> },
+      { path: 'adminmanagetrip', element: <PrivateRoute requiredRole={'ADMIN'}><AdminManageTrip /></PrivateRoute> },
       { path: 'profile', element: <PrivateRoute><Profile /></PrivateRoute> },
       { path: 'UpdateProfile', element: <PrivateRoute><UpdateProfile /></PrivateRoute> },
       { path: 'triphistory', element: <PrivateRoute><TripHistory /> </PrivateRoute>},
       { path: 'about', element: <About /> },
       { path: 'admin_dashboard', element: <PrivateRoute requiredRole={'ADMIN'}><Admin_Dashboard /></PrivateRoute> },
-      { path: 'trip/:id', element: <PrivateRoute><TripDetails /></PrivateRoute> }
+      { path: 'monitorTrips', element: <PrivateRoute requiredRole={'ADMIN'}><MonitorTrips /></PrivateRoute> },
+      { path: 'trip/:id', element: <PrivateRoute><TripDetails /></PrivateRoute> },
+      { path: 'edit-trip/:tripId', element: <PrivateRoute><EditTripForm /></PrivateRoute>}
 
     ],
   }
 ])
+
 
 
 createRoot(document.getElementById('root')).render(
@@ -56,3 +65,5 @@ createRoot(document.getElementById('root')).render(
     </AuthProvider>
   </StrictMode>,
 )
+
+

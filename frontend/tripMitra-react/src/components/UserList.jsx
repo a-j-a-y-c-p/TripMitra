@@ -3,7 +3,7 @@ import debounce from 'lodash/debounce';
 import axiosInstance from '../api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
 
-const TripList = ({ filters }) => {
+const UserList = ({ filters }) => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -65,7 +65,7 @@ const TripList = ({ filters }) => {
       </h4> */}
 
       <h4 className="mb-4 fw-bold text-center" style={{ fontSize: "1.5rem" }}>
-        Trip List
+        User List
       </h4>
 
       {loading && <p className="text-center text-muted">Loading trips...</p>}
@@ -129,6 +129,4 @@ const TripList = ({ filters }) => {
   );
 };
 
-export default TripList;
-
-
+export default UserList;

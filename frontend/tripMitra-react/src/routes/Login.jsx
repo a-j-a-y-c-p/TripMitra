@@ -75,32 +75,32 @@ const Login = () => {
           </div>
 
           <div className="mb-3">
-  <label>Password</label>
-  <div className="position-relative">
-    <input
-      type={showPassword ? "text" : "password"}
-      className="form-control pe-5"
-      name="userPassword"
-      required
-      onChange={handleChange}
-      value={formData.userPassword}
-    />
-    <span
-      onClick={() => setShowPassword(!showPassword)}
-      className="position-absolute"
-      style={{
-        top: "50%",
-        right: "15px",
-        transform: "translateY(-50%)",
-        cursor: "pointer",
-        color: "#6c757d",
-        fontSize: "1.1rem"
-      }}
-    >
-      {showPassword ? <FaEyeSlash /> : <FaEye />}
-    </span>
-  </div>
-</div>
+            <label>Password</label>
+            <div className="position-relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="form-control pe-5"
+                name="userPassword"
+                required
+                onChange={handleChange}
+                value={formData.userPassword}
+              />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="position-absolute"
+                style={{
+                  top: "50%",
+                  right: "15px",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                  color: "#6c757d",
+                  fontSize: "1.1rem"
+                }}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
+          </div>
 
           <button type="submit" className="btn btn-primary w-100">
             Login

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.acts.tripmitra.dto.UserDto;
+import com.acts.tripmitra.entity.Trip;
 import com.acts.tripmitra.entity.User;
 import com.acts.tripmitra.services.UserService;
 
@@ -51,9 +52,15 @@ public class UserController {
         return userService.updateUser(id, user);
     }
 
-    @DeleteMapping("deleteUser/{id}")
+    @DeleteMapping("/deleteUser/{id}")
     public void deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
     }
     
+
+    @GetMapping("/getAllTrip/{id}")
+    public List<Trip> getAllTripsByUserId(@PathVariable Integer id){
+    	return userService.getAllTripsByUserId(id);
+    }
+
 }

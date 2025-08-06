@@ -14,4 +14,5 @@ html, body {
 /* Main content expands to push footer down */
 .app-content {
   flex: 1;
+  background-color: white;
 }

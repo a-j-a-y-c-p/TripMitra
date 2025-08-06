@@ -6,9 +6,9 @@ const TripNavigation = () => {
   return (
     <div
       className="d-flex flex-column flex-shrink-0 p-4 bg-light shadow"
-      style={{ height: "100vh", width: "250px" }}
+      style={{ height: "100%"}}
     >
-      <h4 className="mb-4 fw-bold" style={{ fontSize: "1.5rem" }}>
+      <h4 className="mb-4 fw-bold text-center" style={{ fontSize: "1.5rem" }}>
         Trip Navigation
       </h4>
 

@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '../api/axiosConfig';
 import { AuthContext } from '../contexts/AuthContext';
 
-const ManageTrip = () => {
+const AdminManageTrip = () => {
   const [trips, setTrips] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -152,4 +152,4 @@ const ManageTrip = () => {
   );
 };
 
-export default ManageTrip;
+export default AdminManageTrip;

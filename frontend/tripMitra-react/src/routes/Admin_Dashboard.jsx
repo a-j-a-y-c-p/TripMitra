@@ -15,26 +15,28 @@ const Admin_Dashboard = () => {
     {
       title: 'Manage Users',
       description: 'Add, block, remove users and manage permissions',
-      path: '/manage-users',
+      path: '/manageUser',
       color: 'primary',
     },
     {
       title: 'Manage Trips',
       description: 'Create, delete, or update trip data',
-      path: '/manage-trips',
+      path: '/adminmanagetrip',
       color: 'success',
     },
     {
-      title: 'Active Trips',
-      description: 'Monitor all currently running trips',
-      path: '/active-trips',
+      title: 'Completed Trips',
+      description: 'Monitor all Completed trips',
+      path: '/monitorTrips',
       color: 'warning',
+      status: 'Completed'
     },
     {
       title: 'Cancelled Trips',
       description: 'Review all trips that were cancelled',
-      path: '/cancelled-trips',
+      path: '/monitorTrips',
       color: 'danger',
+      status: 'Cancelled'
     },
   ];
 
@@ -47,8 +49,13 @@ const Admin_Dashboard = () => {
             <div
               key={idx}
               className="col-sm-6 col-lg-4"
-              onClick={() => navigate(card.path)}
-              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                if (card.status) {
+                  navigate(card.path, { state: { status: card.status } });
+                } else {
+                  navigate(card.path);
+                }
+              }} style={{ cursor: 'pointer' }}
             >
               <div className={`card h-100 text-white bg-${card.color} shadow-lg rounded-4 hover-card transition`}>
                 <div className="card-body text-center py-5 px-4">

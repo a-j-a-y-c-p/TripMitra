@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Slider } from '@mui/material';
 
-const TripFilter = ({ onFilterChange = () => {} }) => {
+const UserFilter = ({ onFilterChange = () => {} }) => {
   const [source, setSource] = useState('');
   const [destination, setDestination] = useState('');
   const [priceRange, setPriceRange] = useState([0, 10000]);
@@ -33,7 +33,7 @@ const TripFilter = ({ onFilterChange = () => {} }) => {
       </h4> */}
 
       <h4 className="mb-4 fw-bold text-center" style={{ fontSize: "1.5rem" }}>
-        Trip Filters
+        User Filters
       </h4>
 
       {/* Source */}
@@ -110,4 +110,4 @@ const TripFilter = ({ onFilterChange = () => {} }) => {
   );
 };
 
-export default TripFilter;
+export default UserFilter;

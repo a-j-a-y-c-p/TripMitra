@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.acts.tripmitra.entity.Trip;
+import com.acts.tripmitra.dto.UserDetailsDto;
 import com.acts.tripmitra.entity.TripMember;
 import com.acts.tripmitra.services.TripMemberService;
 import com.acts.tripmitra.services.exceptions.UserAlreadyExistsException;
 import com.acts.tripmitra.utilities.MemberId;
-import com.acts.tripmitra.utilities.TripMemberStatusEnum;
 
 @RestController
 @RequestMapping("/members")
@@ -46,7 +45,7 @@ public class TripMemberController {
 	}
 
 	@GetMapping("/")
-	List<TripMember> getTripMembers(@RequestParam(name = "tripId") int tripId,
+	List<TripMember> getTripMembers(@RequestParam(name = "tripId") Integer tripId,
 			@RequestParam(name = "status", required = false) String status) {
 
 		if (null != status) {
@@ -56,8 +55,14 @@ public class TripMemberController {
 		}
 	}
 	
+	@GetMapping("/users/{tripId}")
+	List<UserDetailsDto> getAcceptedUsersByTripId(@PathVariable("tripId") Integer tripId){
+		return service.findAcceptedUsersByTripId(tripId);
+		
+	}
+	
 	@GetMapping("/{id}")
-	List<Integer> getHostedTripIdByUserId(@PathVariable int id){
+	List<Integer> getHostedTripIdByUserId(@PathVariable("id") int id){
 		
 		return service.findHostedTripsByUserId(id);
 		
@@ -69,4 +74,5 @@ public class TripMemberController {
 		return service.findAllTripsByUserId(id);
 		
 	}
+	
 }
