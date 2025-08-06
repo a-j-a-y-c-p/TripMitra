@@ -46,7 +46,7 @@ public class TripServiceImpl implements TripService {
 	public String createTrip(TripDto tripdto , String authHeader) {
 		Trip trip = new Trip();
 		BeanUtils.copyProperties(tripdto, trip);
-
+		trip.setStatus(TripStatusEnum.ACTIVE);
 		try {
 			tripRepository.save(trip);
 			
@@ -77,6 +77,17 @@ public class TripServiceImpl implements TripService {
 		return tripDtoList;
 	}
 
+	@Override
+	public TripDto getActiveTripById(Integer id) {
+		Optional<Trip> trip = tripRepository.findActiveTripById(id);
+		if(trip.isEmpty()) {
+			throw new TripNotFoundException("Trip with ID " + id + " not found.");
+		}
+		TripDto tripDto = new TripDto();
+		BeanUtils.copyProperties(trip.get(), tripDto);
+		return tripDto;
+	}
+	
 	@Override
 	public TripDto getTripById(Integer id) {
 		Optional<Trip> trip = tripRepository.findById(id);
@@ -125,6 +136,9 @@ public class TripServiceImpl implements TripService {
 			if(null != tripDto.getDescription()) {
 				trip.setDescription(tripDto.getDescription());
 			}
+			if(null != tripDto.getStatus()) {
+				trip.setStatus(tripDto.getStatus());
+			}
 			if(null != tripDto.getTripDetails()) {
 				TripDetails details = trip.getTripDetails();
 				if(null != tripDto.getTripDetails().getDestination()) {
@@ -156,9 +170,9 @@ public class TripServiceImpl implements TripService {
 
 	
 	@Override
-	public Page<Trip> getFilteredTrips(String source, String destination,float minPrice, float maxPrice,int minSeats, 
+	public Page<Trip> getFilteredActiveTrips(String source, String destination,float minPrice, float maxPrice,int minSeats, 
 										int maxSeats,Pageable pageable) {
-				return tripRepository.findFilteredTrips(source, destination,minPrice, maxPrice, minSeats, maxSeats, pageable);
+				return tripRepository.findFilteredTrips(source, destination,minPrice, maxPrice, minSeats, maxSeats,TripStatusEnum.ACTIVE.toString(), pageable);
 	}
 
 	@Override
@@ -167,13 +181,40 @@ public class TripServiceImpl implements TripService {
 			throw new TripNotFoundException("Cannot cancel Trip with ID " + tripId + " not found.");
 		}
 		try {
-			tripRepository.updateStatus(tripId, TripStatusEnum.CANCELLED);
+			tripRepository.updateStatus(tripId, TripStatusEnum.CANCELLED.toString());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			throw new TripDeletionException("Failed to cancel trip with ID " + tripId);
 		}
 		return "Trip cancelled successfully";
 	}
+
+	@Override
+	public List<TripDto> getAllCancelledTrips() {
+		List<Trip> tripList = tripRepository.findAllByStatus(TripStatusEnum.CANCELLED);
+		List<TripDto> tripDtoList = new ArrayList<>();
+		for(Trip trip: tripList) {
+			TripDto tripDto = new TripDto();
+			BeanUtils.copyProperties(trip, tripDto);
+			tripDtoList.add(tripDto);
+		}
+		return tripDtoList;
+	}
+
+	@Override
+	public List<TripDto> getAllCompletedTrips() {
+		List<Trip> tripList = tripRepository.findAllByStatus(TripStatusEnum.COMPLETED);
+		List<TripDto> tripDtoList = new ArrayList<>();
+		for(Trip trip: tripList) {
+			TripDto tripDto = new TripDto();
+			BeanUtils.copyProperties(trip, tripDto);
+			tripDtoList.add(tripDto);
+		}
+		return tripDtoList;
+	}
+
+	
+	
 
 
 }

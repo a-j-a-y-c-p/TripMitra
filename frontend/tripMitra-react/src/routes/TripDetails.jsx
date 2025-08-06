@@ -14,7 +14,8 @@ const TripDetails = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [joining, setJoining] = useState(false);
 
-  const userId = user?.id; 
+  const userId = user.userId; 
+
         
   useEffect(() => {
     const fetchTripDetails = async () => {
@@ -26,7 +27,8 @@ const TripDetails = () => {
         setTrip(trip);
         console.log("Trip Details:", trip);
 
-    //   const usersRes = await api.get(`/members/`);
+    //   const usersRes = await api.get(`/members/?tripId=${id}`);
+    //   console.log("Joined Users:", usersRes.data);
     //     const users = usersRes.data;
     //     setJoinedUsers(users);
 
@@ -44,9 +46,11 @@ const TripDetails = () => {
     try {
       setJoining(true);
       setSuccessMessage('');
+      console.log("Joining trip with ID:", id, "for user ID:", userId);
       const response = await api.post('/members/add', {
-        tripId: parseInt(id),
-        userId: parseInt(userId)
+        userId: parseInt(userId),
+        tripId: parseInt(id)
+        
       });
 
       if (response.status === 200 || response.status === 201) {
@@ -119,8 +123,8 @@ const TripDetails = () => {
             <p>No one has joined yet.</p>
           ) : (
             <ul>
-              {joinedUsers.map((username, index) => (
-                <li key={index}>{username}</li>
+              {joinedUsers.map((userId, index) => (
+                <li key={index}>{userId}</li>
               ))}
             </ul>
           )}

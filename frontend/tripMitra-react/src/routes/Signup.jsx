@@ -1,9 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import api from '../api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
-
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -19,10 +17,9 @@ const Signup = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Forcefully set body background to white
     document.body.style.backgroundColor = "#fff";
     return () => {
-      document.body.style.backgroundColor = ""; // cleanup
+      document.body.style.backgroundColor = "";
     };
   }, []);
 
@@ -105,12 +102,10 @@ const Signup = () => {
 
           <div className="mb-3">
             <label>Password</label>
-            <div className="input-group">
+            <div className="position-relative">
               <input
                 type={showPassword ? "text" : "password"}
-
-                className="form-control border-end-0 bg-white"
-
+                className="form-control pe-5"
                 name="userPassword"
                 required
                 placeholder="Enter password"
@@ -118,14 +113,15 @@ const Signup = () => {
                 onChange={handleChange}
               />
               <span
-                className="input-group-text position-absolute"
                 onClick={() => setShowPassword(!showPassword)}
+                className="position-absolute"
                 style={{
-
+                  top: "50%",
+                  right: "15px",
+                  transform: "translateY(-50%)",
                   cursor: "pointer",
-                  backgroundColor: "transparent",
-                  borderLeft: "none",
-
+                  color: "#6c757d",
+                  fontSize: "1.1rem"
                 }}
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -135,12 +131,10 @@ const Signup = () => {
 
           <div className="mb-3">
             <label>Confirm Password</label>
-            <div className="input-group">
+            <div className="position-relative">
               <input
                 type={showConfirmPassword ? "text" : "password"}
-
-                className="form-control border-end-0 bg-white"
-
+                className="form-control pe-5"
                 name="confirmPassword"
                 required
                 placeholder="Re-enter password"
@@ -148,14 +142,15 @@ const Signup = () => {
                 onChange={handleChange}
               />
               <span
-                className="input-group-text position-absolute"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="position-absolute"
                 style={{
-
+                  top: "50%",
+                  right: "15px",
+                  transform: "translateY(-50%)",
                   cursor: "pointer",
-                  backgroundColor: "transparent",
-                  borderLeft: "none",
-
+                  color: "#6c757d",
+                  fontSize: "1.1rem"
                 }}
               >
                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
