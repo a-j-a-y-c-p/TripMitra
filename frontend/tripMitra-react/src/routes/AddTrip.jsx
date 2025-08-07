@@ -96,8 +96,10 @@ const AddTripForm = () => {
       });
 
       console.log("User details:", userDetailsResponse.data);
+      const details = userDetailsResponse.data;
       if (
-        !userDetailsResponse.data ||
+        !details ||
+        !details.gender ||
         Object.keys(userDetailsResponse.data).length === 0
       ) {
         userProfileMissing = true;
@@ -154,7 +156,7 @@ const AddTripForm = () => {
       };
 
       const response = await api.post('/trips/new', payload);
-      toast.done('Trip added successfully!');
+      toast.success('Trip added successfully!');
       console.log('Trip added successfully:', response.data);
 
       // Reset form

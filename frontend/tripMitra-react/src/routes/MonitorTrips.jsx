@@ -2,7 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import api from '../api/axiosConfig';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthContext } from '../contexts/AuthContext';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Navigation from '../components/Navigation';
+
 
 const MonitorTrips = () => {
     const [trips, setTrips] = useState([]);
@@ -12,6 +14,8 @@ const MonitorTrips = () => {
     const location = useLocation();
     const status = location.state?.status;
     const userId = user?.userId;
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const fetchTrips = async () => {
@@ -30,62 +34,108 @@ const MonitorTrips = () => {
             }
         };
         fetchTrips();
-    }, [userId]);
+    }, [userId, status]);
     return (
-        <div className="container mt-4 mt-md-5">
-            <h1 className="text-center mb-4 fs-3 fs-md-2">{status} Trips</h1>
-            {error && <div className="alert alert-danger">{error}</div>}
-            {isLoading && (
-                <div className="text-center">
-                    <div className="spinner-border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
+
+
+
+        <div className="container-fluid bg-light py-3">
+            <div className="row g-3">
+                <div className="col-sm-12 col-md-3 ">
+                    <Navigation />
                 </div>
-            )}
+                <div className="col-sm-12 col-md-9 px-0 ">
 
-            <div className="row justify-content-center g-2">
-                <div className="col-12 col-md-8">
-                    {trips.length === 0 && !isLoading && (
-                        <p className="text-center">No cancelled trips found.</p>
-                    )}
-                    {trips.length > 0 && (
-                        <>
-                            {trips.map(trip => (
-                                <div key={trip.id} className="mb-4">
-                                    <div className="card shadow-sm border-0" style={{ borderRadius: '8px' }}>
-                                        <div className="card-body d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <h5 className="fw-bold mb-1" style={{ fontSize: '1.25rem' }}>
-                                                    {trip.tripDetails?.source || 'N/A'} → {trip.tripDetails?.destination || 'N/A'}
-                                                </h5>
-                                                <p className="mb-1 text-muted" style={{ fontSize: '0.9rem' }}>
-                                                    {trip.tripDetails?.startDate || 'N/A'} – {trip.tripDetails?.endDate || 'N/A'}
-                                                </p>
-                                            </div>
-
-                                            <div className="text-center">
-                                                <p className="mb-1">
-                                                    <strong>Mode:</strong> {trip.mode || 'N/A'}
-                                                </p>
-                                                <p className="mb-1">
-                                                    <strong>Members:</strong> {trip.currMembers}/{trip.maxMembers}
-                                                </p>
-                                            </div>
-
-                                            <div className="text-end">
-                                                <p className="mb-2 fw-bold" style={{ fontSize: '1.25rem' }}>
-                                                    ₹{trip.estimateCost}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div className="container mt-4 mt-md-5">
+                        <h1 className="text-center mb-4 fs-3 fs-md-2"> {status} Trips </h1>
+                        {error && <div className="alert alert-danger">{error}</div>}
+                        {isLoading && (
+                            <div className="text-center">
+                                <div className="spinner-border" role="status">
+                                    <span className="visually-hidden">Loading...</span>
                                 </div>
-                            ))}
-                        </>
-                    )}
+                            </div>
+                        )}
+
+                        {!isLoading && (
+
+                            <div className="row justify-content-center g-2">
+                                <div className="col-12 col-md-8">
+                                    {trips.length === 0 && !isLoading && (
+                                        <p className="text-center">No past trips found.</p>
+                                    )}
+                                    {trips.length > 0 && (
+                                        <>
+                                            {trips.map((trip) => (
+                                                <div key={trip.tripId} className="mb-4">
+                                                    <div
+                                                        className="card shadow-sm border-0"
+                                                        style={{ borderRadius: '8px' }}
+                                                    >
+                                                        <div className="card-body d-flex justify-content-between align-items-center">
+                                                            {/* Left section: route and dates */}
+                                                            <div>
+                                                                {/* <div>Trip : ${trip}</div> */}
+                                                                <h5
+                                                                    className="fw-bold mb-1"
+                                                                    style={{ fontSize: '1.25rem' }}
+                                                                >
+                                                                    {trip.tripDetails?.source || 'N/A'} →{' '}
+                                                                    {trip.tripDetails?.destination || 'N/A'}
+                                                                </h5>
+                                                                <p
+                                                                    className="mb-1 text-muted"
+                                                                    style={{ fontSize: '0.9rem' }}
+                                                                >
+                                                                    {trip.tripDetails?.startDate || 'N/A'} –{' '}
+                                                                    {trip.tripDetails?.endDate || 'N/A'}
+                                                                </p>
+                                                            </div>
+
+                                                            {/* Middle section: details */}
+                                                            <div className="text-center">
+                                                                <p className="mb-1">
+                                                                    <strong>Mode:</strong> {trip.mode || 'N/A'}
+                                                                </p>
+                                                                <p className="mb-1">
+                                                                    <strong>Members:</strong> {trip.currMembers}/
+                                                                    {trip.maxMembers}
+                                                                </p>
+                                                            </div>
+
+                                                            {/* Right section: cost and status */}
+                                                            <div className="text-end d-flex flex-column align-items-end">
+                                                                <p
+                                                                    className="mb-2 fw-bold"
+                                                                    style={{ fontSize: '1.25rem' }}
+                                                                >
+                                                                    ₹{trip.estimateCost}
+                                                                </p>
+
+
+                                                                <button className="btn btn-primary btn-sm mt-2"
+                                                                    onClick={() =>
+                                                                        trip?.tripId ? navigate(`/trip/${trip.tripId}`)
+                                                                            : console.warn('Trip ID is undefined')}
+                                                                >
+                                                                    View Details</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+
+                        )}
+
+                    </div>
                 </div>
             </div>
         </div>
+
     );
 };
 
