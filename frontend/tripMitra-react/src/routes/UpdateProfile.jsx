@@ -2,13 +2,13 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import '../CSS/UserProfile.css';
+import '../css/UserProfile.css';
 import { AuthContext } from '../contexts/AuthContext';
 import authAxios from '../api/axiosConfig';
 
 const UpdateProfile = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user , setUser } = useContext(AuthContext);
   const dashboardPath = user?.role === 'ADMIN' ? "/admin_dashboard" : "/dashboard";
 
   const [formData, setFormData] = useState({
@@ -116,7 +116,10 @@ const UpdateProfile = () => {
           imageUrl: formData.imageUrl,
         }),
       ]);
-
+      setUser({
+        ...user,
+        userName: formData.userName
+      })
       alert('Profile updated successfully');
       navigate(dashboardPath);
     } catch (err) {

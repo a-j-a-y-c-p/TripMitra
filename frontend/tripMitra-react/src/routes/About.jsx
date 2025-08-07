@@ -1,6 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../CSS/About.css';
+import '../css/About.css';
 
 const About = () => {
   return (

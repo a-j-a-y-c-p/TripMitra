@@ -1,9 +1,12 @@
 package com.acts.tripmitra.services.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.acts.tripmitra.dto.AddressDto;
@@ -114,20 +117,69 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
         return dto;
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
     
     public void delete(Integer id) {
     	Optional<UserDetails> optional = userDetailsRepository.findById(id);
     	if(optional.isPresent())
     		userDetailsRepository.deleteById(id);
     }
+
+	@Override
+	public List<UserDetails> getAllUserDetails() {
+		return userDetailsRepository.findAll();
+	}
+	
+	public Page<UserDetails> getFilteredUsers(String gender, Boolean isBlocked, String keyword, Pageable pageable) {
+	    return userDetailsRepository.findFilteredUsers(gender, isBlocked, keyword, pageable);
+	}
+
+	@Override
+	public String blockUserById(Integer id) {
+		Optional<UserDetails> optional = userDetailsRepository.findByUserId(id);
+		UserDetails userDetails = optional.get();
+		userDetails.setBlocked(true);
+		userDetailsRepository.save(userDetails);
+		return "User Blocked";
+	}
+
+	@Override
+	public String unBlockUserById(Integer id) {
+		Optional<UserDetails> optional = userDetailsRepository.findByUserId(id);
+		UserDetails userDetails = optional.get();
+		userDetails.setBlocked(false);
+		userDetailsRepository.save(userDetails);
+		return "User Unblocked";
+	}
+	
+	
+	public String toggleBlockStatus(Integer id) {
+	    Optional<UserDetails> userOptional = userDetailsRepository.findById(id);
+	    if (!userOptional.isPresent()) {
+	        return "User not found";
+	    }
+
+	    UserDetails user = userOptional.get();
+	    user.setBlocked(!user.isBlocked()); // toggle the status
+	    userDetailsRepository.save(user);
+
+	    return user.isBlocked() ? "User blocked" : "User unblocked";
+	}
+
+	@Override
+	public UserDetailsDto getUserDetailsByUserId(Integer id) {
+		Optional<UserDetails> optional = userDetailsRepository.findByUserId(id);
+		if(optional.isPresent()) {
+    		UserDetails details =  optional.get();
+    		UserDetailsDto dto = new UserDetailsDto();
+    		BeanUtils.copyProperties(details, dto);
+    		dto.setUser(new UserResponseDto());
+    		BeanUtils.copyProperties(details.getUser(), dto.getUser());
+    		dto.setAddress(new AddressDto());
+    		BeanUtils.copyProperties(details.getAddress(), dto.getAddress());
+    		return dto;
+    	}
+		return null;
+	}
+
 
 }

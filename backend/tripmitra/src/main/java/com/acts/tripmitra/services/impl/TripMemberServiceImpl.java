@@ -16,6 +16,7 @@ import com.acts.tripmitra.entity.TripMember;
 import com.acts.tripmitra.entity.User;
 import com.acts.tripmitra.entity.UserDetails;
 import com.acts.tripmitra.repository.TripMemberRepository;
+import com.acts.tripmitra.repository.TripRepository;
 import com.acts.tripmitra.services.TripMemberService;
 import com.acts.tripmitra.services.exceptions.TripUpdationException;
 import com.acts.tripmitra.services.exceptions.UserAlreadyExistsException;
@@ -26,7 +27,10 @@ import com.acts.tripmitra.utilities.TripMemberStatusEnum;
 public class TripMemberServiceImpl implements TripMemberService {
 	@Autowired
 	TripMemberRepository repository;
-
+	
+	@Autowired
+	TripRepository tripRepository;
+	
 	@Override
 	public void addMember(MemberId memberId) throws UserAlreadyExistsException {
 		 if (repository.existsById(memberId) ) {
@@ -44,6 +48,11 @@ public class TripMemberServiceImpl implements TripMemberService {
 	public void removeMember(MemberId memberId) {
 		repository.deleteById(memberId);
 	}
+	
+	@Override
+	public boolean memberExist(MemberId memberId) {
+		return repository.existsByMemberId(memberId);
+	}
 
 	@Override
 	public void updateStatus(TripMember tripMember) {
@@ -51,6 +60,19 @@ public class TripMemberServiceImpl implements TripMemberService {
 			repository.updateStatus(tripMember.getMemberId().getTripId(),
 					tripMember.getMemberId().getUserId(),
 					tripMember.getStatus().toString());
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			throw new TripUpdationException("Updation failed");
+		}
+		
+	}
+	
+	@Override
+	public void leave(MemberId memberId) {
+		try {
+			repository.updateStatus(memberId.getTripId(),
+					memberId.getUserId(),
+					TripMemberStatusEnum.LEAVING.toString());
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 			throw new TripUpdationException("Updation failed");
@@ -97,7 +119,11 @@ public class TripMemberServiceImpl implements TripMemberService {
 		return usersDetailsDtoList;
 	}
 
-	
-	
-	
+	@Override
+
+	public List<UserDetails> findWaitingUsersByTripId(Integer tripId) {
+		
+		return repository.findWaitingUsersByTripId(tripId);
+	}
+
 }

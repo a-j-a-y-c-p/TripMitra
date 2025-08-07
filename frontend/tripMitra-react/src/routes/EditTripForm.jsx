@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/axiosConfig';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditTripForm = () => {
   const { tripId } = useParams();
   const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const [trip, setTrip] = useState({
     mode: '',
@@ -42,19 +46,32 @@ const EditTripForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    api.put(`/trips/${tripId}`, trip)
+
+    setSubmitting(true);
+    api.put(`/trips/update/${tripId}`, trip)
       .then(() => {
-        alert('Trip updated successfully!');
-        navigate('/trips');
+        toast.success('Trip updated successfully!');
+        navigate('/managetrip');
       })
       .catch(error => {
         console.error('Update failed:', error);
         alert('Error updating trip');
       });
+
+    setSubmitting(false); // re-enable the button
+
   };
 
   return (
     <div className="container mt-5">
+      <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            closeOnClick
+            pauseOnHover
+            draggable
+            closeButton={true}
+          />
       <h3 className="text-center mb-4 fs-3 fs-md-2">Edit Trip</h3>
       <form onSubmit={handleSubmit} className="border p-4 rounded bg-light">
         <div className="mb-3">
@@ -105,7 +122,15 @@ const EditTripForm = () => {
             rows="3"
           />
         </div>
-        <button type="submit" className="btn btn-primary w-100">Update Trip</button>
+        <button
+          type="submit"
+          className="btn btn-primary w-100"
+          disabled={submitting}
+        >
+          {submitting ? 'Updating...' : 'Update Trip'}
+        </button>
+
+        {error && <p className="error-msg">{error}</p>}
       </form>
     </div>
   );

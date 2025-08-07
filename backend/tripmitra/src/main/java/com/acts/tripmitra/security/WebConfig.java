@@ -16,7 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**") // Allow all endpoints
 //                .allowedOrigins(frontendUrl) // Allow React's origin
                 .allowedOrigins("http://localhost:5173") // Allow React's origin
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow HTTP methods
+                .allowedMethods("GET", "POST", "PUT", "DELETE","PATCH", "OPTIONS") // Allow HTTP methods
                 .allowedHeaders("*") // Allow all headers
                 .allowCredentials(true); // Allow cookies and credentials if needed
     }

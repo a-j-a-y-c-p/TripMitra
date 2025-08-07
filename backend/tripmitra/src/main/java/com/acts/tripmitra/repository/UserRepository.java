@@ -16,14 +16,15 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     boolean existsByUserEmail(String email);
     
     @Query(value = """
-    		select * 
-    		from trip 
-    		where tripid in (select t.tripid 
-    					 from users u 
-    					 join tripmembers t
-    					 on u.userid=t.userid
-    					 and t.userid=:id)
-    		""" , 
-    		nativeQuery = true)
+    			select * 
+	    		from trip 
+	    		where tripid in (select t.tripid 
+	    					 	 from users u 
+	    					     join tripmembers t
+	    					     on u.userid=t.userid
+	    					     and t.userid=:id
+	    					     and t.ishost=1)
+	    		""", 
+	    		nativeQuery = true)
     List<Trip> getAllTripByUserId(Integer id);
 }

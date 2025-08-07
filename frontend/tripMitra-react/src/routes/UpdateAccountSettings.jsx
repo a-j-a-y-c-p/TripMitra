@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import authAxios from '../api/axiosConfig';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../CSS/UserProfile.css';
+import '../css/UserProfile.css';
 
 const UpdateAccountSettings = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const [contactData, setContactData] = useState({
     userEmail: '',
     phoneNumber: '',
@@ -92,7 +92,10 @@ const UpdateAccountSettings = () => {
         authAxios.put(`/users/update`, fullUser),
         authAxios.put(`/userdetails/userdetailsPut`, fullDetails),
       ]);
-
+      setUser({
+        ...user,
+        userEmail: contactData.userEmail
+      })
       alert('Contact information updated successfully');
       navigate(user?.role === 'ADMIN' ? "/admin_dashboard" : "/dashboard");
     } catch (err) {

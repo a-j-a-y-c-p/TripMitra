@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.acts.tripmitra.dto.UserDto;
 import com.acts.tripmitra.entity.Trip;
 import com.acts.tripmitra.entity.User;
+import com.acts.tripmitra.entity.UserDetails;
 import com.acts.tripmitra.repository.UserRepository;
 import com.acts.tripmitra.services.UserService;
 import com.acts.tripmitra.utilities.JwtUtil;
@@ -68,5 +69,22 @@ public class UserServiceImpl implements  UserService{
     	return userRepository.getAllTripByUserId(id);
     }
 
+    public String changeRoleOfUser(Integer id) {
+	    Optional<User> userOptional = userRepository.findById(id);
+	    if (!userOptional.isPresent()) {
+	        return "User not found";
+	    }
+
+	    User user = userOptional.get();
+	    String role = user.getUserRole();
+	    if(role.equals("USER"))
+	    	user.setUserRole("ADMIN");
+	    else
+	    	user.setUserRole("USER");
+	    userRepository.save(user);
+
+	    return role.equals("USER") ? "Role chnaged to ADMIN" : "Role chnaged to USER";
+	}
+    
 }
 
