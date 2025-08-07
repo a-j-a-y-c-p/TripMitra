@@ -44,11 +44,11 @@ const Admin_Dashboard = () => {
     <div className={`bg-light min-vh-100 py-4 px-3 ${fadeIn ? 'fade-in' : ''}`}>
       <div className="container">
         <h2 className="text-center fw-bold mb-5 fs-2">Admin Dashboard</h2>
-        <div className="row g-4 justify-content-center">
+        <div className="row g-4 justify-content-center mx-lg-5">
           {cards.map((card, idx) => (
             <div
               key={idx}
-              className="col-sm-6 col-lg-4"
+              className="col-sm-6"
               onClick={() => {
                 if (card.status) {
                   navigate(card.path, { state: { status: card.status } });
