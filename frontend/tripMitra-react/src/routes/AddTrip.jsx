@@ -96,8 +96,10 @@ const AddTripForm = () => {
       });
 
       console.log("User details:", userDetailsResponse.data);
+      const details = userDetailsResponse.data;
       if (
-        !userDetailsResponse.data ||
+        !details ||
+        !details.gender ||
         Object.keys(userDetailsResponse.data).length === 0
       ) {
         userProfileMissing = true;
