@@ -49,7 +49,7 @@ const router = createBrowserRouter([
       { path: 'managetrip', element: <PrivateRoute><ManageTrip /></PrivateRoute> },
       { path: 'adminmanagetrip', element: <PrivateRoute requiredRole={'ADMIN'}><AdminManageTrip /></PrivateRoute> },
       { path: 'profile', element: <PrivateRoute><UserProfile /></PrivateRoute> },
-      { path: 'viewProfile', element: <PrivateRoute><Profile /></PrivateRoute> },
+      { path: 'viewProfile/:id', element: <PrivateRoute><Profile /></PrivateRoute> },
       { path: 'UpdateProfile', element: <PrivateRoute><UpdateProfile /></PrivateRoute> },
       { path: 'triphistory', element: <PrivateRoute><TripHistory /> </PrivateRoute>},
       { path: 'about', element: <About /> },
