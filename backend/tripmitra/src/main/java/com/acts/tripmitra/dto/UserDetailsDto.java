@@ -12,6 +12,7 @@ public class UserDetailsDto {
     private String gender;
     private Date dateOfBirth;
     private String imageUrl;
+    private boolean isBlocked;
     private AddressDto address;
     
 }

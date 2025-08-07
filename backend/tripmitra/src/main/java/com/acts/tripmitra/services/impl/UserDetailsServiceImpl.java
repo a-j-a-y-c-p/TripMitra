@@ -28,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	private JwtUtil jwtUtil;
 
 	
-    public UserDetailsDto getUserDetailsById(Integer id) {
+    public UserDetails getUserDetailsById(Integer id) {
     	Optional<UserDetails> optional = userDetailsRepository.findById(id);
     	if(optional.isPresent()) {
     		UserDetails details =  optional.get();
@@ -38,7 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     		BeanUtils.copyProperties(details.getUser(), dto.getUser());
     		dto.setAddress(new AddressDto());
     		BeanUtils.copyProperties(details.getAddress(), dto.getAddress());
-    		return dto;
+    		return details;
     	}
     	return null;
     }
@@ -166,7 +166,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	}
 
 	@Override
-	public UserDetailsDto getUserDetailsByUserId(Integer id) {
+	public UserDetails getUserDetailsByUserId(Integer id) {
 		Optional<UserDetails> optional = userDetailsRepository.findByUserId(id);
 		if(optional.isPresent()) {
     		UserDetails details =  optional.get();
@@ -176,7 +176,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     		BeanUtils.copyProperties(details.getUser(), dto.getUser());
     		dto.setAddress(new AddressDto());
     		BeanUtils.copyProperties(details.getAddress(), dto.getAddress());
-    		return dto;
+    		return details;
     	}
 		return null;
 	}
