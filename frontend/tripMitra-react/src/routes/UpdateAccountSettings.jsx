@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import authAxios from '../api/axiosConfig';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../CSS/UserProfile.css';
+import '../css/UserProfile.css';
 
 const UpdateAccountSettings = () => {
   const navigate = useNavigate();
