@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import api from '../api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -171,7 +172,7 @@ const Signup = () => {
 
         <div className="text-center mt-3">
           <p>
-            Already have an account? <a href="/login">Login</a>
+            Already have an account? <Link to="/login">Login</Link>
           </p>
         </div>
       </div>
