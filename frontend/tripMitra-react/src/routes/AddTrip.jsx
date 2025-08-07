@@ -227,42 +227,39 @@ const AddTripForm = () => {
                   {showErrors && errors.modeEmpty && (
                     <div className="alert alert-danger">Please select a travel mode.</div>
                   )}
-                  <div className="mb-3">
-                    <label className="form-label">Current Members</label>
-                    <input
-                      type="text"
-                      name="currMembers"
-                      value={trip.currMembers}
-                      onChange={handleTripInfoChange}
-                      className="form-control"
-                      required
-                    />
-                  </div>
-                  {showErrors && errors.currMemberInvalid && (
-                    <div className="alert alert-danger">There must be at least one current member.</div>
-                  )}
-                  <div className="mb-3">
-                    <label className="form-label">Maximum Members</label>
-                    <input
-                      type="text"
-                      name="maxMembers"
-                      value={trip.maxMembers}
-                      onChange={handleTripInfoChange}
-                      className="form-control"
-                      required
-                    />
-                  </div>
-                  {showErrors && errors.memberLimit && (
-                    <div className="alert alert-danger">
-                      Current members cannot exceed maximum members.
+                  <div className="row mb-3">
+                    <div className="col-md-6">
+                      <label className="form-label">Current Members</label>
+                      <input
+                        type="text"
+                        name="currMembers"
+                        value={trip.currMembers}
+                        onChange={handleTripInfoChange}
+                        className="form-control"
+                        required
+                      />
+                      {showErrors && errors.currMemberInvalid && (
+                        <div className="alert alert-danger mt-1">At least one current member required.</div>
+                      )}
                     </div>
-                  )}
-                  {showErrors && errors.maxMemberInvalid && (
-                    <div className="alert alert-danger">
-                      Maximum members must be greater than 0.
+                    <div className="col-md-6">
+                      <label className="form-label">Maximum Members</label>
+                      <input
+                        type="text"
+                        name="maxMembers"
+                        value={trip.maxMembers}
+                        onChange={handleTripInfoChange}
+                        className="form-control"
+                        required
+                      />
+                      {showErrors && errors.memberLimit && (
+                        <div className="alert alert-danger mt-1">Current members cannot exceed max members.</div>
+                      )}
+                      {showErrors && errors.maxMemberInvalid && (
+                        <div className="alert alert-danger mt-1">Maximum members must be greater than 0.</div>
+                      )}
                     </div>
-                  )}
-
+                  </div>
                   <div className="mb-3">
                     <label className="form-label">Estimated Cost (₹)</label>
                     <input
@@ -283,61 +280,64 @@ const AddTripForm = () => {
 
                 <div className="mb-4">
                   <h4 className="mb-3 fs-5">Itinerary</h4>
-                  <div className="mb-3">
-                    <label className="form-label">Source</label>
-                    <input
-                      type="text"
-                      name="source"
-                      value={trip.tripDetails.source}
-                      onChange={handleItineraryChange}
-                      className="form-control"
-                      required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Destination</label>
-                    <input
-                      type="text"
-                      name="destination"
-                      value={trip.tripDetails.destination}
-                      onChange={handleItineraryChange}
-                      className="form-control"
-                      required
-                    />
-                  </div>
-                  {showErrors && errors.sameLocation && (
-                    <div className="alert alert-danger">Source and destination cannot be the same.</div>
-                  )}
-                  <div className="mb-3">
-                    <label className="form-label">Start Date</label>
-                    <input
-                      type="date"
-                      name="startDate"
-                      value={trip.tripDetails.startDate}
-                      onChange={handleItineraryChange}
-                      className="form-control"
-                      required
-                    />
-                  </div>
-                  {showErrors && errors.startDatePast && (
-                    <div className="alert alert-danger">Start date cannot be in the past.</div>
-                  )}
-                  <div className="mb-3">
-                    <label className="form-label">End Date</label>
-                    <input
-                      type="date"
-                      name="endDate"
-                      value={trip.tripDetails.endDate}
-                      onChange={handleItineraryChange}
-                      className="form-control"
-                      required
-                    />
-                  </div>
-                  {showErrors && errors.dateOrder && (
-                    <div className="alert alert-danger">
-                      End date must be after start date.
+                  <div className="row mb-3">
+                    <div className="col-md-6">
+                      <label className="form-label">Source</label>
+                      <input
+                        type="text"
+                        name="source"
+                        value={trip.tripDetails.source}
+                        onChange={handleItineraryChange}
+                        className="form-control"
+                        required
+                      />
                     </div>
-                  )}
+                    <div className="col-md-6">
+                      <label className="form-label">Destination</label>
+                      <input
+                        type="text"
+                        name="destination"
+                        value={trip.tripDetails.destination}
+                        onChange={handleItineraryChange}
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                    {showErrors && errors.sameLocation && (
+                      <div className="alert alert-danger mt-2">Source and destination cannot be the same.</div>
+                    )}
+                  </div>
+
+                  <div className="row mb-3">
+                    <div className="col-md-6">
+                      <label className="form-label">Start Date</label>
+                      <input
+                        type="date"
+                        name="startDate"
+                        value={trip.tripDetails.startDate}
+                        onChange={handleItineraryChange}
+                        className="form-control"
+                        required
+                      />
+                      {showErrors && errors.startDatePast && (
+                        <div className="alert alert-danger mt-1">Start date can't be in the past.</div>
+                      )}
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">End Date</label>
+                      <input
+                        type="date"
+                        name="endDate"
+                        value={trip.tripDetails.endDate}
+                        onChange={handleItineraryChange}
+                        className="form-control"
+                        required
+                      />
+                      {showErrors && errors.dateOrder && (
+                        <div className="alert alert-danger mt-1">End date must be after start date.</div>
+                      )}
+                    </div>
+                  </div>
 
                   <div className="mb-3">
                     <label className="form-label">Trip Description</label>
@@ -368,7 +368,7 @@ const AddTripForm = () => {
           </div>
         </div>
       </div>
-      
+
 
     </div>
   );
