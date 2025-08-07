@@ -15,7 +15,7 @@ const TripDetails = () => {
   const [joining, setJoining] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
-  const [alreadyJoined, setAlreadyJoined] = useState(false); // ✅ Added state
+  const [alreadyJoined, setAlreadyJoined] = useState(false); 
   const [withdrawing, setWithdrawing] = useState(false);
   const [withdrawRequested, setWithdrawRequested] = useState(false);
 
@@ -31,7 +31,7 @@ const TripDetails = () => {
       const usersRes = await api.get(`/members/users/${id}`);
       setJoinedUsers(usersRes.data);
 
-      // ✅ Check if current user has joined the trip
+   
       const existsRes = await api.post('/members/exists', {
   userId: userId,
   tripId: id
@@ -39,7 +39,7 @@ const TripDetails = () => {
 
 if (existsRes.data === 'pending') {
   setWithdrawRequested(true);
-  setAlreadyJoined(true); // Still part of trip
+  setAlreadyJoined(true); 
 } else if (existsRes.data === true) {
   setAlreadyJoined(true);
   setWithdrawRequested(false);
@@ -111,7 +111,7 @@ if (existsRes.data === 'pending') {
   }
 
   setJoining(true);
-  setWithdrawing(true); // ✅ Start showing "Withdraw Trip Requested"
+  setWithdrawing(true); 
   setError('');
   setSuccessMessage('');
 
@@ -132,7 +132,7 @@ if (existsRes.data === 'pending') {
     setError(err.response?.data?.message || err.message);
   } finally {
     setJoining(false);
-    // Optional: setWithdrawing(false) if you want to reset it after request
+    
   }
 };
 
