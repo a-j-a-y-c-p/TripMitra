@@ -8,7 +8,7 @@ import authAxios from '../api/axiosConfig';
 
 const UpdateProfile = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user , setUser } = useContext(AuthContext);
   const dashboardPath = user?.role === 'ADMIN' ? "/admin_dashboard" : "/dashboard";
 
   const [formData, setFormData] = useState({
@@ -116,7 +116,10 @@ const UpdateProfile = () => {
           imageUrl: formData.imageUrl,
         }),
       ]);
-
+      setUser({
+        ...user,
+        userName: formData.userName
+      })
       alert('Profile updated successfully');
       navigate(dashboardPath);
     } catch (err) {
