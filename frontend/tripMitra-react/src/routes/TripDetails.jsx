@@ -23,39 +23,44 @@ const TripDetails = () => {
 
   useEffect(() => {
   const fetchTripDetails = async () => {
-    try {
-      const tripRes = await api.get(`/trips/${id}`);
-      const tripData = tripRes.data;
-      setTrip(tripData);
+  try {
+    const tripRes = await api.get(`/trips/${id}`);
+    const tripData = tripRes.data;
+    setTrip(tripData);
 
-      const usersRes = await api.get(`/members/users/${id}`);
-      setJoinedUsers(usersRes.data);
+    const usersRes = await api.get(`/members/users/${id}`);
+    const members = usersRes.data;
 
-   
-      const existsRes = await api.post('/members/exists', {
-  userId: userId,
-  tripId: id
-});
-
-if (existsRes.data === 'pending') {
-  setWithdrawRequested(true);
-  setAlreadyJoined(true); 
-} else if (existsRes.data === true) {
-  setAlreadyJoined(true);
-  setWithdrawRequested(false);
-} else {
-  setAlreadyJoined(false);
-  setWithdrawRequested(false);
-}
-      setAlreadyJoined(existsRes.data === true);
-    } catch (err) {
-      console.error(err);
-      setError('Failed to load trip details.');
-    } finally {
-      setLoading(false);
+    // ✅ Mark the first user as host
+    if (members.length > 0) {
+      members[0].host = true;
     }
-  };
 
+    setJoinedUsers(members);
+
+    const existsRes = await api.post('/members/exists', {
+      userId: userId,
+      tripId: id
+    });
+
+    if (existsRes.data === 'pending') {
+      setWithdrawRequested(true);
+      setAlreadyJoined(true); 
+    } else if (existsRes.data === true) {
+      setAlreadyJoined(true);
+      setWithdrawRequested(false);
+    } else {
+      setAlreadyJoined(false);
+      setWithdrawRequested(false);
+    }
+
+  } catch (err) {
+    console.error(err);
+    setError('Failed to load trip details.');
+  } finally {
+    setLoading(false);
+  }
+};
   if (userId) {
     fetchTripDetails();
   }
@@ -90,13 +95,18 @@ if (existsRes.data === 'pending') {
     });
 
     const details = userDetailsResponse.data;
+console.log("User details response:", details);
 
-    // 👇 Check if userDetails exist or are valid
-    if (!details || !details.user || !details.user.userId) {
-      setError('Please update your profile before joining a trip.');
-      setJoining(false);
-      return;
-    }
+// Check for required fields: gender, phoneNumber, or any required by your backend
+if (
+  !details ||
+  !details.gender || // 👈 Add checks for whatever your backend expects
+  !details.phoneNumber
+) {
+  setError('Please update your profile before joining a trip.');
+  setJoining(false);
+  return;
+}
 
     // Proceed with joining the trip
     const response = await api.post('/members/add', {
@@ -250,7 +260,10 @@ if (existsRes.data === 'pending') {
         className="member-image"
       />
       <div className="member-info">
-        <p><strong>{u.user?.userName}</strong></p>
+        <p>
+          <strong>{u.user?.userName}</strong>{' '}
+          {u.host && <span className="host-badge"> (Host)</span>}
+        </p>
         <p>{u.user?.userEmail}</p>
         <p>{u.gender}</p>
       </div>
