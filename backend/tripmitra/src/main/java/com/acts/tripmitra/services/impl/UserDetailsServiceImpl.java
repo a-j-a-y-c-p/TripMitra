@@ -150,5 +150,36 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		userDetailsRepository.save(userDetails);
 		return "User Unblocked";
 	}
+	
+	
+	public String toggleBlockStatus(Integer id) {
+	    Optional<UserDetails> userOptional = userDetailsRepository.findById(id);
+	    if (!userOptional.isPresent()) {
+	        return "User not found";
+	    }
+
+	    UserDetails user = userOptional.get();
+	    user.setBlocked(!user.isBlocked()); // toggle the status
+	    userDetailsRepository.save(user);
+
+	    return user.isBlocked() ? "User blocked" : "User unblocked";
+	}
+
+	@Override
+	public UserDetailsDto getUserDetailsByUserId(Integer id) {
+		Optional<UserDetails> optional = userDetailsRepository.findByUserId(id);
+		if(optional.isPresent()) {
+    		UserDetails details =  optional.get();
+    		UserDetailsDto dto = new UserDetailsDto();
+    		BeanUtils.copyProperties(details, dto);
+    		dto.setUser(new UserResponseDto());
+    		BeanUtils.copyProperties(details.getUser(), dto.getUser());
+    		dto.setAddress(new AddressDto());
+    		BeanUtils.copyProperties(details.getAddress(), dto.getAddress());
+    		return dto;
+    	}
+		return null;
+	}
+
 
 }

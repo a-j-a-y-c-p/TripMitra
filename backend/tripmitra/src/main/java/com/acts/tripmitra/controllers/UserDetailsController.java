@@ -36,6 +36,11 @@ public class UserDetailsController {
         return userDetailsService.getUserDetailsById(id);
     }
     
+    @GetMapping("/byUser/{id}")
+    public UserDetailsDto getUserDetailsByUserId(@PathVariable Integer id) {
+        return userDetailsService.getUserDetailsByUserId(id);
+    }
+    
 
     @GetMapping("/getAllUser")
     public List<UserDetails> getAllUserDetails(){
@@ -83,9 +88,14 @@ public class UserDetailsController {
         return ResponseEntity.ok(result);
     }
     
+//    @PatchMapping("/blockUser/{id}")
+//    public String blockUser(@PathVariable Integer id ){
+//    	return userDetailsService.blockUserById(id);
+//    }
+    
     @PatchMapping("/blockUser/{id}")
-    public String blockUser(@PathVariable Integer id ){
-    	return userDetailsService.blockUserById(id);
+    public String toggleUserBlockStatus(@PathVariable Integer id) {
+        return userDetailsService.toggleBlockStatus(id);
     }
     
     @PatchMapping("/unBlockUser/{id}")
