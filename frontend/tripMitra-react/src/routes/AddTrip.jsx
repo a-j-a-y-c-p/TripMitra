@@ -78,61 +78,61 @@ const AddTripForm = () => {
   };
   const [showErrors, setShowErrors] = useState(false);
   const validate = async () => {
-  const currMembers = parseInt(trip.currMembers || 0);
-  const maxMembers = parseInt(trip.maxMembers || 0);
-  const estimateCost = parseInt(trip.estimateCost || 0);
-  const startDate = new Date(trip.tripDetails.startDate);
-  const endDate = new Date(trip.tripDetails.endDate);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+    const currMembers = parseInt(trip.currMembers || 0);
+    const maxMembers = parseInt(trip.maxMembers || 0);
+    const estimateCost = parseInt(trip.estimateCost || 0);
+    const startDate = new Date(trip.tripDetails.startDate);
+    const endDate = new Date(trip.tripDetails.endDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-  // Step 1: Try to get user details from backend
-  let userProfileMissing = false;
-  try {
-    const userDetailsResponse = await api.get("/userdetails/b", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    // Step 1: Try to get user details from backend
+    let userProfileMissing = false;
+    try {
+      const userDetailsResponse = await api.get("userdetails/userdetailsGet", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    console.log("User details:", userDetailsResponse.data);
-    if (
-      !userDetailsResponse.data ||
-      Object.keys(userDetailsResponse.data).length === 0
-    ) {
+      console.log("User details:", userDetailsResponse.data);
+      if (
+        !userDetailsResponse.data ||
+        Object.keys(userDetailsResponse.data).length === 0
+      ) {
+        userProfileMissing = true;
+      }
+    } catch (err) {
+      console.error("Error fetching user details:", err);
       userProfileMissing = true;
     }
-  } catch (err) {
-    console.error("Error fetching user details:", err);
-    userProfileMissing = true;
-  }
 
-  if (userProfileMissing) {
-    toast.info("Please update your profile before adding a trip.");
-  }
+    if (userProfileMissing) {
+      toast.info("Please update your profile before adding a trip.");
+    }
 
 
-  // Step 2: Form validation
-  const errorsToSet = {
-    memberLimit: currMembers > maxMembers,
-    dateOrder: endDate < startDate,
-    startDatePast: startDate < today,
-    estCostInvalid: estimateCost < 100,
-    maxMemberInvalid: maxMembers < 1,
-    currMemberInvalid: currMembers < 1,
-    modeEmpty: trip.mode.trim() === "",
-    shortDescription: trip.description.trim().length < 10,
-    sameLocation:
-      trip.tripDetails.source.trim().toLowerCase() ===
-      trip.tripDetails.destination.trim().toLowerCase(),
+    // Step 2: Form validation
+    const errorsToSet = {
+      memberLimit: currMembers > maxMembers,
+      dateOrder: endDate < startDate,
+      startDatePast: startDate < today,
+      estCostInvalid: estimateCost < 100,
+      maxMemberInvalid: maxMembers < 1,
+      currMemberInvalid: currMembers < 1,
+      modeEmpty: trip.mode.trim() === "",
+      shortDescription: trip.description.trim().length < 10,
+      sameLocation:
+        trip.tripDetails.source.trim().toLowerCase() ===
+        trip.tripDetails.destination.trim().toLowerCase(),
+    };
+
+    setErrors(errorsToSet);
+
+    const hasAnyValidationError = Object.values(errorsToSet).some(Boolean);
+
+    return !(userProfileMissing || hasAnyValidationError);
   };
-
-  setErrors(errorsToSet);
-
-  const hasAnyValidationError = Object.values(errorsToSet).some(Boolean);
-
-  return !(userProfileMissing || hasAnyValidationError);
-};
 
 
 
@@ -187,7 +187,15 @@ const AddTripForm = () => {
   return (
 
     <div className="container mt-4 mt-md-5">
-      <ToastContainer position="top-center" autoClose={3000} />
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        closeOnClick
+        pauseOnHover
+        draggable
+        closeButton={true}
+      />
+
       <div className="row justify-content-center">
         <div className="col-12 col-md-8 col-lg-6">
           <div className="card shadow-sm">
@@ -358,7 +366,7 @@ const AddTripForm = () => {
           </div>
         </div>
       </div>
-      <ToastContainer position="top-center" autoClose={3000} />
+      
 
     </div>
   );
