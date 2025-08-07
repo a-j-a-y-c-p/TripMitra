@@ -156,7 +156,7 @@ const AddTripForm = () => {
       };
 
       const response = await api.post('/trips/new', payload);
-      toast.done('Trip added successfully!');
+      toast.success('Trip added successfully!');
       console.log('Trip added successfully:', response.data);
 
       // Reset form
