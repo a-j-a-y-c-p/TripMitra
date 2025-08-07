@@ -17,6 +17,7 @@ import com.acts.tripmitra.dto.UserDetailsDto;
 import com.acts.tripmitra.entity.TripMember;
 import com.acts.tripmitra.entity.UserDetails;
 import com.acts.tripmitra.services.TripMemberService;
+import com.acts.tripmitra.services.TripService;
 import com.acts.tripmitra.services.exceptions.UserAlreadyExistsException;
 import com.acts.tripmitra.utilities.MemberId;
 
@@ -26,6 +27,8 @@ public class TripMemberController {
 
 	@Autowired
 	TripMemberService service;
+	@Autowired
+	TripService tripService;
 
 	@PostMapping("/add")
 	public String addTripMember(@RequestBody MemberId memberId) throws UserAlreadyExistsException {
@@ -48,6 +51,10 @@ public class TripMemberController {
 	@PutMapping("/update")
 	public String updateTripMember(@RequestBody TripMember tripMember) {
 		service.updateStatus(tripMember);
+		if(tripMember.getStatus().toString() == "ACCEPTED") {
+			tripService.updateCurrMembers(tripMember.getMemberId().getTripId());
+		}
+		
 		return "Member Updated!";
 	}
 
