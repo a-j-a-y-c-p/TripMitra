@@ -2,12 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import api from '../api/axiosConfig';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthContext } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const TripHistory = () => {
   const [trips, setTrips] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const userId = user?.userId;
 
@@ -61,7 +63,7 @@ const TripHistory = () => {
           {trips.length > 0 && (
             <>
               {trips.map((trip) => (
-                <div key={trip.id} className="mb-4">
+                <div key={trip.tripId} className="mb-4">
                   <div
                     className="card shadow-sm border-0"
                     style={{ borderRadius: '8px' }}
@@ -69,6 +71,7 @@ const TripHistory = () => {
                     <div className="card-body d-flex justify-content-between align-items-center">
                       {/* Left section: route and dates */}
                       <div>
+                        {/* <div>Trip : ${trip}</div> */}
                         <h5
                           className="fw-bold mb-1"
                           style={{ fontSize: '1.25rem' }}
@@ -105,20 +108,29 @@ const TripHistory = () => {
                           ₹{trip.estimateCost}
                         </p>
                         {trip.status && (
-                          <span
-                            className={`badge ${
-                              trip.status === 'COMPLETED' || trip.endDate < Date.now
-                                ? 'bg-primary'
-                                : trip.status === 'CANCELLED'
-                                ? 'bg-danger'
-                                : 'bg-success'
-                            }`}
-                            style={{ fontSize: '0.8rem' }}
+                          <p
+                            className="fw-bold mb-0"
+                            style={{
+                              fontSize: '0.9rem',
+                              color:
+                                trip.status === 'COMPLETED'
+                                  ? 'orange'
+                                  : trip.status === 'CANCELLED'
+                                    ? 'red'
+                                    : 'green',
+                            }}
                           >
-                            {trip.status.charAt(0) +
-                              trip.status.slice(1).toLowerCase()}
-                          </span>
+                            {trip.status.charAt(0) + trip.status.slice(1).toLowerCase()}
+                          </p>
                         )}
+
+
+                        <button className="btn btn-primary btn-sm mt-2"
+                          onClick={() =>
+                            trip?.tripId ? navigate(`/trip/${trip.tripId}`)
+                              : console.warn('Trip ID is undefined')}
+                        >
+                          View Details</button>
                       </div>
                     </div>
                   </div>

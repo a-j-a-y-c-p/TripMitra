@@ -1,0 +1,270 @@
+A PROJECT REPORT
+ON
+Trip Mitra
+Submitted in partial fulfillment for the award of
+Post Graduate Diploma in Advanced Computing
+from
+ 
+ 
+ 
+ 
+CENTRE FOR DEVELOPMENT OF ADVANCED COMPUTING
+Panchawati, Pashan, PUNE
+Under the Guidance of
+Mr. Salman Kavtekar
+CDAC Pune
+Presented By 
+ 
+ 
+Sumit Kumar
+250240120197
+Harshit Srivastava
+250240120077
+Ajay Saini
+250240120018
+Rishabh Sawantdesai
+250240120154
+Kushagra Srivastava
+250240120097
+ 
+ 
+ 
+ 
+ 
+ 
+Centre of Development of Advanced Computing (C-DAC), Pune
+CERTIFICATE
+TO WHOMSOEVER IT MAY CONCERN
+This is to certify that
+Sumit Kumar (PRN: 250240120197),
+Harshit Srivastava (PRN: 250240120077),
+Ajay Saini (PRN: 250240120018),
+Rishabh Sawantdesai (PRN: 250240120154)
+and
+Kushagra Srivastava (PRN: 250240120097)
+have successfully completed their project titled
+“Trip Mitra”
+
+Under the Guidance of
+Mr. Salman Kavtekar
+CDAC Pune
+
+Project Guide​HOD ACTS
+TABLE OF CONTENTS
+Sr. No
+Contents
+1.
+Introduction
+2.
+Software Requirement Specification
+3.
+Tools and technologies used
+4.
+Project flow diagram
+5.
+ER Diagram
+6.
+Advantages
+7.
+Screenshots
+8.
+Future Scope
+9.
+Conclusion
+10.
+References
+ 
+1. Introduction
+ 
+Travel is not just about reaching a destination; it is about the journey, the planning, and the people involved. However, coordinating a group trip can be challenging. From setting the dates and destinations to finalizing budgets and managing members, each step requires planning, communication, and clarity. These tasks become even more difficult when group members are spread across different locations or have conflicting schedules. Traditional methods like WhatsApp groups, shared spreadsheets, or phone calls often result in confusion, data loss, or lack of accountability.
+
+To address these issues, Trip Mitra has been conceptualized as an end-to-end digital solution for group trip planning and management. The word “Mitra” means “friend” in Hindi, and true to its name, this application acts as a smart companion that assists users at every step of their travel planning journey. Whether it's creating a trip, adding members, setting travel dates, selecting transportation modes, or estimating costs, Trip Mitra centralizes all functionalities under a single platform.
+
+Trip Mitra enables users to register and log in securely, create trip profiles, define maximum participant limits, and allow others to join ongoing trips based on availability. It also maintains the current member count, tracks important trip details, and gives users a clean, organized dashboard to manage their journeys. This structured approach not only saves time but also ensures better coordination among trip participants.
+
+The application leverages a modern tech stack to ensure performance and scalability. The frontend is developed using React.js, offering a responsive and intuitive user interface. The backend is powered by Spring Boot, which manages the business logic and API endpoints. All data is stored securely in a MySQL database, and API communication is handled via RESTful services. Together, these technologies make the application efficient, reliable, and easy to maintain.
+
+In a world where people crave for experiences and adventures, Trip Mitra stands out as a smart travel assistant designed for modern users — especially college students, travel enthusiasts, and working professionals who often plan trips with peers. By reducing the complexity of group travel planning and making it a collaborative digital experience, Trip Mitra delivers on its promise of making every trip smoother, more enjoyable, and more organized.
+
+
+
+2. Software/Hardware Requirement
+​
+Server:
+Processor: Intel Core i5 or equivalent AMD processor.
+RAM: Minimum 8GB RAM.
+Storage: SSD storage for improved performance.
+Network: Ethernet or Wi-Fi connectivity.
+Operating System: Windows 11 and MacOS.
+ 
+Client Devices:
+Processor: Dual-core processor or higher.
+RAM: Minimum 4GB RAM.
+Storage: Sufficient storage for caching and local data.
+Network: Ethernet or Wi-Fi connectivity.
+Browser: Compatible with latest versions of popular browsers like Google Chrome, Mozilla Firefox, and Safari.
+3. 
+4. Tools and technologies used
+● Spring Boot
+● Spring Data JPA
+● RESTful Web
+● Spring Web
+● Railway
+● JWT
+● Git
+● Spring Security
+● React JS
+● HTML and CSS
+● Axios
+● Bootstrap
+ 
+1. Spring Boot: Utilized to develop the backend of the application, providing a robust framework for building Java-based web applications with ease.
+2. Spring Data JPA: Implemented for data access, allowing seamless interaction with the MySQL database to store and retrieve sports data efficiently.
+3. RESTful Web Services: In the context of an e-commerce web application like Book Charm, RESTful web services play a crucial role in facilitating communication between the frontend and backend components. These services adhere to the principles of Representational State Transfer (REST), which emphasizes a stateless, standardized approach for building web services.
+ 
+4. Spring Web: Used for handling web requests and responses, managing controllers, and serving static resources to the frontend.
+5. Railway Cloud Database (MySQL): Chosen as the relational database management system to host and manage data on the cloud, including user details, seller details, book information, and admin records. Railway provides a scalable and developer-friendly cloud infrastructure for deploying and maintaining MySQL databases seamlessly. JWT (JSON Web Tokens): Implemented for secure user authentication and authorization, ensuring that only authenticated users can access into account and buy books and seller can add books.
+6. Axios: In the context of a web application like Book Charm, Axios is likely used as a client-side HTTP library. Axios simplifies the process of making asynchronous HTTP requests from the frontend (React.js) to the backend (Node.js/Express.js). It is instrumental in fetching data from the server, handling API calls, and facilitating smooth communication between the frontend and backend components, ensuring efficient data retrieval and seamless user interactions in the e-commerce application
+7. React: Employed to build the frontend of the application, offering a component-based architecture for creating dynamic and interactive user interfaces.
+8. CSS: Used for styling the frontend components with utility-first  CSS classes, allowing for rapid prototyping and customization of the user interface.
+9. Material UI: Leveraged to enhance the visual appeal and user experience of the application by incorporating pre-designed React components following Google's Material Design principles.
+10. Git: Implemented as a version control system to track changes in the source code, enabling collaboration among developers, and facilitating code management and deployment workflows.
+5. Project Database Diagram
+ 
+ 
+ 
+ 
+6. Project ER (Entity Relationship) Diagram
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+7. Advantages
+ 
+Use of MySQL Cloud Database (Railway)
+
+The Trip Mitra application utilizes the Railway cloud-based MySQL database to ensure efficient, secure, and scalable data handling. Below are the core advantages of integrating Railway into the system architecture:
+
+1. Reliability: Railway provides a highly reliable and available MySQL database service, ensuring smooth and uninterrupted access to trip data, user profiles, and membership records.
+2. Scalability: As the number of users and trips increases, Railway’s cloud infrastructure allows Trip Mitra to scale seamlessly without manual server provisioning.
+3. Manage Services: Railway offers fully managed MySQL services, including automated backups, updates, uptime monitoring, and performance optimization — allowing the development team to focus on building features rather than managing infrastructure.
+4. Security: With secure connections (SSL/TLS), encrypted storage, and access control mechanisms, Railway ensures all sensitive data such as user credentials and trip details are well-protected.
+5. Automatic Backups: Trip Mitra benefits from Railway’s automatic and scheduled backups, which safeguard against data loss and enable quick recovery in case of failure. 
+6. API Compatibility: Railway’s standard MySQL support ensures seamless integration with the Spring Boot backend APIs of Trip Mitra, without requiring changes in the data access logic.
+7. Developer-Friendly Interface: Railway offers a clean, intuitive dashboard where developers can manage databases, set environment variables, and monitor logs, making the development and deployment process more efficient.
+8. Cost-Effective: Railway uses a usage-based pricing model, allowing Trip Mitra to minimize cloud infrastructure costs while maintaining performance and reliability.
+9. Data Durability: By leveraging redundant storage and secure cloud infrastructure, Railway enhances data durability and availability for critical trip and user data.
+Use of JWT for Authorization
+
+1. Stateless Authentication: JWT enables stateless user authentication, removing the need for server-side sessions and improving the application’s ability to scale under user load.
+2. Enhanced Security: JWTs are signed and tamper-proof, ensuring data integrity and preventing unauthorized access. Since they avoid storing sensitive data in plaintext, the risk of exposure is minimized.
+3. Cross-Domain Compatibility: JWTs are easily transmitted via HTTP headers, cookies, or URLs, making them ideal for frontend-backend communication in modern web applications like Trip Mitra.
+.
+
+8. Screenshots
+ 
+A) User Related Functionalities
+Fig-1: Home Page
+ 
+Fig2 – User Registration page
+Fig 3 –User login page
+ 
+Fig 4 –User Authenticated page
+ 
+Fig 5 –Book added to cart by user
+ 
+Fig 6 –Cart
+ 
+B) Seller Related Functionalities
+Fig 7 – Seller Registration Page
+Fig 8 – Seller Login Page
+ 
+ 
+Fig 9 – Seller can add book
+C) Admin Related Functionalities
+Fig 10 – Admin Login page
+ 
+Fig 11 – Admin Dashboard (Admin can verify seller)
+ 
+D) Use Case Diagram
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+9. Future Scope:
+While Trip Mitra has achieved its core objectives of simplifying group trip planning and management, there is significant potential to enhance and expand the application further. The future scope of the project includes both functional and technical improvements that can make the system more powerful, user-friendly, and scalable.
+
+1. Real-Time Chat & Notifications: Integrating a real-time messaging system would allow users to communicate instantly within a trip group. Push notifications for trip updates, member joins, or changes in itinerary can also enhance user engagement.
+2. Expense Tracking & Splitting: Adding features like shared expense management (similar to Split wise) would allow users to track and split trip-related costs among members — a common and useful requirement in group travel.
+3. Map Integration & Route Planning: Integration with Google Maps or Map-box APIs can offer route visualization, estimated travel times, and suggestions for sightseeing, restaurants, or accommodations along the way.
+4. Payment Gateway Integration: Enabling secure payments (via Razor pay, Paytm, etc.) for trip contributions, bookings, or shared costs would extend the platform's functionality and bring it closer to real-world usage.
+5. Trip Review & Rating System: Allowing users to rate trips or provide feedback can help improve trip quality, assist in moderation, and build trust among users.
+6. Social Media Sharing: Providing options to share trip plans or achievements on social media platforms can increase user engagement and promote the application organically.
+7. Mobile App Development: A cross-platform mobile version (using React Native or Flutter) can significantly boost accessibility and allow users to manage their trips on the go.
+8. AI-Based Trip Suggestions: Implementing machine learning algorithms in the future could allow personalized trip recommendations based on past behaviour, interests, budget, and location.
+9. Multilingual Support: Supporting multiple languages would make the app more inclusive and accessible to users from various regions across India and beyond.
+10. Admin Analytics Dashboard: An advanced admin panel with visual analytics could help monitor trip trends, user activity, and system performance, supporting better decision-making and future improvements.
+10. Conclusion
+The development of Trip Mitra has successfully demonstrated how modern web technologies can be leveraged to simplify and enhance the group travel planning experience. The project was conceptualized to address real-world challenges in coordinating trips—such as managing members, tracking trip details, estimating costs, and ensuring smooth communication—and it delivers on these goals through a clean, intuitive, and responsive user interface backed by robust backend services.
+
+By integrating a cloud-hosted MySQL database via Railway, the application ensures scalability, reliability, and data security. The use of Spring Boot for the backend allows for efficient REST API development, while the React.js frontend offers a dynamic and user-friendly experience. Additionally, implementing JWT-based authentication provides secure, stateless user access across all components of the platform.
+
+Throughout the development lifecycle, the team focused on modular architecture, maintainability, and real-time interaction—key elements that make Trip Mitra a practical and deployable solution for collaborative trip planning.
+
+In conclusion, Trip Mitra not only meets the objectives defined at the outset but also lays a strong foundation for further extension into features like real-time chat, expense tracking, and location sharing. The project has been a valuable learning experience, enabling hands-on exposure to full-stack development, cloud integration, and secure web application design.
+11. References
+1. React.js Documentation
+https://react.dev/learn
+2. Spring Boot Documentation
+https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle
+3. Spring Security Documentation
+https://docs.spring.io/spring-security/reference/index.html
+4. MySQL Official Documentation
+https://dev.mysql.com/doc/
+5. Railway Cloud Hosting Platform
+https://railway.app
+6. JWT.io – Introduction to JSON Web Tokens
+https://jwt.io/introduction
+7. Axios API Library (for React)
+https://axios-http.com/docs/intro
+8. Material UI (MUI) React Components
+https://mui.com/material-ui/getting-started/overview/
+9. Postman API Testing Tool
+https://www.postman.com/
+10. GitHub – Version Control
+https://github.com/
+11. Geeks for Geeks & Stack Overflow: Used for resolving code-related queries and understanding implementation logic.

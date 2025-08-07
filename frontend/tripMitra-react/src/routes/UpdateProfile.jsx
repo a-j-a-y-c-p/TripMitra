@@ -1,48 +1,74 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css'; // For camera icon
-import '../CSS/UserProfile.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import '../css/UserProfile.css';
+import { AuthContext } from '../contexts/AuthContext';
+import authAxios from '../api/axiosConfig';
 
 const UpdateProfile = () => {
   const navigate = useNavigate();
+  const { user , setUser } = useContext(AuthContext);
+  const dashboardPath = user?.role === 'ADMIN' ? "/admin_dashboard" : "/dashboard";
+
   const [formData, setFormData] = useState({
     userName: '',
+    userEmail: '',
+    gender: '',
+    dateOfBirth: '',
+    phoneNumber: '',
+    alterPhone: '',
     addressLine1: '',
     addressLine2: '',
     district: '',
     state: '',
     pincode: '',
-    dateOfBirth: '',
-    gender: '',
-    phoneNumber: '',
-    alterPhone: '',
-    userEmail: '',
-    userPassword: '',
     imageUrl: '',
     userRole: '',
   });
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const dummyUser = {
-      userName: 'Aman Gupta',
-      addressLine1: 'Flat No. 203, Palm Residency',
-      addressLine2: 'Near Infinity Mall, Andheri West',
-      district: 'Mumbai Suburban',
-      state: 'Maharashtra',
-      pincode: '400053',
-      dateOfBirth: '1992-09-21',
-      gender: 'Male',
-      phoneNumber: '+91-9876543210',
-      alterPhone: '+91-9123456780',
-      userEmail: 'ag@gmail.com',
-      userPassword: 'password123',
-      imageUrl: 'https://randomuser.me/api/portraits/men/73.jpg',
-      userRole: 'User',
+    const userId = user?.userId;
+    if (!userId) {
+      console.warn('User not found');
+      setLoading(false);
+      return;
+    }
+
+    const fetchProfileData = async () => {
+      try {
+        const [basicRes, addressRes, prefRes] = await Promise.all([
+          authAxios.get(`/users/getUser/${userId}`),
+          authAxios.get(`/api/addresses/addressGet`),
+          authAxios.get(`/userdetails/userdetailsGet`),
+        ]);
+
+        setFormData({
+          userName: basicRes.data.userName || '',
+          userEmail: basicRes.data.userEmail || '',
+          userRole: basicRes.data.userRole || '',
+          gender: prefRes.data.gender || '',
+          dateOfBirth: prefRes.data.dateOfBirth || '',
+          phoneNumber: prefRes.data.phoneNumber || '',
+          alterPhone: prefRes.data.alterPhone || '',
+          imageUrl: prefRes.data.imageUrl || '',
+          addressLine1: addressRes.data.addressLine1 || '',
+          addressLine2: addressRes.data.addressLine2 || '',
+          district: addressRes.data.district || '',
+          state: addressRes.data.state || '',
+          pincode: addressRes.data.pincode || '',
+        });
+      } catch (err) {
+        console.error('Failed to fetch profile:', err);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    setFormData(dummyUser);
-  }, []);
+    fetchProfileData();
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,15 +83,52 @@ const UpdateProfile = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Updated Profile:', formData);
 
-    setTimeout(() => {
-      alert('Changes Saved');
-      navigate('/dashboard');
-    }, 500);
+    const userId = user?.userId;
+    if (!userId) return alert('User not found');
+
+    const today = new Date().toISOString().split("T")[0];
+    if (formData.dateOfBirth > today) {
+      return alert("Date of birth cannot be a future date");
+    }
+
+    try {
+      await Promise.all([
+        authAxios.put(`/users/update`, {
+          userName: formData.userName,
+          userEmail: formData.userEmail,
+          userRole: formData.userRole,
+        }),
+        authAxios.put(`/api/addresses/addressPut`, {
+          addressLine1: formData.addressLine1,
+          addressLine2: formData.addressLine2,
+          district: formData.district,
+          state: formData.state,
+          pincode: formData.pincode,
+        }),
+        authAxios.put(`/userdetails/userdetailsPut`, {
+          gender: formData.gender,
+          dateOfBirth: formData.dateOfBirth,
+          phoneNumber: formData.phoneNumber,
+          alterPhone: formData.alterPhone,
+          imageUrl: formData.imageUrl,
+        }),
+      ]);
+      setUser({
+        ...user,
+        userName: formData.userName
+      })
+      alert('Profile updated successfully');
+      navigate(dashboardPath);
+    } catch (err) {
+      console.error('Update failed:', err);
+      alert('Failed to update profile. Please try again.');
+    }
   };
+
+  if (loading) return <div className="loading">Loading Profile...</div>;
 
   return (
     <div className="profile-bg">
@@ -74,7 +137,7 @@ const UpdateProfile = () => {
         <div className="col-md-4 text-center d-flex flex-column align-items-center justify-content-center">
           <div className="position-relative">
             <img
-              src={formData.imageUrl}
+              src={formData.imageUrl || 'https://via.placeholder.com/150'}
               alt="Profile"
               className="profile-pic-glass shadow"
               style={{
@@ -105,9 +168,7 @@ const UpdateProfile = () => {
 
         {/* Editable Info */}
         <div className="col-md-8 mt-4 mt-md-0">
-          <h4 className="mb-3 border-bottom pb-2 text-purple">
-            Edit Personal Information
-          </h4>
+          <h4 className="mb-3 border-bottom pb-2 text-purple">Edit Personal Information</h4>
           <div className="row g-3">
             <div className="col-md-6">
               <label className="form-label">User Name</label>
@@ -116,26 +177,26 @@ const UpdateProfile = () => {
                 className="form-control custom-input"
                 value={formData.userName}
                 onChange={handleChange}
+                required
               />
             </div>
-            <div className="col-md-6">
-              <label className="form-label">Email</label>
-              <input
-                name="userEmail"
-                className="form-control custom-input"
-                value={formData.userEmail}
-                onChange={handleChange}
-              />
-            </div>
+
             <div className="col-md-6">
               <label className="form-label">Gender</label>
-              <input
+              <select
                 name="gender"
-                className="form-control custom-input"
+                className="form-select custom-input"
                 value={formData.gender}
                 onChange={handleChange}
-              />
+                required
+              >
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+              </select>
             </div>
+
             <div className="col-md-6">
               <label className="form-label">Date of Birth</label>
               <input
@@ -144,77 +205,32 @@ const UpdateProfile = () => {
                 className="form-control custom-input"
                 value={formData.dateOfBirth}
                 onChange={handleChange}
-              />
-            </div>
-            <div className="col-md-6">
-              <label className="form-label">Phone Number</label>
-              <input
-                name="phoneNumber"
-                className="form-control custom-input"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="col-md-6">
-              <label className="form-label">Alternate Phone</label>
-              <input
-                name="alterPhone"
-                className="form-control custom-input"
-                value={formData.alterPhone}
-                onChange={handleChange}
+                max={new Date().toISOString().split("T")[0]}
+                required
               />
             </div>
           </div>
 
-          <h4 className="mt-4 mb-3 border-bottom pb-2 text-purple">
-            Edit Address Information
-          </h4>
+          <h4 className="mt-4 mb-3 border-bottom pb-2 text-purple">Edit Address Information</h4>
           <div className="row g-3">
-            <div className="col-md-6">
-              <label className="form-label">Address Line 1</label>
-              <input
-                name="addressLine1"
-                className="form-control custom-input"
-                value={formData.addressLine1}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="col-md-6">
-              <label className="form-label">Address Line 2</label>
-              <input
-                name="addressLine2"
-                className="form-control custom-input"
-                value={formData.addressLine2}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="col-md-4">
-              <label className="form-label">District</label>
-              <input
-                name="district"
-                className="form-control custom-input"
-                value={formData.district}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="col-md-4">
-              <label className="form-label">State</label>
-              <input
-                name="state"
-                className="form-control custom-input"
-                value={formData.state}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="col-md-4">
-              <label className="form-label">Pincode</label>
-              <input
-                name="pincode"
-                className="form-control custom-input"
-                value={formData.pincode}
-                onChange={handleChange}
-              />
-            </div>
+            {[
+              ['Address Line 1', 'addressLine1'],
+              ['Address Line 2', 'addressLine2'],
+              ['District', 'district'],
+              ['State', 'state'],
+              ['Pincode', 'pincode'],
+            ].map(([label, name], idx) => (
+              <div className={`col-md-${name === 'pincode' ? 4 : 6}`} key={idx}>
+                <label className="form-label">{label}</label>
+                <input
+                  name={name}
+                  className="form-control custom-input"
+                  value={formData[name]}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            ))}
           </div>
 
           <div className="text-end mt-4">

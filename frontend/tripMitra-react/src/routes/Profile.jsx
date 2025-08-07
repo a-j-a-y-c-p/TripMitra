@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/UserProfile.css';
 import { AuthContext } from '../contexts/AuthContext';
-import authAxios from '../api/axiosConfig'; // <-- using your pre-configured axios
+import authAxios from '../api/axiosConfig';
 
-const UserProfile = () => {
+const Profile = () => {
   const navigate = useNavigate();
-  const { user, logout } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const [basicInfo, setBasicInfo] = useState({});
   const [addressInfo, setAddressInfo] = useState({});
@@ -16,26 +16,19 @@ const UserProfile = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const userId =  user?.userId;
+      const userId = user?.userId;
 
       if (!userId) {
-        console.log("User not available yet");
-        setLoading(false); // Prevent infinite loader
+        setLoading(false);
         return;
       }
 
       try {
-        console.log("Fetching data for user ID:", userId);
-
         const [basicRes, addressRes, prefRes] = await Promise.all([
           authAxios.get(`/users/getUser/${userId}`),
           authAxios.get(`/api/addresses/addressGet`),
           authAxios.get(`/userdetails/userdetailsGet`),
         ]);
-
-        console.log("Fetched basic:", basicRes.data);
-        console.log("Fetched address:", addressRes.data);
-        console.log("Fetched preferences:", prefRes.data);
 
         setBasicInfo(basicRes.data);
         setAddressInfo(addressRes.data);
@@ -50,27 +43,31 @@ const UserProfile = () => {
     fetchProfile();
   }, [user]);
 
-  const handleDeleteProfile = async (e) => {
-    e.preventDefault();
-    const confirmDelete = window.confirm('Are you sure you want to delete your profile? This action cannot be undone.');
-
-    const userId = user?.userId;
-    if (!confirmDelete || !userId) return;
-
+  const handleBlockUser = async () => {
     try {
-      await Promise.all([
-        authAxios.delete(`/users/deleteUser/${userId}`),
-        authAxios.delete(`/api/addresses/${userId}`),
-        authAxios.delete(`/userdetails/${userId}`),
-      ]);
-
-      alert('Your profile has been deleted.');
-      logout();
-      navigate('/login');
-      window.location.reload();
+      await authAxios.patch(`/blockUser/${user.userId}`);
+      alert('User block status updated.');
     } catch (err) {
-      console.error('Failed to delete profile:', err);
-      alert('Error deleting profile. Please try again.');
+      console.error('Error blocking user:', err);
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      await authAxios.delete(`/users/deleteUser/${user.userId}`);
+      alert('User deleted successfully.');
+      navigate('/login');
+    } catch (err) {
+      console.error('Error deleting user:', err);
+    }
+  };
+
+  const handleChangeRole = async () => {
+    try {
+      await authAxios.patch(`/users/changeRole/${user.userId}`); // backend must support this
+      alert('User role updated to admin.');
+    } catch (err) {
+      console.error('Error changing user role:', err);
     }
   };
 
@@ -80,7 +77,6 @@ const UserProfile = () => {
     <div className="profile-bg position-relative min-vh-100">
       <div className="container pb-5">
         <div className="row">
-          {/* Profile Image & Name */}
           <div className="col-md-4 text-center d-flex flex-column align-items-center justify-content-center">
             <img
               src={preferences.imageUrl || 'https://via.placeholder.com/150'}
@@ -91,7 +87,6 @@ const UserProfile = () => {
             <span className="text-muted">{basicInfo.userRole}</span>
           </div>
 
-          {/* User Info */}
           <div className="col-md-8 mt-4 mt-md-0">
             <h4 className="mb-3 border-bottom pb-2 text-purple">Personal Information</h4>
             <div className="row g-3">
@@ -100,12 +95,24 @@ const UserProfile = () => {
                 <input className="form-control custom-input" value={basicInfo.userName || ''} readOnly />
               </div>
               <div className="col-md-6">
+                <label className="form-label">Email</label>
+                <input className="form-control custom-input" value={basicInfo.userEmail || ''} readOnly />
+              </div>
+              <div className="col-md-6">
                 <label className="form-label">Gender</label>
                 <input className="form-control custom-input" value={preferences.gender || ''} readOnly />
               </div>
               <div className="col-md-6">
                 <label className="form-label">Date of Birth</label>
                 <input className="form-control custom-input" value={preferences.dateOfBirth || ''} readOnly />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Phone Number</label>
+                <input className="form-control custom-input" value={preferences.phoneNumber || ''} readOnly />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Alternate Phone</label>
+                <input className="form-control custom-input" value={preferences.alterPhone || ''} readOnly />
               </div>
             </div>
 
@@ -133,23 +140,22 @@ const UserProfile = () => {
               </div>
             </div>
 
-            <div className="text-end mt-4">
-              <button className="btn custom-btn" onClick={() => navigate('/UpdateProfile')}>
-                Edit Profile
+            <div className="text-end mt-5 d-flex justify-content-between">
+              <button className="btn btn-outline-danger" onClick={handleBlockUser}>
+                Block User
+              </button>
+              <button className="btn btn-outline-warning" onClick={handleChangeRole}>
+                Promote to Admin
+              </button>
+              <button className="btn btn-danger" onClick={handleDeleteUser}>
+                Delete User
               </button>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Bottom Center Delete Profile Link */}
-      <div className="delete-profile-link text-center py-3">
-        <a href="#" className="text-danger fw-bold" onClick={handleDeleteProfile}>
-          Delete Profile
-        </a>
-      </div>
     </div>
   );
 };
 
-export default UserProfile;
+export default Profile;
