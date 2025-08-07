@@ -16,6 +16,7 @@ import com.acts.tripmitra.repository.UserRepository;
 import com.acts.tripmitra.services.AuthService;
 import com.acts.tripmitra.services.exceptions.EmailAlreadyExistsException;
 import com.acts.tripmitra.services.exceptions.InvalidCredentialsException;
+import com.acts.tripmitra.services.exceptions.UserBlockedException;
 import com.acts.tripmitra.utilities.JwtUtil;
 
 @Service
@@ -67,6 +68,10 @@ public class AuthServiceImpl implements AuthService {
 		User user = userRepository.findByUserEmail(request.getUserEmail());
 		if (user == null || !passwordEncoder.matches(request.getUserPassword(), user.getUserPassword())) {
 			throw new InvalidCredentialsException("Invalid email or password");
+		}
+		
+		if(user.getUserDetails().isBlocked()) {
+			throw new UserBlockedException("User is blocked by admin");
 		}
 
 		String token = jwtUtil.generateToken(user.getUserEmail(), user.getUserRole(), user.getUserId(), user.getUserName());
