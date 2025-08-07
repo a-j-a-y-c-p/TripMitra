@@ -32,12 +32,12 @@ public class UserDetailsController {
 
 
     @GetMapping("/{id}")
-    public UserDetailsDto getUserDetailsById(@PathVariable Integer id) {
+    public UserDetails getUserDetailsById(@PathVariable Integer id) {
         return userDetailsService.getUserDetailsById(id);
     }
     
     @GetMapping("/byUser/{id}")
-    public UserDetailsDto getUserDetailsByUserId(@PathVariable Integer id) {
+    public UserDetails getUserDetailsByUserId(@PathVariable Integer id) {
         return userDetailsService.getUserDetailsByUserId(id);
     }
     
