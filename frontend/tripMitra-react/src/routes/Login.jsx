@@ -3,7 +3,7 @@ import api from '../api/axiosConfig'
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import { jwtDecode } from "jwt-decode";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // 👈 install if not already
+import { FaEye, FaEyeSlash } from "react-icons/fa"; 
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const Login = () => {
   });
 
   const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // 👈 NEW STATE
+  const [showPassword, setShowPassword] = useState(false); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
