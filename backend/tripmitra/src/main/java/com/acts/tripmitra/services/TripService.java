@@ -21,5 +21,6 @@ public interface TripService {
 	public List<TripDto> getAllCancelledTrips();
 	public List<TripDto> getAllCompletedTrips();
 	public TripDto getTripById(Integer id);
+	public void updateCurrMembers(Integer tripId);
 	
 }

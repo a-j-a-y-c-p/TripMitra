@@ -213,6 +213,12 @@ public class TripServiceImpl implements TripService {
 		return tripDtoList;
 	}
 
+	@Override
+	public void updateCurrMembers(Integer tripId) {
+		
+		tripRepository.updateCurrMembers(tripId);
+	}
+
 	
 	
 
