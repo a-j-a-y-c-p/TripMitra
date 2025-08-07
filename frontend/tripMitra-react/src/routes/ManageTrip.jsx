@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '../api/axiosConfig';
 import { AuthContext } from '../contexts/AuthContext';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ManageTrip = () => {
   const [trips, setTrips] = useState([]);
@@ -51,7 +53,7 @@ const ManageTrip = () => {
       await api.post(`/trips/cancel/${id}`);
       setTrips(trips.filter((trip) => trip.tripId !== id));
       setError(null);
-      alert('Trip cancelled successfully!');
+      toast.error('Trip cancelled successfully!');
     } catch (err) {
       setError('Failed to cancel trip. Please try again.');
       console.error('Error deleting trip:', err);
@@ -65,7 +67,17 @@ const ManageTrip = () => {
   };
 
   return (
+    
+    
     <div className="container mt-4 mt-md-5">
+      <ToastContainer
+      position="top-center"
+      autoClose={3000}
+      closeOnClick
+      pauseOnHover
+      draggable
+      closeButton={true}
+    />
       <h1 className="text-center mb-4 fs-3 fs-md-2">Manage Trips</h1>
       {error && <div className="alert alert-danger">{error}</div>}
       {isLoading && (

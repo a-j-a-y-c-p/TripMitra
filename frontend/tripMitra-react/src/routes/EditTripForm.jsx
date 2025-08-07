@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/axiosConfig';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditTripForm = () => {
   const { tripId } = useParams();
@@ -48,7 +50,7 @@ const EditTripForm = () => {
     setSubmitting(true);
     api.put(`/trips/update/${tripId}`, trip)
       .then(() => {
-        alert('Trip updated successfully!');
+        toast.success('Trip updated successfully!');
         navigate('/managetrip');
       })
       .catch(error => {
@@ -62,6 +64,14 @@ const EditTripForm = () => {
 
   return (
     <div className="container mt-5">
+      <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            closeOnClick
+            pauseOnHover
+            draggable
+            closeButton={true}
+          />
       <h3 className="text-center mb-4 fs-3 fs-md-2">Edit Trip</h3>
       <form onSubmit={handleSubmit} className="border p-4 rounded bg-light">
         <div className="mb-3">

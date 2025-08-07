@@ -59,6 +59,11 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
 	@Query(value="select * from trip where tripid = :id and status='ACTIVE'", nativeQuery = true)
 	Optional<Trip> findActiveTripById(Integer id);
 	
+	@Modifying
+	@Transactional
+	@Query(value="Update trip set currmembers = currmembers + 1 where tripid = :tripId", nativeQuery = true)
+	void updateCurrMembers(Integer tripId);
+	
 	
 
 }
