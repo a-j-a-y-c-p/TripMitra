@@ -15,6 +15,7 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     document.body.style.backgroundColor = "#fff";
@@ -30,7 +31,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
+      setSubmitting(true);
     if (formData.userPassword !== formData.confirmPassword) {
       setError("Passwords do not match.");
       return;
@@ -50,6 +51,8 @@ const Signup = () => {
     } catch (err) {
       console.error(err);
       setError("Signup failed. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -158,8 +161,11 @@ const Signup = () => {
             </div>
           </div>
 
-          <button type="submit" className="btn btn-primary w-100">
-            Signup
+          <button type="submit" className="btn btn-primary w-100" disabled={submitting} >
+            
+            
+                
+                  {submitting ? 'Signing up...' : 'Signup'}
           </button>
         </form>
 
