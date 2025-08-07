@@ -1,5 +1,5 @@
 
-
+import { Link } from 'react-router-dom';
 import React from "react";
 
 const TripNavigation = () => {
@@ -13,27 +13,27 @@ const TripNavigation = () => {
       </h4>
 
       <div className="mb-3">
-        <a href="/addtrip" className="text-decoration-none text-dark">
+        <Link to="/addtrip" className="text-decoration-none text-dark">
           <div className="p-3 bg-white rounded hover-shadow" style={{ fontSize: "1.1rem" }}>
             ➕ Add Trip
           </div>
-        </a>
+        </Link>
       </div>
 
       <div className="mb-3">
-        <a href="/managetrip" className="text-decoration-none text-dark">
+        <Link to="/managetrip" className="text-decoration-none text-dark">
           <div className="p-3 bg-white rounded hover-shadow" style={{ fontSize: "1.1rem" }}>
             🛠️ Manage Trip
           </div>
-        </a>
+        </Link>
       </div>
 
       <div>
-        <a href="/triphistory" className="text-decoration-none text-dark">
+        <Link to="/triphistory" className="text-decoration-none text-dark">
           <div className="p-3 bg-white rounded hover-shadow" style={{ fontSize: "1.1rem" }}>
             📜 Trip History
           </div>
-        </a>
+        </Link>
       </div>
     </div>
   );
