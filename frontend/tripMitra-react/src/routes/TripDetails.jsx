@@ -31,7 +31,6 @@ const TripDetails = () => {
     const usersRes = await api.get(`/members/users/${id}`);
     const members = usersRes.data;
 
-    // ✅ Mark the first user as host
     if (members.length > 0) {
       members[0].host = true;
     }
@@ -97,10 +96,9 @@ const TripDetails = () => {
     const details = userDetailsResponse.data;
 console.log("User details response:", details);
 
-// Check for required fields: gender, phoneNumber, or any required by your backend
 if (
   !details ||
-  !details.gender || // 👈 Add checks for whatever your backend expects
+  !details.gender || 
   !details.phoneNumber
 ) {
   setError('Please update your profile before joining a trip.');
@@ -108,7 +106,7 @@ if (
   return;
 }
 
-    // Proceed with joining the trip
+   
     const response = await api.post('/members/add', {
       userId: parseInt(userId),
       tripId: parseInt(id),
@@ -128,7 +126,7 @@ if (
   } catch (err) {
     console.error('Join error:', err);
 
-    // ✅ Handle backend "Details not found" response
+   
     if (err.response?.data?.message?.includes('Details not found')) {
       setError('Please update your profile before joining a trip.');
     } else {
