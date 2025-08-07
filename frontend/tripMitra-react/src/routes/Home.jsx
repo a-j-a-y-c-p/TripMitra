@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeroCarousel from './HeroCarousel';
-import '../CSS/Home.css';
+import '../css/Home.css';
 
 const Home = () => {
   const navigate = useNavigate();
