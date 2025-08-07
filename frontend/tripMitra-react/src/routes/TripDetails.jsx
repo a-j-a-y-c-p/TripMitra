@@ -66,43 +66,68 @@ if (existsRes.data === 'pending') {
 
 
   const handleJoinTrip = async () => {
-    if (alreadyJoined) {
-      setError('You are already a participant in this trip.');
-      return;
-    }
+  if (alreadyJoined) {
+    setError('You are already a participant in this trip.');
+    return;
+  }
 
-    if (tripFull) {
-      setError('This trip is already full.');
-      return;
-    }
+  if (tripFull) {
+    setError('This trip is already full.');
+    return;
+  }
 
-    setJoining(true);
-    setError('');
-    setSuccessMessage('');
+  setJoining(true);
+  setError('');
+  setSuccessMessage('');
 
-    try {
-      const response = await api.post('/members/add', {
-        userId: parseInt(userId),
-        tripId: parseInt(id),
-      });
+  try {
+    const token = localStorage.getItem('token');
 
-      if (response.status === 200 || response.status === 201) {
-        setSuccessMessage('Successfully joined the trip!');
-        setJoinedUsers(prev => [...prev, { userId, username: user.username }]);
-        setTrip(prev => ({
-  ...prev,
-  
-}));
-        setAlreadyJoined(true);
-      } else {
-        throw new Error('Failed to join the trip.');
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || err.message);
-    } finally {
+    const userDetailsResponse = await api.get('/userdetails/userdetailsGet', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const details = userDetailsResponse.data;
+
+    // 👇 Check if userDetails exist or are valid
+    if (!details || !details.user || !details.user.userId) {
+      setError('Please update your profile before joining a trip.');
       setJoining(false);
+      return;
     }
-  };
+
+    // Proceed with joining the trip
+    const response = await api.post('/members/add', {
+      userId: parseInt(userId),
+      tripId: parseInt(id),
+    });
+
+    if (response.status === 200 || response.status === 201) {
+      setSuccessMessage('Successfully joined the trip!');
+      setJoinedUsers(prev => [...prev, { userId, username: user.username }]);
+      setTrip(prev => ({
+        ...prev,
+        currMembers: prev.currMembers + 1,
+      }));
+      setAlreadyJoined(true);
+    } else {
+      throw new Error('Failed to join the trip.');
+    }
+  } catch (err) {
+    console.error('Join error:', err);
+
+    // ✅ Handle backend "Details not found" response
+    if (err.response?.data?.message?.includes('Details not found')) {
+      setError('Please update your profile before joining a trip.');
+    } else {
+      setError(err.response?.data?.message || err.message);
+    }
+  } finally {
+    setJoining(false);
+  }
+};
 
   const handleLeaveTrip = async () => {
   if (!userId) {
