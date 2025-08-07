@@ -31,7 +31,7 @@ public class TripMemberController {
 	TripService tripService;
 
 	@PostMapping("/add")
-	public String addTripMember(@RequestBody MemberId memberId) throws UserAlreadyExistsException {
+	public String addTripMember(@RequestBody MemberId memberId) {
 		service.addMember(memberId);
 		return "Member Added! ";
 	}
