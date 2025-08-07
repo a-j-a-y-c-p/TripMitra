@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import Logo from '../../images/temp-logo-tm.png';
 import { AuthContext } from '../contexts/AuthContext';
 
 const Navbar = () => {
@@ -16,7 +15,7 @@ const Navbar = () => {
       <div className="container-fluid">
         
         <NavLink className="navbar-brand d-flex align-items-center" to="/">
-          <img src={Logo} alt="logo" height={40} width={80} className="me-2" />
+          <img src='/images/temp-logo-tm.png' alt="logo" height={40} width={80} className="me-2" />
         </NavLink>
 
         
@@ -81,9 +80,6 @@ const Navbar = () => {
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                   <li>
                     <NavLink className="dropdown-item" to="/profile">My Profile</NavLink>
-                  </li>
-                  <li>
-                    <NavLink className="dropdown-item" to="/accountsettings">Account Settings</NavLink>
                   </li>
                   <li><hr className="dropdown-divider" /></li>
                   <li>
