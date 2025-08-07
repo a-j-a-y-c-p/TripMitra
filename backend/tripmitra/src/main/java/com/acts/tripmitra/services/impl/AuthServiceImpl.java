@@ -7,7 +7,11 @@ import org.springframework.stereotype.Service;
 import com.acts.tripmitra.dto.AuthResponseDto;
 import com.acts.tripmitra.dto.LoginRequestDto;
 import com.acts.tripmitra.dto.UserDto;
+import com.acts.tripmitra.entity.Address;
 import com.acts.tripmitra.entity.User;
+import com.acts.tripmitra.entity.UserDetails;
+import com.acts.tripmitra.repository.AddressRepository;
+import com.acts.tripmitra.repository.UserDetailsRepository;
 import com.acts.tripmitra.repository.UserRepository;
 import com.acts.tripmitra.services.AuthService;
 import com.acts.tripmitra.services.exceptions.EmailAlreadyExistsException;
@@ -19,6 +23,12 @@ public class AuthServiceImpl implements AuthService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private UserDetailsRepository userDetailsRepository;
+	
+	@Autowired
+	private AddressRepository addressRepository;
 
 	@Autowired
 	private JwtUtil jwtUtil;
@@ -37,8 +47,16 @@ public class AuthServiceImpl implements AuthService {
 		newUser.setUserName(user.getUserName());
 		newUser.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
 		newUser.setUserRole("USER");
-
 		userRepository.save(newUser);
+		
+		Address address = new Address();
+		addressRepository.save(address);
+		
+		UserDetails newUserDetails = new UserDetails();
+		newUserDetails.setUser(newUser);
+		newUserDetails.setBlocked(false);
+		newUserDetails.setAddress(address);
+		userDetailsRepository.save(newUserDetails);
 
 		String token = jwtUtil.generateToken(newUser.getUserEmail(), newUser.getUserRole(), newUser.getUserId(), newUser.getUserName());
 		return new AuthResponseDto(token);
