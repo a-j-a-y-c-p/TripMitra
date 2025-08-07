@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api/axiosConfig';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../CSS/TripMembers.css';
+import '../css/TripMembers.css';
 
 const TripMembers = () => {
   const [members, setMembers] = useState([]);
