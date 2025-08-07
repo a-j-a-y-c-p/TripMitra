@@ -40,7 +40,6 @@ const UserList = ({ filters }) => {
   const handleBlockUser = async (user) => {
     try {
         await axiosInstance.patch(`/userdetails/blockUser/${user.user.userId}`);
-        // Update the local state with toggled block status
         setUsers(prev =>
         prev.map(u =>
             u.userId === user.user.userId ? { ...u, blocked: !u.blocked } : u
@@ -79,10 +78,16 @@ const UserList = ({ filters }) => {
               >
                 Delete
               </button>
-              <button className="btn btn-primary btn-sm"
-                      onClick={() => navigate(`/profile`) }  
+              {/* <button className="btn btn-primary btn-sm"
+                      onClick={() => navigate(`/viewprofile`) }  
                 >
                 View Profile
+                </button> */}
+                <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => navigate(`/viewprofile/${user.user.userId}`)}
+                    >
+                    View Profile
                 </button>
             </div>
           </div>
