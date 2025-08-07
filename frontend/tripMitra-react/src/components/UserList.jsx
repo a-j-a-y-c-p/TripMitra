@@ -31,7 +31,7 @@ const UserList = ({ filters }) => {
   const handleDeleteUser = async (userId) => {
     try {
       await axiosInstance.delete(`/userdetails/${userId}`);
-      setUsers(prev => prev.filter(user => user.userId !== userId));
+      setUsers(prev => prev.filter(user => user.userDetailsId !== userId));
     } catch (err) {
       console.error('Failed to delete user', err);
     }
@@ -72,17 +72,13 @@ const UserList = ({ filters }) => {
               >
                 {user.blocked ? 'Unblock' : 'Block'}
               </button>
+              {console.log(user.userDetailsId)}
               <button
                 className="btn btn-outline-danger btn-sm me-2"
-                onClick={() => handleDeleteUser(user.userId)}
+                onClick={() => handleDeleteUser(user.userDetailsId)}
               >
                 Delete
               </button>
-              {/* <button className="btn btn-primary btn-sm"
-                      onClick={() => navigate(`/viewprofile`) }  
-                >
-                View Profile
-                </button> */}
                 <button
                     className="btn btn-primary btn-sm"
                     onClick={() => navigate(`/viewprofile/${user.user.userId}`)}
