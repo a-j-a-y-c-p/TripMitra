@@ -11,6 +11,7 @@ import com.acts.tripmitra.entity.UserDetails;
 public interface UserDetailsService {
 
 	public UserDetailsDto getUserDetailsById(Integer id);
+	public UserDetailsDto getUserDetailsByUserId(Integer id);
 	public UserDetailsDto create(UserDetailsDto dto);
 	public UserDetailsDto update(Integer id, UserDetailsDto dto);
 	public void delete(Integer id);
@@ -20,5 +21,6 @@ public interface UserDetailsService {
 	public UserDetailsDto updateByToken(String authHeader, UserDetailsDto dto);
 	public String blockUserById(Integer id);
 	public String unBlockUserById(Integer id);
+	public String toggleBlockStatus(Integer id);
 	
 }
