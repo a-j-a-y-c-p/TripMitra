@@ -2,7 +2,6 @@ package com.acts.tripmitra.entity;
 
 import java.sql.Date;
 
-import com.acts.tripmitra.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -11,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -42,8 +42,12 @@ public class UserDetails {
     @Column(name = "dateofbirth")
     private Date dateOfBirth;
     
-    @Column(name = "imageurl")
-    private String imageUrl;
+//    @Column(name = "imageurl")
+//    private String imageUrl;
+    
+    @Lob
+    @Column(name = "imageurl", columnDefinition = "LONGBLOB")
+    private byte[] imageUrl;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "addressid", referencedColumnName = "addressid")
