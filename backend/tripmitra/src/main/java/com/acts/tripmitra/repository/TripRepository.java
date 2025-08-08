@@ -62,7 +62,12 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
 	@Modifying
 	@Transactional
 	@Query(value="Update trip set currmembers = currmembers + 1 where tripid = :tripId and maxmembers > currmembers", nativeQuery = true)
-	void updateCurrMembers(Integer tripId);
+	void incrementCurrMembers(Integer tripId);
+	
+	@Modifying
+	@Transactional
+	@Query(value="Update trip set currmembers = currmembers - 1 where tripid = :tripId and maxmembers > currmembers", nativeQuery = true)
+	void decrementCurrMembers(Integer tripId);
 	
 	
 

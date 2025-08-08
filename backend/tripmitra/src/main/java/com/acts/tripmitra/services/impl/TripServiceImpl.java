@@ -214,9 +214,15 @@ public class TripServiceImpl implements TripService {
 	}
 
 	@Override
-	public void updateCurrMembers(Integer tripId) {
+	public void incrementCurrMembers(Integer tripId) {
 		
-		tripRepository.updateCurrMembers(tripId);
+		tripRepository.incrementCurrMembers(tripId);
+	}
+	
+	@Override
+	public void decrementCurrMembers(Integer tripId) {
+		
+		tripRepository.decrementCurrMembers(tripId);
 	}
 
 	
