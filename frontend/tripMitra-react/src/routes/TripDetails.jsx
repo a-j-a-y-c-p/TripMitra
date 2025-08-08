@@ -251,8 +251,10 @@ if (
             <ul>
   {joinedUsers.map((u, idx) => (
     <li key={idx} className="member-item">
+      {console.log(u)}
+      {console.log(u.profileImageBase64)}
       <img
-        src={u.imageUrl}
+        src={u.profileImageBase64}
         alt={u.user?.userName}
         className="member-image"
       />
