@@ -96,16 +96,14 @@ const Profile = () => {
           {/* Profile Image & Name & Buttons */}
           <div className="col-md-4 text-center d-flex flex-column align-items-center justify-content-center">
             <img
-              src={preferences.imageUrl || 'https://via.placeholder.com/150'}
-              alt="Profile"
-              className="shadow"
-              style={{
-                width: '200px',
-                height: '250px',
-                objectFit: 'cover',
-                borderRadius: '15px'
-              }}
-            />
+                src={
+                    preferences.profileImageBase64
+                    ? `data:image/jpeg;base64,${preferences.profileImageBase64}`
+                    : 'https://via.placeholder.com/150'
+                }
+                alt="Profile"
+                className="profile-pic-glass shadow"
+                />
             <h4 className="mt-3 fw-bold">{basicInfo.userName}</h4>
             <span className="text-muted mb-3">
               {basicInfo.userRole === 'ADMIN' ? 'ADMIN' : 'USER'}
