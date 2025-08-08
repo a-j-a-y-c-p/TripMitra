@@ -11,7 +11,7 @@ import com.acts.tripmitra.entity.UserDetails;
 public interface UserDetailsService {
 
 	public UserDetails getUserDetailsById(Integer id);
-	public UserDetails getUserDetailsByUserId(Integer id);
+	public UserDetailsDto getUserDetailsByUserId(Integer id);
 	public UserDetailsDto create(UserDetailsDto dto);
 	public UserDetailsDto update(Integer id, UserDetailsDto dto);
 	public void delete(Integer id);
