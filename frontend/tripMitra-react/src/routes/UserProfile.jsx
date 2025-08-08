@@ -82,8 +82,17 @@ const UserProfile = () => {
         <div className="row">
           {/* Profile Image & Name */}
           <div className="col-md-4 text-center d-flex flex-column align-items-center justify-content-center">
-            <img
+            {/* <img
               src={preferences.imageUrl || 'https://via.placeholder.com/150'}
+              alt="Profile"
+              className="profile-pic-glass shadow"
+            /> */}
+            <img
+              src={
+                preferences.profileImageBase64
+                  ? `data:image/jpeg;base64,${preferences.profileImageBase64}`
+                  : 'https://via.placeholder.com/150'
+              }
               alt="Profile"
               className="profile-pic-glass shadow"
             />
