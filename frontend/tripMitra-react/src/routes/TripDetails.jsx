@@ -98,8 +98,7 @@ console.log("User details response:", details);
 
 if (
   !details ||
-  !details.gender || 
-  !details.phoneNumber
+  !details.gender
 ) {
   setError('Please update your profile before joining a trip.');
   setJoining(false);
