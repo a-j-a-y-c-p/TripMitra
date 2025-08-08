@@ -61,7 +61,7 @@ public class TripMemberController {
 	@PutMapping("/leave")
 	public String leave(@RequestBody MemberId memberId) {
 		service.leave(memberId);
-		tripService.decrementCurrMembers(memberId.getTripId());
+//		tripService.decrementCurrMembers(memberId.getTripId());
 		return "Leave Request Sent!";
 	}
 	
