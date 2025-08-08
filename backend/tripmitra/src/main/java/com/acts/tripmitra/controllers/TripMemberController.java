@@ -52,7 +52,7 @@ public class TripMemberController {
 	public String updateTripMember(@RequestBody TripMember tripMember) {
 		service.updateStatus(tripMember);
 		if(tripMember.getStatus().toString() == "ACCEPTED") {
-			tripService.updateCurrMembers(tripMember.getMemberId().getTripId());
+			tripService.incrementCurrMembers(tripMember.getMemberId().getTripId());
 		}
 		
 		return "Member Updated!";
@@ -61,6 +61,7 @@ public class TripMemberController {
 	@PutMapping("/leave")
 	public String leave(@RequestBody MemberId memberId) {
 		service.leave(memberId);
+		tripService.decrementCurrMembers(memberId.getTripId());
 		return "Leave Request Sent!";
 	}
 	
