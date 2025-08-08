@@ -37,7 +37,7 @@ public class UserDetailsController {
     }
     
     @GetMapping("/byUser/{id}")
-    public UserDetails getUserDetailsByUserId(@PathVariable Integer id) {
+    public UserDetailsDto getUserDetailsByUserId(@PathVariable Integer id) {
         return userDetailsService.getUserDetailsByUserId(id);
     }
     
