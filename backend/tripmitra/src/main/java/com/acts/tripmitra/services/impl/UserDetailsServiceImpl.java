@@ -1,5 +1,6 @@
 package com.acts.tripmitra.services.impl;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,9 +57,11 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	    Integer userId = jwtUtil.extractUserId(token); // Extract userId from JWT
 	    UserDetails details = userDetailsRepository.findByUserId(userId)
 	        .orElseThrow(() -> new RuntimeException("Details not found for userId: " + userId));
-	    
 	    UserDetailsDto dto = new UserDetailsDto();
 	    BeanUtils.copyProperties(details, dto);
+	    if (details.getImageUrl() != null) {
+	        dto.setProfileImageBase64(Base64.getEncoder().encodeToString(details.getImageUrl()));
+	    }
 	    return dto;
 	}
 
@@ -72,7 +75,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
             userDetails.setAlterPhone(dto.getAlterPhone());
             userDetails.setGender(dto.getGender());
             userDetails.setDateOfBirth(dto.getDateOfBirth());
-            userDetails.setImageUrl(dto.getImageUrl());
+            //userDetails.setImageUrl(dto.getImageUrl());
             Address newAddress = userDetails.getAddress();
             AddressDto address = dto.getAddress();
             newAddress.setAddressLine1(address.getAddressLine1());
@@ -99,7 +102,12 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         userDetails.setAlterPhone(dto.getAlterPhone());
         userDetails.setGender(dto.getGender());
         userDetails.setDateOfBirth(dto.getDateOfBirth());
-        userDetails.setImageUrl(dto.getImageUrl());
+        //userDetails.setImageUrl(dto.getImageUrl());
+        
+        if (dto.getProfileImageBase64() != null && !dto.getProfileImageBase64().isEmpty()) {
+            byte[] imageBytes = Base64.getDecoder().decode(dto.getProfileImageBase64());
+            userDetails.setImageUrl(imageBytes);
+        }
 
         Address newAddress = userDetails.getAddress();
         AddressDto address = dto.getAddress();
@@ -166,7 +174,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	}
 
 	@Override
-	public UserDetails getUserDetailsByUserId(Integer id) {
+	public UserDetailsDto getUserDetailsByUserId(Integer id) {
 		Optional<UserDetails> optional = userDetailsRepository.findByUserId(id);
 		if(optional.isPresent()) {
     		UserDetails details =  optional.get();
@@ -176,7 +184,10 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     		BeanUtils.copyProperties(details.getUser(), dto.getUser());
     		dto.setAddress(new AddressDto());
     		BeanUtils.copyProperties(details.getAddress(), dto.getAddress());
-    		return details;
+    		if (details.getImageUrl() != null) {
+    	        dto.setProfileImageBase64(Base64.getEncoder().encodeToString(details.getImageUrl()));
+    	    }
+    		return dto;
     	}
 		return null;
 	}
