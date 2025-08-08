@@ -13,12 +13,12 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3">
       <div className="container-fluid">
-        
+
         <NavLink className="navbar-brand d-flex align-items-center" to="/">
           <img src='/images/temp-logo-tm.png' alt="logo" height={40} width={80} className="me-2" />
         </NavLink>
 
-        
+
         <button
           className="navbar-toggler"
           type="button"
@@ -31,7 +31,7 @@ const Navbar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        
+
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto align-items-lg-center gap-2">
 
@@ -80,6 +80,9 @@ const Navbar = () => {
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                   <li>
                     <NavLink className="dropdown-item" to="/profile">My Profile</NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" to="/accountsettings">Account Settings</NavLink>
                   </li>
                   <li><hr className="dropdown-divider" /></li>
                   <li>
