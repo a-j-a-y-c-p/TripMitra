@@ -1,6 +1,7 @@
 package com.acts.tripmitra.services.impl;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -114,6 +115,9 @@ public class TripMemberServiceImpl implements TripMemberService {
     		BeanUtils.copyProperties(userDetails.getUser(), userDetailsDto.getUser());
     		userDetailsDto.setAddress(new AddressDto());
     		BeanUtils.copyProperties(userDetails.getAddress(), userDetailsDto.getAddress());
+    		if (userDetails.getImageUrl() != null) {
+    			userDetailsDto.setProfileImageBase64(Base64.getEncoder().encodeToString(userDetails.getImageUrl()));
+    	    }
 			usersDetailsDtoList.add(userDetailsDto);
 		}
 		return usersDetailsDtoList;
