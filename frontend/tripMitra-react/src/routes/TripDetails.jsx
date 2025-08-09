@@ -252,7 +252,11 @@ if (
   {joinedUsers.map((u, idx) => (
     <li key={idx} className="member-item">
       <img
-        src={u.imageUrl}
+        src={
+                    u.profileImageBase64
+                    ? `data:image/jpeg;base64,${u.profileImageBase64}`
+                    : 'https://via.placeholder.com/150'
+        }
         alt={u.user?.userName}
         className="member-image"
       />
